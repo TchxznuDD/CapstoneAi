@@ -224,7 +224,7 @@
   display: flex;
   padding: var(--dl-layout-space-fiveunits);
   position: relative;
-  align-items: center;
+  align-items: flex-start;
   flex-direction: column;
 }
  

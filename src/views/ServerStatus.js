@@ -2,7 +2,7 @@ import React from 'react';
 import Header from '../components/Header';
 import './Computer.css';
 import './ServerStatus.css';
-import serverIcon from '../assets/server.svg';
+import serverIcon from '../assets/ServerIcon.svg';
 
 export default function ServerStatus() {
   const server = {

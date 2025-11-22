@@ -12,6 +12,7 @@
 .metric-card .stat-icon { position:absolute; right:12px; top:12px }
 .metric-card .stat-icon .icon-bg { width:44px; height:44px; border-radius:10px; display:inline-flex; align-items:center; justify-content:center; box-shadow:0 8px 18px rgba(15,23,42,0.06); background: #e6f0ff }
 .metric-card .stat-icon .icon-bg.green { background: rgba(40,167,69,0.12) }
+.metric-card .stat-icon .icon-bg.storage { background: rgba(255,75,0,0.12) }
 .metric-card .stat-icon .icon-bg img { width:20px; height:20px; display:block; }
 
 .left-panel { display:flex; flex-direction: column; gap:18px }
@@ -23,8 +24,18 @@
 .manual-backup .btn.primary { background:#ff7b00 }
 /* Manual backup improvements */
 .manual-top { display:flex; gap:12px; align-items:flex-start }
-.manual-thumb { width:56px; height:56px; border-radius:12px; background: rgba(40,167,69,0.12); display:inline-flex; align-items:center; justify-content:center; box-shadow:0 8px 20px rgba(15,23,42,0.06); flex:0 0 56px }
-.manual-thumb img { width:26px; height:26px; display:block }
+.manual-thumb {
+  width:56px;
+  height:56px;
+  border-radius:12px;
+  background: rgba(255,123,0,0.08);
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow: 0 8px 18px rgba(15,23,42,0.04);
+  flex:0 0 56px;
+}
+.manual-thumb img { width:36px; height:36px; display:block }
 .manual-info h3 { margin:0; font-size:18px }
 .manual-actions { display:flex; justify-content:space-between; align-items:center; margin-top:12px; gap:12px }
 .backup-progress { flex:1 }
@@ -34,9 +45,28 @@
 .btn.secondary { background:transparent; border:1px solid #eee }
 .manual-actions .muted.small { color: #666; margin-top:0 }
 
-.auto-settings .form-row { display:flex; align-items:center; justify-content:space-between; margin-top:10px }
+.auto-settings { display:flex; flex-direction:column; align-items:flex-start; }
+.auto-settings .form-row { display:flex; align-items:center; gap:12px; margin-top:10px; width:100%; justify-content:flex-start }
+.auto-settings .form-row label { width:140px; margin:0; text-align:left }
 .toggle { width:42px; height:24px; border-radius:16px; background: #ff7b00; color:#fff; display:inline-flex; align-items:center; justify-content:center }
 .form-row input { padding:10px; border-radius:8px; border:1px solid #eee; width:100% }
+
+/* Toggle switch */
+.toggle-switch { display:inline-block; }
+.toggle-switch input { display:none }
+.toggle-switch .slider { display:inline-block; width:52px; height:28px; background:#e6e6e6; border-radius:999px; position:relative; vertical-align:middle }
+.toggle-switch .slider:before { content:''; position:absolute; left:4px; top:4px; width:20px; height:20px; background:#fff; border-radius:50%; transition:transform 160ms ease }
+.toggle-switch input:checked + .slider { background:#FF4B00 }
+.toggle-switch input:checked + .slider:before { transform: translateX(24px) }
+
+/* select and time input */
+.auto-settings select, .auto-settings input[type="time"] {
+  padding:10px; border-radius:8px; border:1px solid #eee; width:auto; background:#fff; font-size:14px; flex:1;
+}
+.auto-settings select:disabled, .auto-settings input[type="time"]:disabled { opacity:0.6 }
+
+.auto-settings .save-row { width:100%; margin-top:12px }
+.auto-settings .save-row .btn.primary { width:100%; }
 
 .history-list { display:flex; flex-direction: column; gap:12px; margin-top:12px }
 .history-item { display:flex; justify-content:space-between; align-items:center; padding:10px; border-radius:8px; border:1px solid #f0f0f0 }
@@ -46,6 +76,27 @@
 .status-dot.manual { background:#ff9800 }
 .hi-date { font-weight:700 }
 .hi-actions .btn { background: transparent; border:1px solid #eee; padding:6px 10px }
+
+.history-list .btn.secondary { padding:6px 12px; border-radius:8px }
+
+.history-controls { margin-top:12px; text-align:left }
+
+/* Centered stacked layout for Automatic Backup to match requested format */
+.auto-settings.stacked-format { align-items: flex-start }
+.auto-top { display:flex; gap:12px; align-items:center; margin-bottom:8px }
+.auto-thumb { width:56px; height:56px; border-radius:12px; display:inline-flex; align-items:center; justify-content:center; background: rgba(255,123,0,0.08); box-shadow: 0 8px 18px rgba(15,23,42,0.04); flex:0 0 56px }
+.auto-thumb img { width:36px; height:36px; display:block }
+.auto-head h3 { margin:0; font-size:18px }
+.auto-head p { margin:6px 0 0 0 }
+
+.auto-settings.stacked-format .form-row.stack { display:flex; flex-direction:column; align-items:flex-start; text-align:left; gap:6px; width:100% }
+.auto-settings.stacked-format .form-row.stack label { width:auto; margin:0; font-weight:600 }
+.auto-settings.stacked-format .form-row.stack .control { width:100%; display:flex; justify-content:flex-start }
+.auto-settings.stacked-format select, .auto-settings.stacked-format input[type="time"] { width:220px; }
+.auto-settings.stacked-format .toggle-switch { display:block }
+.auto-settings.stacked-format .toggle-switch .slider { margin:0 }
+.auto-settings.stacked-format .save-row { width:100%; margin-top:12px }
+.auto-settings.stacked-format .save-row .btn.primary { width:100%; padding:12px 18px; font-size:16px; font-weight:800; background: #ff7b00 }
 
 /* Responsive */
 @media (max-width: 980px) {
