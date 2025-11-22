@@ -52,6 +52,9 @@ export default function Dashboard() {
   const [selectEditOpen, setSelectEditOpen] = useState(false);
   const [selectBuilding, setSelectBuilding] = useState('');
   const [selectStationId, setSelectStationId] = useState('');
+  // options dropdown state
+  const [optionsOpen, setOptionsOpen] = useState(false);
+  const optionsRef = useRef(null);
 
   // modal state for add / edit
   const [modalOpen, setModalOpen] = useState(false);
@@ -164,6 +167,23 @@ export default function Dashboard() {
     setSelectEditOpen(false);
   }
 
+  // close options menu when clicking outside or pressing Escape
+  useEffect(() => {
+    function onDoc(e) {
+      if (!optionsRef.current) return;
+      if (!optionsRef.current.contains(e.target)) setOptionsOpen(false);
+    }
+    function onKey(e) {
+      if (e.key === 'Escape') setOptionsOpen(false);
+    }
+    document.addEventListener('mousedown', onDoc);
+    document.addEventListener('keydown', onKey);
+    return () => {
+      document.removeEventListener('mousedown', onDoc);
+      document.removeEventListener('keydown', onKey);
+    };
+  }, []);
+
   return (
     <div className="dashboard-root">
       <Header active="computers" />
@@ -176,10 +196,17 @@ export default function Dashboard() {
           </div>
         </div>
 
-        <div className="external-refresh">
-            <button className="add-btn" onClick={openAddModal}>Add PC</button>
-            <button className="add-btn" onClick={openAddBuildingModal}>Add Building</button>
-            <button className="add-btn" onClick={openSelectEditModal}>Edit PC</button>
+        <div className="external-refresh" style={{position:'relative'}}>
+            <div style={{position:'relative'}} ref={optionsRef}>
+              <button className="add-btn" onClick={() => setOptionsOpen(o => !o)}>Options ▾</button>
+              {optionsOpen && (
+                <div className="options-menu" role="menu">
+                  <button className="options-item" onClick={() => { openAddModal(); setOptionsOpen(false); }}>Add PC</button>
+                  <button className="options-item" onClick={() => { openSelectEditModal(); setOptionsOpen(false); }}>Edit PC</button>
+                  <button className="options-item" onClick={() => { openAddBuildingModal(); setOptionsOpen(false); }}>Add Building</button>
+                </div>
+              )}
+            </div>
           <button className="refresh-btn">Refresh ↻</button>
         </div>
       </div>

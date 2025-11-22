@@ -56,9 +56,19 @@ export default function ServerStatus() {
         <article className="building">
           <div className="server-card">
           <header className="server-head">
-            <div>
-              <h2 className="server-name">{server.name}</h2>
-              <div className="server-sub">{server.subtitle} <span className={`server-badge ${server.status}`}>{server.status}</span></div>
+            <div style={{display:'flex', alignItems:'center', gap:12}}>
+              <span className="server-thumb station-thumb" aria-hidden="true">
+                <svg width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect x="2" y="6" width="40" height="32" rx="4" fill="#ffe3c1"/>
+                  <rect x="8" y="10" width="28" height="4" rx="1" fill="#ff9800"/>
+                  <rect x="8" y="18" width="28" height="4" rx="1" fill="#ff7b00"/>
+                  <rect x="8" y="26" width="20" height="4" rx="1" fill="#ff9800"/>
+                </svg>
+              </span>
+              <div>
+                <h2 className="server-name">{server.name}</h2>
+                <div className="server-sub">{server.subtitle} <span className={`server-badge ${server.status}`}>{server.status}</span></div>
+              </div>
             </div>
             <div className="server-meta">
               <div>IP Address<br/><strong>{server.ip}</strong></div>
