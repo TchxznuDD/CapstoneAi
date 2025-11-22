@@ -62,15 +62,13 @@ function AdminDropdown() {
   return (
     <div className="dropdown" ref={ref}>
       <button className="dropdown-toggle" onClick={() => setOpen(s => !s)} aria-haspopup="true" aria-expanded={open}>Admin ▾</button>
-      {open && (
-        <ul className="dropdown-menu" role="menu">
-          <li role="menuitem"><a href="#">Profile</a></li>
-          <li role="menuitem"><a href="#">Settings</a></li>
-          <li role="menuitem"><a href="#">Help</a></li>
-          <li role="menuitem"><a href="#">User Manual</a></li>
-          <li role="menuitem"><button className="link-like" onClick={handleLogout}>Logout</button></li>
-        </ul>
-      )}
+      <ul className={`dropdown-menu ${open ? 'open' : ''}`} role="menu" aria-hidden={!open}>
+        <li role="menuitem"><a href="#">Profile</a></li>
+        <li role="menuitem"><a href="#">Settings</a></li>
+        <li role="menuitem"><a href="#">Help</a></li>
+        <li role="menuitem"><a href="#">User Manual</a></li>
+        <li role="menuitem"><button className="link-like" onClick={handleLogout}>Logout</button></li>
+      </ul>
     </div>
   );
 }

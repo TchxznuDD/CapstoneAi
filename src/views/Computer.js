@@ -182,13 +182,11 @@ export default function Dashboard() {
         <div className="external-refresh" style={{position:'relative'}}>
             <div style={{position:'relative'}} ref={optionsRef}>
               <button className="add-btn" onClick={() => setOptionsOpen(o => !o)}>Options ▾</button>
-              {optionsOpen && (
-                <div className="options-menu" role="menu">
-                  <button className="options-item" onClick={() => { openAddModal(); setOptionsOpen(false); }}>Add PC</button>
-                  <button className="options-item" onClick={() => { openSelectEditModal(); setOptionsOpen(false); }}>Edit PC Details</button>
-                  <button className="options-item" onClick={() => { openAddBuildingModal(); setOptionsOpen(false); }}>Add Building</button>
-                </div>
-              )}
+              <div className={`options-menu ${optionsOpen ? 'open' : ''}`} role="menu" aria-hidden={!optionsOpen}>
+                <button className="options-item" onClick={() => { openAddModal(); setOptionsOpen(false); }}>Add PC</button>
+                <button className="options-item" onClick={() => { openSelectEditModal(); setOptionsOpen(false); }}>Edit PC Details</button>
+                <button className="options-item" onClick={() => { openAddBuildingModal(); setOptionsOpen(false); }}>Add Building</button>
+              </div>
             </div>
           <button className="refresh-btn">Refresh ↻</button>
         </div>
