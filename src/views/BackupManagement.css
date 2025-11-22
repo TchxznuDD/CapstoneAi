@@ -6,6 +6,8 @@
 
 .metrics-cards { display: flex; gap: 18px; margin-bottom: 12px; }
 .metric-card { background: #fff; padding: 18px; border-radius: 12px; box-shadow: 0 12px 30px rgba(15,23,42,0.06); flex:1; position: relative; }
+.metric-card { transition: transform 180ms ease, box-shadow 180ms ease; }
+.metric-card:hover { transform: translateY(-6px); box-shadow: 0 20px 40px rgba(15,23,42,0.08); }
 .metric-card .label { color:#666; font-size:13px; margin:0 }
 .metric-card .value { font-size:28px; font-weight:800; margin:6px 0 }
 .metric-card .note { font-size:13px; color:#15c112 }
