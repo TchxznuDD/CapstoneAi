@@ -1,8 +1,10 @@
 import React, { useState, useRef, useEffect } from "react";
 import "./Computer.css";
+import Header from "../components/Header";
 import computerIcon from "../assets/computer.svg";
 import signal3Icon from "../assets/signal3.svg";
 import offlineIcon from "../assets/offline.svg";
+// header is provided by shared component
 
 export default function Dashboard() {
   const stats = { total: 8, online: 6, offline: 2 };
@@ -133,27 +135,7 @@ export default function Dashboard() {
 
   return (
     <div className="dashboard-root">
-      <header className="app-header">
-        <div className="brand">
-          <img src="fatima-logo.png" alt="logo" />
-          <div>
-            <h1>Barangay Fatima</h1>
-            <p>Network Monitoring Dashboard</p>
-          </div>
-        </div>
-
-        <nav className="nav-links" aria-label="Main navigation">
-          <a href="#" className="nav-item"><strong>Computers</strong></a>
-          <a href="#" className="nav-item">Server Status</a>
-          <a href="#" className="nav-item">Firewall</a>
-          <a href="#" className="nav-item">Backup</a>
-        </nav>
-
-        <div className="header-right">
-          <AdminDropdown />
-        </div>
-
-      </header>
+      <Header active="computers" />
 
       <div className="hero-row">
         <div className="page-hero">
@@ -333,18 +315,4 @@ function AdminDropdown() {
       document.removeEventListener('keydown', onKey);
     };
   }, []);
-
-  return (
-    <div className="dropdown" ref={ref}>
-      <button className="dropdown-toggle" onClick={() => setOpen(s => !s)} aria-haspopup="true" aria-expanded={open}>Admin ▾</button>
-      {open && (
-        <ul className="dropdown-menu" role="menu">
-          <li role="menuitem"><a href="#">Settings</a></li>
-          <li role="menuitem"><a href="#">Help</a></li>
-          <li role="menuitem"><a href="#">User Manual</a></li>
-          <li role="menuitem"><a href="#">Logout</a></li>
-        </ul>
-      )}
-    </div>
-  );
 }
