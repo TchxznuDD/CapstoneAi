@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Computer from "./views/Computer";
 import LoginPage from "./views/login-page";
 import ServerStatus from "./views/ServerStatus";
+import BackupManagement from "./views/BackupManagement";
 import NotFound from "./views/not-found";
 
 ReactDOM.render(
@@ -12,6 +13,7 @@ ReactDOM.render(
       <Route exact path="/" component={LoginPage} />
       <Route path="/computer" component={Computer} />
       <Route path="/server-status" component={ServerStatus} />
+      <Route path="/backup" component={BackupManagement} />
       <Route component={NotFound} />
     </Switch>
   </Router>,

@@ -17,7 +17,7 @@ export default function Header({ active }) {
         <Link to="/computer" className={`nav-item ${active === 'computers' ? 'active' : ''}`}>Computers</Link>
         <Link to="/server-status" className={`nav-item ${active === 'server-status' ? 'active' : ''}`}>Server Status</Link>
         <a href="#" className="nav-item">Firewall</a>
-        <a href="#" className="nav-item">Backup</a>
+            <Link to="/backup" className={`nav-item ${active === 'backup' ? 'active' : ''}`}>Backup</Link>
       </nav>
 
       <div className="header-right">

@@ -1,0 +1,111 @@
+import React from 'react';
+import Header from '../components/Header';
+import './BackupManagement.css';
+import computerIcon from '../assets/computer.svg';
+import signalIcon from '../assets/signal3.svg';
+import checkIcon from '../assets/check.svg';
+
+export default function BackupManagement() {
+  const stats = {
+    storageUsed: '12.4 GB',
+    totalBackups: 5,
+    successRate: '80%'
+  };
+
+  const history = [
+    { id:1, date:'2025-11-05', type:'automatic', size:'2.4 GB' },
+    { id:2, date:'2025-11-04', type:'automatic', size:'2.3 GB' },
+    { id:3, date:'2025-11-03', type:'automatic', size:'2.3 GB' },
+    { id:4, date:'2025-11-02', type:'manual', size:'2.2 GB' },
+  ];
+
+  return (
+    <div className="dashboard-root backup-root">
+      <Header active="backup" />
+
+      <div className="hero-row">
+        <div className="page-hero header-text">
+          <div className="hero-text">
+            <h2>Backup Management</h2>
+            <p>Configure automatic backups and manage your data protection settings</p>
+          </div>
+        </div>
+      </div>
+
+      <main className="backup-grid">
+        <section className="metrics-cards">
+          <div className="metric-card">
+            <p className="label">Storage Used</p>
+            <p className="value">{stats.storageUsed}</p>
+            <div className="note">▲ 24.8%</div>
+            <div className="stat-icon"><div className="icon-bg"><img src={computerIcon} alt="storage"/></div></div>
+          </div>
+
+          <div className="metric-card">
+            <p className="label">Total Backups</p>
+            <p className="value">{stats.totalBackups}</p>
+            <div className="note green">▲ Active</div>
+            <div className="stat-icon"><div className="icon-bg"><img src={signalIcon} alt="backups"/></div></div>
+          </div>
+
+          <div className="metric-card">
+            <p className="label">Success Rate</p>
+            <p className="value">{stats.successRate}</p>
+            <div className="note">▲ Excellent</div>
+            <div className="stat-icon"><div className="icon-bg"><img src={checkIcon} alt="success"/></div></div>
+          </div>
+        </section>
+
+        <section className="left-panel">
+          <div className="card manual-backup">
+            <h3>Manual Backup</h3>
+            <p className="muted">Create an immediate backup of your data</p>
+            <div className="muted small">Trigger a backup now<br/>Last manual backup: 2025-11-02</div>
+            <div style={{textAlign:'right'}}>
+              <button className="btn primary">Start Backup</button>
+            </div>
+          </div>
+
+          <div className="card auto-settings">
+            <h3>Automatic Backup Settings</h3>
+            <p className="muted">Configure scheduled automatic backups</p>
+            <div className="form-row small">
+              <label>Enable Automatic Backup</label>
+              <div className="toggle">●</div>
+            </div>
+            <div className="form-row small">
+              <label>Backup Frequency</label>
+              <input value="Daily" readOnly />
+            </div>
+            <div className="form-row small">
+              <label>Backup Time</label>
+              <input value="5:00 p.m" readOnly />
+            </div>
+            <div style={{marginTop:12}}>
+              <button className="btn primary" style={{width:'100%'}}>Save Settings</button>
+            </div>
+          </div>
+          <div className="card history">
+            <h3>Backup History</h3>
+            <div className="history-list">
+              {history.map(h => (
+                <div key={h.id} className="history-item">
+                  <div className="hi-left">
+                    <div className={`status-dot ${h.type}`}></div>
+                    <div>
+                      <div className="hi-date">{h.date} <span className="muted small">02:00 AM · {h.size}</span></div>
+                      <div className="muted small">{h.type}</div>
+                    </div>
+                  </div>
+                  <div className="hi-actions">
+                    <button className="btn">Restore</button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  );
+}

@@ -246,11 +246,7 @@ export default function Dashboard() {
                   <div className="row">
                     <div className="station-left">
                       <div className="station-thumb">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
-                          <rect x="3" y="4" width="18" height="12" rx="2" fill="#ff7b00" />
-                          <rect x="6" y="7" width="12" height="6" rx="1" fill="#fff" />
-                          <rect x="10" y="17" width="4" height="2" rx="0.5" fill="#ff7b00" />
-                        </svg>
+                        <img src={computerIcon} alt="computer" />
                       </div>
                       <div>
                         <p className="device-title">{s.name}</p>
