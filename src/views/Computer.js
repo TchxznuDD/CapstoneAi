@@ -167,23 +167,6 @@ export default function Dashboard() {
     setSelectEditOpen(false);
   }
 
-  // close options menu when clicking outside or pressing Escape
-  useEffect(() => {
-    function onDoc(e) {
-      if (!optionsRef.current) return;
-      if (!optionsRef.current.contains(e.target)) setOptionsOpen(false);
-    }
-    function onKey(e) {
-      if (e.key === 'Escape') setOptionsOpen(false);
-    }
-    document.addEventListener('mousedown', onDoc);
-    document.addEventListener('keydown', onKey);
-    return () => {
-      document.removeEventListener('mousedown', onDoc);
-      document.removeEventListener('keydown', onKey);
-    };
-  }, []);
-
   return (
     <div className="dashboard-root">
       <Header active="computers" />
@@ -202,7 +185,7 @@ export default function Dashboard() {
               {optionsOpen && (
                 <div className="options-menu" role="menu">
                   <button className="options-item" onClick={() => { openAddModal(); setOptionsOpen(false); }}>Add PC</button>
-                  <button className="options-item" onClick={() => { openSelectEditModal(); setOptionsOpen(false); }}>Edit PC</button>
+                  <button className="options-item" onClick={() => { openSelectEditModal(); setOptionsOpen(false); }}>Edit PC Details</button>
                   <button className="options-item" onClick={() => { openAddBuildingModal(); setOptionsOpen(false); }}>Add Building</button>
                 </div>
               )}
