@@ -48,6 +48,11 @@ export default function Dashboard() {
 
   const [buildings, setBuildings] = useState(initialBuildings);
 
+  // centralized edit selection modal state
+  const [selectEditOpen, setSelectEditOpen] = useState(false);
+  const [selectBuilding, setSelectBuilding] = useState('');
+  const [selectStationId, setSelectStationId] = useState('');
+
   // modal state for add / edit
   const [modalOpen, setModalOpen] = useState(false);
   const [modalMode, setModalMode] = useState('add'); // 'add' | 'edit'
@@ -133,6 +138,32 @@ export default function Dashboard() {
     setBuildingModalOpen(false);
   }
 
+  // --- Centralized Edit selection modal handlers ---
+  function openSelectEditModal() {
+    if (buildings.length) {
+      setSelectBuilding(buildings[0].id);
+      setSelectStationId(buildings[0].stations[0]?.id || '');
+    } else {
+      setSelectBuilding('');
+      setSelectStationId('');
+    }
+    setSelectEditOpen(true);
+  }
+
+  function closeSelectEditModal() {
+    setSelectEditOpen(false);
+  }
+
+  function handleConfirmSelectEdit() {
+    if (!selectBuilding || !selectStationId) return;
+    const b = buildings.find(x => x.id === selectBuilding);
+    const station = b?.stations.find(s => s.id === selectStationId);
+    if (station) {
+      openEditModal(selectBuilding, station);
+    }
+    setSelectEditOpen(false);
+  }
+
   return (
     <div className="dashboard-root">
       <Header active="computers" />
@@ -148,6 +179,7 @@ export default function Dashboard() {
         <div className="external-refresh">
             <button className="add-btn" onClick={openAddModal}>Add PC</button>
             <button className="add-btn" onClick={openAddBuildingModal}>Add Building</button>
+            <button className="add-btn" onClick={openSelectEditModal}>Edit PC</button>
           <button className="refresh-btn">Refresh ↻</button>
         </div>
       </div>
@@ -219,7 +251,6 @@ export default function Dashboard() {
                     </div>
                     <div style={{display:'flex',alignItems:'center',gap:8}}>
                       <p className={`pill ${s.status}`}>{s.status.toUpperCase()}</p>
-                      <button className="edit-btn" onClick={() => openEditModal(b.id, s)}>Edit</button>
                     </div>
                   </div>
 
@@ -235,6 +266,7 @@ export default function Dashboard() {
 
       <AddEditModal open={modalOpen} mode={modalMode} buildings={buildings} buildingId={modalBuilding} setBuildingId={setModalBuilding} onClose={() => setModalOpen(false)} onSave={handleSaveModal} form={form} setForm={setForm} />
       <AddBuildingModal open={buildingModalOpen} onClose={closeBuildingModal} onSave={handleSaveBuilding} form={buildingForm} setForm={setBuildingForm} />
+      <SelectEditModal open={selectEditOpen} onClose={closeSelectEditModal} buildings={buildings} buildingId={selectBuilding} setBuildingId={setSelectBuilding} stationId={selectStationId} setStationId={setSelectStationId} onConfirm={handleConfirmSelectEdit} />
     </div>
   );
 }
@@ -290,6 +322,35 @@ function AddBuildingModal({ open, onClose, onSave, form, setForm }) {
         <div className="form-actions">
           <button className="btn" onClick={onClose}>Cancel</button>
           <button className="btn primary" onClick={onSave}>Add Building</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function SelectEditModal({ open, onClose, buildings, buildingId, setBuildingId, stationId, setStationId, onConfirm }) {
+  if (!open) return null;
+  const currentBuilding = buildings.find(b => b.id === buildingId) || buildings[0] || null;
+  const stations = currentBuilding ? currentBuilding.stations : [];
+  return (
+    <div className="modal" role="dialog" aria-modal="true">
+      <div className="modal-content">
+        <h3>Select Workstation to Edit</h3>
+        <div className="form-row">
+          <label>Building</label>
+          <select value={buildingId} onChange={e => { setBuildingId(e.target.value); const b = buildings.find(x=>x.id===e.target.value); setStationId(b?.stations[0]?.id || ''); }}>
+            {buildings.map(b => <option key={b.id} value={b.id}>{b.name}</option>)}
+          </select>
+        </div>
+        <div className="form-row">
+          <label>Workstation</label>
+          <select value={stationId} onChange={e => setStationId(e.target.value)} disabled={!stations.length}>
+            {stations.map(s => <option key={s.id} value={s.id}>{s.name} ({s.host})</option>)}
+          </select>
+        </div>
+        <div className="form-actions">
+          <button className="btn" onClick={onClose}>Cancel</button>
+          <button className="btn primary" onClick={onConfirm} disabled={!stationId}>Edit Selected</button>
         </div>
       </div>
     </div>
