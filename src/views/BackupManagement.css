@@ -8,10 +8,11 @@
 .metric-card { background: #fff; padding: 18px; border-radius: 12px; box-shadow: 0 12px 30px rgba(15,23,42,0.06); flex:1; position: relative; }
 .metric-card .label { color:#666; font-size:13px; margin:0 }
 .metric-card .value { font-size:28px; font-weight:800; margin:6px 0 }
-.metric-card .note { font-size:13px; color:#0b8f36 }
+.metric-card .note { font-size:13px; color:#15c112 }
 .metric-card .stat-icon { position:absolute; right:12px; top:12px }
-.metric-card .stat-icon .icon-bg { width:44px; height:44px; border-radius:10px; display:inline-flex; align-items:center; justify-content:center; box-shadow:0 8px 18px rgba(15,23,42,0.06); background:#0b8f36 }
-.metric-card .stat-icon .icon-bg img { width:20px; height:20px; display:block; filter:brightness(0) invert(1); }
+.metric-card .stat-icon .icon-bg { width:44px; height:44px; border-radius:10px; display:inline-flex; align-items:center; justify-content:center; box-shadow:0 8px 18px rgba(15,23,42,0.06); background: #e6f0ff }
+.metric-card .stat-icon .icon-bg.green { background: rgba(40,167,69,0.12) }
+.metric-card .stat-icon .icon-bg img { width:20px; height:20px; display:block; }
 
 .left-panel { display:flex; flex-direction: column; gap:18px }
 .card { background:#fff; padding:18px; border-radius:12px; box-shadow: 0 12px 30px rgba(15,23,42,0.06); }
@@ -20,6 +21,18 @@
 .small { font-size:12px }
 
 .manual-backup .btn.primary { background:#ff7b00 }
+/* Manual backup improvements */
+.manual-top { display:flex; gap:12px; align-items:flex-start }
+.manual-thumb { width:56px; height:56px; border-radius:12px; background: rgba(40,167,69,0.12); display:inline-flex; align-items:center; justify-content:center; box-shadow:0 8px 20px rgba(15,23,42,0.06); flex:0 0 56px }
+.manual-thumb img { width:26px; height:26px; display:block }
+.manual-info h3 { margin:0; font-size:18px }
+.manual-actions { display:flex; justify-content:space-between; align-items:center; margin-top:12px; gap:12px }
+.backup-progress { flex:1 }
+.progress-bar { height:8px; background: rgba(0,0,0,0.06); border-radius:999px; overflow:hidden; width:220px; margin-bottom:6px }
+.progress-bar .progress { height:100%; background: linear-gradient(90deg,#28a745,#0b8f36); width:0%; transition:width 360ms ease }
+.actions { display:flex; gap:8px }
+.btn.secondary { background:transparent; border:1px solid #eee }
+.manual-actions .muted.small { color: #666; margin-top:0 }
 
 .auto-settings .form-row { display:flex; align-items:center; justify-content:space-between; margin-top:10px }
 .toggle { width:42px; height:24px; border-radius:16px; background: #ff7b00; color:#fff; display:inline-flex; align-items:center; justify-content:center }

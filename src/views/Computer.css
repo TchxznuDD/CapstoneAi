@@ -472,7 +472,7 @@ body {
   width: 44px;
   height: 44px;
   border-radius: 10px;
-  background: #ffffff;
+  background: rgba(40,167,69,0.12);
   display: inline-flex;
   align-items: center;
   justify-content: center;

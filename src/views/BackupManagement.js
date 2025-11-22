@@ -1,9 +1,10 @@
 import React from 'react';
 import Header from '../components/Header';
 import './BackupManagement.css';
-import computerIcon from '../assets/computer.svg';
-import signalIcon from '../assets/signal3.svg';
-import checkIcon from '../assets/check.svg';
+import DatabaseIcon from '../assets/Database.svg';
+import BakaupIcon from '../assets/Bakaup.svg';
+import BakaupOrange from '../assets/BakaupOrange.svg';
+import checkIcon from '../assets/CheckNew.svg';
 
 export default function BackupManagement() {
   const stats = {
@@ -38,31 +39,46 @@ export default function BackupManagement() {
             <p className="label">Storage Used</p>
             <p className="value">{stats.storageUsed}</p>
             <div className="note">▲ 24.8%</div>
-            <div className="stat-icon"><div className="icon-bg"><img src={computerIcon} alt="storage"/></div></div>
+            <div className="stat-icon"><div className="icon-bg"><img src={DatabaseIcon} alt="storage"/></div></div>
           </div>
 
           <div className="metric-card">
             <p className="label">Total Backups</p>
             <p className="value">{stats.totalBackups}</p>
             <div className="note green">▲ Active</div>
-            <div className="stat-icon"><div className="icon-bg"><img src={signalIcon} alt="backups"/></div></div>
+            <div className="stat-icon"><div className="icon-bg"><img src={BakaupIcon} alt="backups"/></div></div>
           </div>
 
           <div className="metric-card">
             <p className="label">Success Rate</p>
             <p className="value">{stats.successRate}</p>
             <div className="note">▲ Excellent</div>
-            <div className="stat-icon"><div className="icon-bg"><img src={checkIcon} alt="success"/></div></div>
+            <div className="stat-icon"><div className="icon-bg green"><img src={checkIcon} alt="success"/></div></div>
           </div>
         </section>
 
         <section className="left-panel">
           <div className="card manual-backup">
-            <h3>Manual Backup</h3>
-            <p className="muted">Create an immediate backup of your data</p>
-            <div className="muted small">Trigger a backup now<br/>Last manual backup: 2025-11-02</div>
-            <div style={{textAlign:'right'}}>
-              <button className="btn primary">Start Backup</button>
+            <div className="manual-top">
+              <div className="manual-thumb"><img src={BakaupOrange} alt="backup"/></div>
+              <div className="manual-info">
+                <h3>Manual Backup</h3>
+                <p className="muted">Create an immediate backup of your data</p>
+                <div className="muted small">Last manual backup: 2025-11-02 · 2.2 GB</div>
+              </div>
+            </div>
+
+            <div className="manual-actions">
+              <div className="backup-progress">
+                <div className="progress-bar" aria-hidden>
+                  <div className="progress" style={{width: '0%'}}></div>
+                </div>
+                <div className="muted small">No recent successful backups</div>
+              </div>
+              <div className="actions">
+                <button className="btn primary">Start Backup</button>
+                <button className="btn secondary">View Backups</button>
+              </div>
             </div>
           </div>
 
@@ -93,7 +109,7 @@ export default function BackupManagement() {
                   <div className="hi-left">
                     <div className={`status-dot ${h.type}`}></div>
                     <div>
-                      <div className="hi-date">{h.date} <span className="muted small">02:00 AM · {h.size}</span></div>
+                      <div className="hi-date">{h.date} <span className="muted small">05:00 PM · {h.size}</span></div>
                       <div className="muted small">{h.type}</div>
                     </div>
                   </div>
