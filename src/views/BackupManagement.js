@@ -1,5 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import Header from '../components/Header';
+import { Link } from 'react-router-dom';
 import './BackupManagement.css';
 import { ReactComponent as DatabaseIcon } from '../assets/Database.svg';
 import { ReactComponent as BakaupIcon } from '../assets/Bakaup.svg';
@@ -14,12 +15,28 @@ export default function BackupManagement() {
     successRate: '80%'
   };
 
-  const history = [
+  const [historyList, setHistoryList] = useState([
     { id:1, date:'2025-11-05', type:'automatic', size:'2.4 GB' },
     { id:2, date:'2025-11-04', type:'automatic', size:'2.3 GB' },
     { id:3, date:'2025-11-03', type:'automatic', size:'2.3 GB' },
     { id:4, date:'2025-11-02', type:'manual', size:'2.2 GB' },
-  ];
+  ]);
+  const [deleting, setDeleting] = useState(null);
+
+  function groupByYearMonth(items) {
+    const map = {};
+    items.forEach(it => {
+      const d = new Date(it.date);
+      const year = d.getFullYear();
+      const month = d.toLocaleString(undefined, { month: 'long' });
+      const day = d.getDate();
+      map[year] = map[year] || {};
+      map[year][month] = map[year][month] || {};
+      map[year][month][day] = map[year][month][day] || [];
+      map[year][month][day].push(it);
+    });
+    return map;
+  }
 
   const historyRef = useRef(null);
   const [showAllHistory, setShowAllHistory] = useState(false);
@@ -158,32 +175,96 @@ export default function BackupManagement() {
           <div className="card history">
             <h3>Backup History</h3>
             <div className="history-list">
-              {(
-                (showAllHistory ? history : history.slice(0,3)).map(h => (
-                  <div key={h.id} className="history-item">
-                    <div className="hi-left">
-                      <div className={`status-dot ${h.type}`}></div>
-                      <div>
-                        <div className="hi-date">{h.date} <span className="muted small">02:00 AM · {h.size}</span></div>
-                        <div className="muted small">{h.type}</div>
+              {(() => {
+                const grouped = groupByYearMonth(historyList);
+                return Object.keys(grouped).sort((a,b) => b - a).map(year => (
+                  <div key={year} style={{marginBottom:6}}>
+                    <div style={{fontWeight:700, marginBottom:8}}>{year}</div>
+                    {Object.keys(grouped[year]).map(month => (
+                      <div key={month} style={{marginBottom:8}}>
+                        <div style={{fontWeight:600, color:'#444'}}>{month}</div>
+                        <div style={{display:'grid', gap:8, marginTop:8}}>
+                          {Object.keys(grouped[year][month]).sort((a,b)=>b-a).map(day => {
+                            const itemsForDay = grouped[year][month][day];
+                            const rep = itemsForDay.find(i => i.type === 'automatic') || itemsForDay[0];
+                            const repDate = new Date(rep.date);
+                            const repTime = rep.type === 'automatic' ? new Date(repDate).setHours(17,0,0,0) : repDate;
+                            const displayTime = new Date(repTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+                            return (
+                              <div key={day} className="history-item" style={{display:'flex', justifyContent:'space-between', alignItems:'flex-start'}}>
+                                <div style={{flex:1, display:'flex', flexDirection:'column', gap:8}}>
+                                  <div style={{display:'flex', gap:12, alignItems:'center'}}>
+                                    <div className={`status-dot ${itemsForDay[0].type}`}></div>
+                                    <div>
+                                      <div className="hi-date">{month} {day}</div>
+                                      <div className="muted small">{itemsForDay.length} backup(s)</div>
+                                      <div className="muted small hi-time">{displayTime}</div>
+                                    </div>
+                                  </div>
+
+                                  <div className="day-list">
+                                    {itemsForDay.map(it => {
+                                      const d = new Date(it.date);
+                                      const timeVal = it.type === 'automatic' ? new Date(d).setHours(17,0,0,0) : d;
+                                      const timeStr = new Date(timeVal).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                                      return (
+                                        <div key={it.id} className="day-entry">
+                                          <div className="entry-time muted small">{timeStr}</div>
+                                          <div className={`type-pill ${it.type}`}>{it.type}</div>
+                                          <div className="muted small">{it.size}</div>
+                                        </div>
+                                      );
+                                    })}
+                                  </div>
+                                </div>
+
+                                <div style={{width:160, display:'flex', flexDirection:'column', alignItems:'flex-end', gap:6}}>
+                                  <div className="muted small">{itemsForDay.map(it => it.size).join(', ')}</div>
+                                  <div style={{marginTop:'auto'}}>
+                                    <div className="hi-actions" style={{display:'flex', gap:8}}>
+                                      <button className="btn danger" onClick={() => setDeleting({ year, month, day })}>Delete</button>
+                                      <button className="btn primary">Restore</button>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
                       </div>
-                    </div>
-                    <div className="hi-actions">
-                      <button className="btn primary">Restore</button>
-                    </div>
+                    ))}
                   </div>
-                ))
-              )}
+                ));
+              })()}
+
               <div ref={historyRef}></div>
               <div className="history-controls">
-                {history.length > 3 && (
-                  <button className="btn secondary" onClick={toggleHistory}>{showAllHistory ? 'Show less' : 'View more'}</button>
+                {historyList.length > 3 && (
+                  <Link to="/backup/history" className="btn secondary">View more</Link>
                 )}
               </div>
             </div>
           </div>
         </section>
       </main>
+      {deleting && (
+        <div className="modal" role="dialog" aria-modal="true">
+          <div className="modal-content">
+            <div className="warning-row">
+              <div className="modal-icon" aria-hidden>!</div>
+              <div>
+                <h3>Delete Backup</h3>
+                <p>Are you sure you want to permanently delete this backup? This cannot be undone.</p>
+              </div>
+            </div>
+            <div className="modal-actions">
+              <button className="btn secondary" onClick={() => setDeleting(null)}>Cancel</button>
+              <button className="btn danger" onClick={() => { setHistoryList(prev => prev.filter(i => i.id !== deleting)); setDeleting(null); }}>Delete</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

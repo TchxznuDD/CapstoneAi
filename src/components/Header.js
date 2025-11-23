@@ -22,7 +22,7 @@ export default function Header({ active }) {
   return (
     <header className="app-header">
       <Link to="/computer" className="brand" onClick={handleBrandClick} aria-label="Go to Computers">
-        <img src="fatima-logo.png" alt="logo" />
+        <img src="/fatima-logo.png" alt="logo" />
         <div>
           <h1>Barangay Fatima</h1>
           <p>Network Monitoring Dashboard</p>

@@ -280,7 +280,7 @@ function AddEditModal({ open, mode, buildings, buildingId, setBuildingId, onClos
   return (
     <div className="modal" role="dialog" aria-modal="true">
       <div className="modal-content">
-        <h3>{mode === 'add' ? 'Add Workstation' : 'Edit Workstation'}</h3>
+        <h3>{mode === 'add' ? 'Add Computer' : 'Edit Computer'}</h3>
         <div className="form-row">
           <label>Building</label>
           <select name="building" value={buildingId} onChange={e => setBuildingId(e.target.value)} disabled={mode === 'edit'}>

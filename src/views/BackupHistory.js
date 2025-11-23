@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Header from '../components/Header';
 import './BackupManagement.css';
+import './BackupHistory.css';
 
 function groupByYearMonth(items) {
   const map = {};
@@ -58,7 +59,7 @@ export default function BackupHistory() {
         </div>
       </div>
 
-      <main style={{padding: '0 18px 40px 18px'}}>
+      <main className="backup-grid">
         {Object.keys(grouped).sort((a,b) => b - a).map(year => (
           <section key={year} className="card" style={{marginBottom:18}}>
             <h3 style={{marginBottom:12}}>{year}</h3>
@@ -81,6 +82,7 @@ export default function BackupHistory() {
                               <div>
                                 <div className="hi-date">{month} {day}</div>
                                 <div className="muted small">{itemsForDay.length} backup(s)</div>
+                                <div className="muted small hi-time">{displayTime}</div>
                               </div>
                             </div>
 
