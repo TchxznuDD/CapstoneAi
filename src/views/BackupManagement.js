@@ -92,10 +92,18 @@ export default function BackupManagement() {
             <div className="manual-top">
               <div className="manual-thumb"><img src={BakaupGlyph} alt="backup"/></div>
               <div className="manual-info">
-                <h3>Manual Backup</h3>
-                <p className="muted">Create an immediate backup of your data</p>
-                <div className="muted small">Last manual backup: 2025-11-02 · 2.2 GB</div>
+                <div className="manual-head">
+                  <h3>Manual Backup</h3>
+                  <p className="muted">Create an immediate backup of your data</p>
+                  <div className="muted small">Last manual backup: 2025-11-02 · 2.2 GB</div>
+                </div>
               </div>
+            </div>
+            <div className="manual-inline">
+              <div className="mini-progress" aria-hidden>
+                <div className="mini-fill" style={{width: '0%'}}></div>
+              </div>
+              <div className="mini-label muted small">0%</div>
             </div>
 
             <div className="manual-actions">

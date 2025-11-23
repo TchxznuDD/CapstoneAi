@@ -25,7 +25,11 @@
 
 .manual-backup .btn.primary { background:#ff7b00 }
 /* Manual backup improvements */
-.manual-top { display:flex; gap:12px; align-items:flex-start }
+.card.manual-backup { position: relative }
+.manual-inline { position: absolute; top: 12px; right: 12px; display:flex; align-items:center; gap:8px }
+.mini-progress { width:180px; height:8px; background: rgba(0,0,0,0.06); border-radius:999px; overflow:hidden }
+.mini-progress .mini-fill { height:100%; width:0%; background: linear-gradient(90deg,#ff7b00,#ff4b00); transition: width 360ms ease }
+.mini-label { min-width:40px; text-align:right }
 .manual-thumb {
   width:56px;
   height:56px;
@@ -39,10 +43,15 @@
 }
 .manual-thumb img { width:36px; height:36px; display:block }
 .manual-info h3 { margin:0; font-size:18px }
+.manual-top { display:flex; gap:12px; align-items:center }
+.manual-head h3 { margin:0; font-size:18px }
+.manual-head p { margin:6px 0 0 0 }
 .manual-actions { display:flex; justify-content:space-between; align-items:center; margin-top:12px; gap:12px }
 .backup-progress { flex:1 }
-.progress-bar { height:8px; background: rgba(0,0,0,0.06); border-radius:999px; overflow:hidden; width:220px; margin-bottom:6px }
+.progress-bar { height:8px; background: rgba(0,0,0,0.06); border-radius:999px; overflow:hidden; width:220px; margin-bottom:6px; }
 .progress-bar .progress { height:100%; background: linear-gradient(90deg,#28a745,#0b8f36); width:0%; transition:width 360ms ease }
+/* hide the large progress bar in manual actions (we show a compact one in the card corner) */
+.manual-actions .progress-bar { display: none }
 .actions { display:flex; gap:8px }
 .btn.secondary { background:transparent; border:1px solid #eee }
 .manual-actions .muted.small { color: #666; margin-top:0 }
