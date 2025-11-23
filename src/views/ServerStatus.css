@@ -26,12 +26,22 @@
 /* server-specific thumbnail: use branded orange box */
 .server-thumb {
   background: rgba(255,123,0,0.12); /* softened/pale orange */
-  border-radius: 10px;
+  border-radius: 12px;
   box-shadow: 0 8px 18px rgba(15,23,42,0.06);
   padding: 8px; /* give icon breathing room */
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  width: 56px;
+  height: 56px;
+  flex: 0 0 56px;
+}
+
+.server-thumb img {
+  width: 36px;
+  height: 36px;
+  display: block;
+  object-fit: contain;
 }
 
 .specs-grid { display:grid; grid-template-columns: repeat(4, 1fr); gap:12px; margin:18px 0; }

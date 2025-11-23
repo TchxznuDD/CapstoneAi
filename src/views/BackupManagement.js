@@ -72,7 +72,7 @@ export default function BackupManagement() {
             <div className="stat-icon"><div className="icon-bg storage"><img src={DatabaseIcon} alt="storage"/></div></div>
           </div>
 
-          <div className="metric-card">
+          <div className="metric-card total">
             <p className="label">Total Backups</p>
             <p className="value">{stats.totalBackups}</p>
             <div className="note green">▲ Active</div>
@@ -152,7 +152,7 @@ export default function BackupManagement() {
             </div>
 
             <div className="save-row">
-              <button className="btn primary" onClick={handleSaveSettings}>Save Settings</button>
+              <button className="btn primary" onClick={handleSaveSettings} disabled={!autoEnabled} aria-disabled={!autoEnabled}>Save Settings</button>
             </div>
           </div>
           <div className="card history">
@@ -169,7 +169,7 @@ export default function BackupManagement() {
                       </div>
                     </div>
                     <div className="hi-actions">
-                      <button className="btn">Restore</button>
+                      <button className="btn primary">Restore</button>
                     </div>
                   </div>
                 ))

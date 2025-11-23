@@ -16,6 +16,12 @@
 .metric-card .stat-icon .icon-bg.green { background: rgba(40,167,69,0.12) }
 .metric-card .stat-icon .icon-bg.storage { background: rgba(255,75,0,0.12) }
 .metric-card .stat-icon .icon-bg img { width:20px; height:20px; display:block; }
+/* Slightly larger icons for Storage and Total Backups */
+.metric-card.storage .stat-icon .icon-bg img,
+.metric-card.total .stat-icon .icon-bg img {
+  width:28px;
+  height:28px;
+}
 
 .left-panel { display:flex; flex-direction: column; gap:18px }
 .card { background:#fff; padding:18px; border-radius:12px; box-shadow: 0 12px 30px rgba(15,23,42,0.06); }
@@ -23,7 +29,16 @@
 .muted { color:#777 }
 .small { font-size:12px }
 
-.manual-backup .btn.primary { background:#ff7b00 }
+.manual-backup .btn.primary {
+  background: linear-gradient(90deg,#ff7b00,#ff4b00);
+  color: #fff;
+  border: none;
+  padding: 8px 14px;
+  font-weight: 800;
+  border-radius: 8px;
+  box-shadow: 0 10px 24px rgba(255,123,0,0.10);
+}
+.manual-backup .btn.primary:hover { transform: translateY(-2px); }
 /* Manual backup improvements */
 .card.manual-backup { position: relative }
 .manual-inline { position: absolute; top: 12px; right: 12px; display:flex; align-items:center; gap:8px }
@@ -91,6 +106,14 @@
 .auto-settings .save-row { width:100%; margin-top:12px }
 .auto-settings .save-row .btn.primary { width:100%; }
 
+/* disabled primary button inside auto-settings */
+.auto-settings .save-row .btn.primary[disabled] {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
 .history-list { display:flex; flex-direction: column; gap:12px; margin-top:12px }
 .history-item { display:flex; justify-content:space-between; align-items:center; padding:10px; border-radius:8px; border:1px solid #f0f0f0 }
 .hi-left { display:flex; gap:10px; align-items:center }
@@ -99,6 +122,20 @@
 .status-dot.manual { background:#ff9800 }
 .hi-date { font-weight:700 }
 .hi-actions .btn { background: transparent; border:1px solid #eee; padding:6px 10px }
+
+/* Make restore button orange-style to match primary buttons */
+.hi-actions .btn.primary {
+  background: linear-gradient(90deg,#ff7b00,#ff4b00);
+  color: #fff;
+  border: none;
+  padding: 4px 8px;
+  font-weight: 700;
+  font-size: 13px;
+  border-radius: 6px;
+  box-shadow: 0 6px 14px rgba(255,123,0,0.10);
+  line-height: 1;
+}
+.hi-actions .btn.primary:hover { transform: translateY(-1px); }
 
 .history-list .btn.secondary { padding:6px 12px; border-radius:8px }
 
@@ -119,7 +156,7 @@
 .auto-settings.stacked-format .toggle-switch { display:block }
 .auto-settings.stacked-format .toggle-switch .slider { margin:0 }
 .auto-settings.stacked-format .save-row { width:100%; margin-top:12px }
-.auto-settings.stacked-format .save-row .btn.primary { width:100%; padding:12px 18px; font-size:16px; font-weight:800; background: #ff7b00 }
+.auto-settings.stacked-format .save-row .btn.primary { width:100%; padding:12px 18px; font-size:16px; font-weight:800; background: linear-gradient(90deg,#ff7b00,#ff4b00); color:#fff; box-shadow: 0 10px 24px rgba(255,123,0,0.10); }
 
 /* Dropdown styles specific to the auto-settings card so the toggle is visible on white cards */
 .auto-settings .dropdown { position: relative; display: inline-block }

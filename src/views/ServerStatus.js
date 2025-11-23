@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Header from '../components/Header';
 import './Computer.css';
 import './ServerStatus.css';
 import serverIcon from '../assets/ServerIcon.svg';
+import BakaupGlyph from '../assets/BakaupGlyph.svg';
 
 export default function ServerStatus() {
   const server = {
@@ -34,6 +35,44 @@ export default function ServerStatus() {
 
   const pct = (used, total) => Math.round((used / total) * 1000) / 10;
 
+  const [iconSrc, setIconSrc] = useState(serverIcon);
+
+  useEffect(() => {
+    let cancelled = false;
+    let blobUrl = null;
+
+    async function fetchSvgWithRetries(url, attempts = 3, delay = 250) {
+      for (let i = 0; i < attempts; i++) {
+        try {
+          const res = await fetch(url, { cache: 'reload' });
+          if (!res.ok) throw new Error('bad status ' + res.status);
+          const text = await res.text();
+          const blob = new Blob([text], { type: 'image/svg+xml' });
+          blobUrl = URL.createObjectURL(blob);
+          return blobUrl;
+        } catch (err) {
+          // exponential backoff
+          await new Promise(r => setTimeout(r, delay * (i + 1)));
+        }
+      }
+      throw new Error('failed to fetch svg');
+    }
+
+    fetchSvgWithRetries(serverIcon, 3, 200).then(url => {
+      if (cancelled) return;
+      setIconSrc(url);
+    }).catch(e => {
+      if (cancelled) return;
+      console.warn('Could not load server SVG, using fallback glyph', e);
+      setIconSrc(BakaupGlyph);
+    });
+
+    return () => {
+      cancelled = true;
+      if (blobUrl) URL.revokeObjectURL(blobUrl);
+    };
+  }, []);
+
   return (
     <div className="dashboard-root">
       <Header active="server-status" />
@@ -59,7 +98,18 @@ export default function ServerStatus() {
           <header className="server-head">
             <div style={{display:'flex', alignItems:'center', gap:12}}>
               <span className="server-thumb station-thumb" aria-hidden="true">
-                <img src={serverIcon} alt="server" />
+                <img
+                  src={iconSrc}
+                  alt="server"
+                  loading="eager"
+                  decoding="async"
+                  onError={(e) => {
+                    // if blob URL or other image fails, fall back to glyph
+                    const img = e.currentTarget;
+                    img.onerror = null;
+                    img.src = BakaupGlyph;
+                  }}
+                />
               </span>
               <div>
                 <h2 className="server-name">{server.name}</h2>
