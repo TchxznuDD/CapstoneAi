@@ -48,6 +48,7 @@
 .manual-actions .muted.small { color: #666; margin-top:0 }
 
 .auto-settings { display:flex; flex-direction:column; align-items:flex-start; }
+.auto-settings { position: relative }
 .auto-settings .form-row { display:flex; align-items:center; gap:12px; margin-top:10px; width:100%; justify-content:flex-start }
 .auto-settings .form-row label { width:140px; margin:0; text-align:left }
 .toggle { width:42px; height:24px; border-radius:16px; background: #ff7b00; color:#fff; display:inline-flex; align-items:center; justify-content:center }
@@ -64,6 +65,17 @@
 /* select and time input */
 .auto-settings select, .auto-settings input[type="time"] {
   padding:10px; border-radius:8px; border:1px solid #eee; width:auto; background:#fff; font-size:14px; flex:1;
+  transition: box-shadow 180ms ease, transform 140ms ease, border-color 180ms ease, background-color 180ms ease;
+}
+.auto-settings select:focus, .auto-settings input[type="time"]:focus {
+  outline: none;
+  transform: translateY(-2px);
+  border-color: #ff7b00;
+  box-shadow: 0 8px 20px rgba(255,123,0,0.12);
+  background-color: #fff;
+}
+.auto-settings select:hover, .auto-settings input[type="time"]:hover {
+  transform: translateY(-1px);
 }
 .auto-settings select:disabled, .auto-settings input[type="time"]:disabled { opacity:0.6 }
 
@@ -92,13 +104,53 @@
 .auto-head p { margin:6px 0 0 0 }
 
 .auto-settings.stacked-format .form-row.stack { display:flex; flex-direction:column; align-items:flex-start; text-align:left; gap:6px; width:100% }
-.auto-settings.stacked-format .form-row.stack label { width:auto; margin:0; font-weight:600 }
+.auto-settings.stacked-format .form-row.stack label { width:auto; margin:0; font-weight:500 }
 .auto-settings.stacked-format .form-row.stack .control { width:100%; display:flex; justify-content:flex-start }
 .auto-settings.stacked-format select, .auto-settings.stacked-format input[type="time"] { width:220px; }
 .auto-settings.stacked-format .toggle-switch { display:block }
 .auto-settings.stacked-format .toggle-switch .slider { margin:0 }
 .auto-settings.stacked-format .save-row { width:100%; margin-top:12px }
 .auto-settings.stacked-format .save-row .btn.primary { width:100%; padding:12px 18px; font-size:16px; font-weight:800; background: #ff7b00 }
+
+/* Dropdown styles specific to the auto-settings card so the toggle is visible on white cards */
+.auto-settings .dropdown { position: relative; display: inline-block }
+.auto-settings .dropdown-toggle {
+  background: #fff;
+  color: #111;
+  border: 1px solid #eee;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  min-width: 160px;
+  text-align: left;
+  font-weight: 500;
+}
+.auto-settings .dropdown-toggle[disabled] { opacity: 0.6; cursor: not-allowed }
+.auto-settings .dropdown-menu {
+  position: absolute;
+  left: 0;
+  top: calc(100% + 8px);
+  background: #fff;
+  color: #111;
+  border-radius: 8px;
+  box-shadow: 0 8px 22px rgba(0,0,0,0.12);
+  min-width: 160px;
+  padding: 6px 0;
+  list-style: none;
+  z-index: 240;
+}
+.auto-settings .dropdown-menu li { padding: 6px 12px }
+.auto-settings .dropdown-menu .link-like { display:block; width:100%; text-align:left; padding:6px 12px; border-radius:6px; background:transparent; border:none; color:inherit }
+.auto-settings .dropdown-menu .link-like:hover { background: rgba(0,0,0,0.04) }
+
+/* compact inline controls placed at top-right of the automatic card */
+.auto-inline { position: absolute; top: 12px; right: 18px; display:flex; align-items:center; gap:10px }
+.auto-inline .auto-inline-label { font-size:13px; color:#666; margin-right:6px }
+.auto-inline .toggle-switch { display:inline-block }
+.auto-inline .toggle-switch .slider { width:52px; height:28px; border-radius:999px }
+.auto-inline .toggle-switch .slider:before { width:20px; height:20px; left:4px; top:4px; box-shadow: 0 2px 6px rgba(0,0,0,0.12) }
+.auto-inline .toggle-switch input:checked + .slider { background:#FF4B00 }
+.auto-inline .toggle-switch input:checked + .slider:before { transform: translateX(24px) }
 
 /* Responsive */
 @media (max-width: 980px) {

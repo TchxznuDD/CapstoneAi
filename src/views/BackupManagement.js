@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import Header from '../components/Header';
 import './BackupManagement.css';
 import DatabaseIcon from '../assets/Database.svg';
@@ -121,8 +121,8 @@ export default function BackupManagement() {
               </div>
             </div>
 
-            <div className="form-row stack">
-              <label>Enable Automatic Backup</label>
+            <div className="auto-inline">
+              <div className="auto-inline-label muted">Automatic Backup</div>
               <label className="toggle-switch">
                 <input type="checkbox" checked={autoEnabled} onChange={e => setAutoEnabled(e.target.checked)} />
                 <span className="slider" aria-hidden></span>
@@ -132,11 +132,7 @@ export default function BackupManagement() {
             <div className="form-row stack">
               <label>Backup Frequency</label>
               <div className="control">
-                <select value={frequency} onChange={e => setFrequency(e.target.value)} disabled={!autoEnabled}>
-                  <option value="Daily">Daily</option>
-                  <option value="Weekly">Weekly</option>
-                  <option value="Monthly">Monthly</option>
-                </select>
+                <FrequencyDropdown value={frequency} onChange={setFrequency} disabled={!autoEnabled} />
               </div>
             </div>
 
@@ -180,6 +176,45 @@ export default function BackupManagement() {
           </div>
         </section>
       </main>
+    </div>
+  );
+}
+
+function FrequencyDropdown({ value, onChange, disabled }) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    function onDoc(e) {
+      if (!ref.current) return;
+      if (!ref.current.contains(e.target)) setOpen(false);
+    }
+    function onKey(e) {
+      if (e.key === 'Escape') setOpen(false);
+    }
+    document.addEventListener('mousedown', onDoc);
+    document.addEventListener('keydown', onKey);
+    return () => {
+      document.removeEventListener('mousedown', onDoc);
+      document.removeEventListener('keydown', onKey);
+    };
+  }, []);
+
+  function handleSelect(v) {
+    onChange(v);
+    setOpen(false);
+  }
+
+  return (
+    <div className="dropdown" ref={ref} style={{opacity: disabled ? 0.6 : 1}}>
+      <button className="dropdown-toggle" onClick={() => !disabled && setOpen(s => !s)} aria-haspopup="true" aria-expanded={open} disabled={disabled}>
+        {value} ▾
+      </button>
+      <ul className={`dropdown-menu ${open ? 'open' : ''}`} role="menu" aria-hidden={!open}>
+        <li role="menuitem"><button className="link-like" onClick={() => handleSelect('Daily')}>Daily</button></li>
+        <li role="menuitem"><button className="link-like" onClick={() => handleSelect('Weekly')}>Weekly</button></li>
+        <li role="menuitem"><button className="link-like" onClick={() => handleSelect('Monthly')}>Monthly</button></li>
+      </ul>
     </div>
   );
 }
