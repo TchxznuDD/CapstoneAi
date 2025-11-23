@@ -86,7 +86,7 @@ body {
   list-style: none;
 }
 .dropdown-menu li { padding: 6px 12px; }
-.dropdown-menu li a { color: inherit; text-decoration: none; display: block; }
+.dropdown-menu li a { color: inherit; text-decoration: none; display: block; font-weight: 500; }
 .dropdown-menu li:hover { background: rgba(0,0,0,0.04); }
 
 /* smooth open/close transitions for dropdowns */
@@ -174,7 +174,7 @@ body {
   background: transparent;
   cursor: pointer;
   border-radius: 8px;
-  font-weight: 700;
+  font-weight: 500;
   color: #222;
 }
 .options-item + .options-item { margin-top: 6px }

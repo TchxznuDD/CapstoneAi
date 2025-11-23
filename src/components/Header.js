@@ -3,15 +3,31 @@ import { Link, useHistory } from 'react-router-dom';
 import '../views/Computer.css';
 
 export default function Header({ active }) {
+  const history = useHistory();
+
+  function handleBrandClick(e) {
+    // Prevent default Link navigation so we can control scroll behaviour
+    e.preventDefault();
+    const target = '/computer';
+    if (history.location && history.location.pathname === target) {
+      // already on computer page — scroll to top smoothly
+      try { window.scrollTo({ top: 0, behavior: 'smooth' }); } catch (err) { window.scrollTo(0, 0); }
+      return;
+    }
+    // navigate then scroll to top after a short delay so the target page rendered
+    history.push(target);
+    setTimeout(() => { try { window.scrollTo({ top: 0, behavior: 'smooth' }); } catch (err) { window.scrollTo(0, 0); } }, 120);
+  }
+
   return (
     <header className="app-header">
-      <div className="brand">
+      <Link to="/computer" className="brand" onClick={handleBrandClick} aria-label="Go to Computers">
         <img src="fatima-logo.png" alt="logo" />
         <div>
           <h1>Barangay Fatima</h1>
           <p>Network Monitoring Dashboard</p>
         </div>
-      </div>
+      </Link>
 
       <nav className="nav-links" aria-label="Main navigation">
         <Link to="/computer" className={`nav-item ${active === 'computers' ? 'active' : ''}`}>Computers</Link>
