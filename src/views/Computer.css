@@ -298,6 +298,14 @@ body {
   object-fit: contain;
 }
 
+/* inline SVGs (React component imports) sizing */
+.stat-icon svg,
+.stat-icon .stat-svg {
+  width: 22px;
+  height: 22px;
+  display: block;
+}
+
 .stat-card.stat-total .icon-bg { background: rgba(255,123,0,0.08); }
 .stat-card.stat-online .icon-bg { background: #eaffef; }
 .stat-card.stat-offline .icon-bg { background: #ffecec; }

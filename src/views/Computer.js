@@ -2,8 +2,8 @@ import React, { useState, useRef, useEffect } from "react";
 import "./Computer.css";
 import Header from "../components/Header";
 import computerIcon from "../assets/computer.svg";
-import signal3Icon from "../assets/signal3.svg";
-import offlineIcon from "../assets/offline.svg";
+import { ReactComponent as Signal3Icon } from "../assets/signal3.svg";
+import { ReactComponent as OfflineIcon } from "../assets/offline.svg";
 // header is provided by shared component
 
 export default function Dashboard() {
@@ -206,7 +206,7 @@ export default function Dashboard() {
             <p className="label">Online</p>
             <p className="value green">{stats.online}</p>
           </div>
-          <div className="stat-icon"><div className="icon-bg"><img src={signal3Icon} alt="Online" /></div></div>
+          <div className="stat-icon"><div className="icon-bg"><Signal3Icon className="stat-svg" aria-hidden="true" /></div></div>
         </div>
 
         <div className="stat-card stat-offline">
@@ -214,7 +214,7 @@ export default function Dashboard() {
             <p className="label">Offline</p>
             <p className="value red">{stats.offline}</p>
           </div>
-          <div className="stat-icon"><div className="icon-bg"><img src={offlineIcon} alt="Offline" /></div></div>
+          <div className="stat-icon"><div className="icon-bg"><OfflineIcon className="stat-svg" aria-hidden="true" /></div></div>
         </div>
       </section>
 

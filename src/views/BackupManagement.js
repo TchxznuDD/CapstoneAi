@@ -1,11 +1,11 @@
 import React, { useRef, useState, useEffect } from 'react';
 import Header from '../components/Header';
 import './BackupManagement.css';
-import DatabaseIcon from '../assets/Database.svg';
-import BakaupIcon from '../assets/Bakaup.svg';
+import { ReactComponent as DatabaseIcon } from '../assets/Database.svg';
+import { ReactComponent as BakaupIcon } from '../assets/Bakaup.svg';
 import BakaupOrange from '../assets/BakaupOrange.svg';
 import BakaupGlyph from '../assets/BakaupGlyph.svg';
-import checkIcon from '../assets/CheckNew.svg';
+import { ReactComponent as CheckIcon } from '../assets/CheckNew.svg';
 
 export default function BackupManagement() {
   const stats = {
@@ -69,21 +69,21 @@ export default function BackupManagement() {
             <p className="label">Storage Used</p>
             <p className="value">{stats.storageUsed}</p>
             <div className="note">▲ 24.8%</div>
-            <div className="stat-icon"><div className="icon-bg storage"><img src={DatabaseIcon} alt="storage"/></div></div>
+            <div className="stat-icon"><div className="icon-bg storage"><DatabaseIcon className="stat-svg" aria-hidden="true" /></div></div>
           </div>
 
           <div className="metric-card total">
             <p className="label">Total Backups</p>
             <p className="value">{stats.totalBackups}</p>
             <div className="note green">▲ Active</div>
-            <div className="stat-icon"><div className="icon-bg"><img src={BakaupIcon} alt="backups"/></div></div>
+            <div className="stat-icon"><div className="icon-bg"><BakaupIcon className="stat-svg" aria-hidden="true" /></div></div>
           </div>
 
           <div className="metric-card">
             <p className="label">Success Rate</p>
             <p className="value">{stats.successRate}</p>
             <div className="note">▲ Excellent</div>
-            <div className="stat-icon"><div className="icon-bg green"><img src={checkIcon} alt="success"/></div></div>
+            <div className="stat-icon"><div className="icon-bg green"><CheckIcon className="stat-svg" aria-hidden="true" /></div></div>
           </div>
         </section>
 

@@ -16,9 +16,19 @@
 .metric-card .stat-icon .icon-bg.green { background: rgba(40,167,69,0.12) }
 .metric-card .stat-icon .icon-bg.storage { background: rgba(255,75,0,0.12) }
 .metric-card .stat-icon .icon-bg img { width:20px; height:20px; display:block; }
+.metric-card .stat-icon .icon-bg svg,
+.metric-card .stat-icon .icon-bg .stat-svg {
+  width:20px;
+  height:20px;
+  display:block;
+}
 /* Slightly larger icons for Storage and Total Backups */
 .metric-card.storage .stat-icon .icon-bg img,
-.metric-card.total .stat-icon .icon-bg img {
+.metric-card.total .stat-icon .icon-bg img,
+.metric-card.storage .stat-icon .icon-bg svg,
+.metric-card.total .stat-icon .icon-bg svg,
+.metric-card.storage .stat-icon .icon-bg .stat-svg,
+.metric-card.total .stat-icon .icon-bg .stat-svg {
   width:28px;
   height:28px;
 }
