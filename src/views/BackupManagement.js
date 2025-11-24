@@ -241,7 +241,7 @@ export default function BackupManagement() {
               <div ref={historyRef}></div>
               <div className="history-controls">
                 {historyList.length > 3 && (
-                  <Link to="/backup/history" className="btn secondary">View more</Link>
+                  <Link to="/backup/history?scroll=top" className="btn secondary" state={{ scrollToTop: true }}>View more</Link>
                 )}
               </div>
             </div>

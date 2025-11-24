@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import Header from '../components/Header';
 import './BackupManagement.css';
 import './BackupHistory.css';
@@ -31,6 +31,34 @@ export default function BackupHistory() {
   ]);
 
   const [deleting, setDeleting] = useState(null);
+
+  const location = useLocation();
+
+  // If navigated here with state or ?scroll=top, scroll the main container into view
+  useEffect(() => {
+    try {
+      const params = new URLSearchParams(location.search || '');
+      const wantsScroll = (location && location.state && location.state.scrollToTop) || params.get('scroll') === 'top';
+      if (wantsScroll) {
+        // small delay to allow route render / layout before scrolling
+          setTimeout(() => {
+            const mainEl = document.querySelector('main.backup-grid') || document.querySelector('main');
+            const headerEl = document.querySelector('.app-header') || document.querySelector('.header');
+            const headerH = headerEl ? headerEl.getBoundingClientRect().height : 0;
+            const extraOffset = 24; // nudge further up so content sits higher under header
+            if (mainEl) {
+              const top = mainEl.getBoundingClientRect().top + window.scrollY - headerH - extraOffset;
+              window.scrollTo({ top: Math.max(0, Math.floor(top)), behavior: 'smooth' });
+            } else {
+              window.scrollTo({ top: Math.max(0, headerH + extraOffset * -1), behavior: 'smooth' });
+            }
+          }, 80);
+      }
+    } catch (e) {
+      // fallback to a simple scroll
+      setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 80);
+    }
+  }, [location]);
 
   const grouped = groupByYearMonth(items);
 
