@@ -100,6 +100,18 @@ export default function Dashboard() {
     setForm(f => ({ ...f, [name]: value }));
   }
 
+  // Validate IP address format (XXX.XXX.XXX.XXX with each octet 0-255)
+  function isValidIP(ip) {
+    if (!ip || !ip.trim()) return false;
+    const parts = ip.trim().split('.');
+    if (parts.length !== 4) return false;
+    return parts.every(part => {
+      if (!/^\d{1,3}$/.test(part)) return false;
+      const num = parseInt(part, 10);
+      return num >= 0 && num <= 255;
+    });
+  }
+
   function handleSaveModal() {
     if (modalMode === 'add') {
       // Validate required fields
@@ -113,6 +125,10 @@ export default function Dashboard() {
       }
       if (!form.ip || !form.ip.trim()) {
         showNotification('Please enter an IP address', 'error');
+        return;
+      }
+      if (!isValidIP(form.ip)) {
+        showNotification('Invalid IP format. Use XXX.XXX.XXX.XXX (0-255)', 'error');
         return;
       }
 
@@ -139,6 +155,10 @@ export default function Dashboard() {
       }
       if (!form.ip || !form.ip.trim()) {
         showNotification('Please enter an IP address', 'error');
+        return;
+      }
+      if (!isValidIP(form.ip)) {
+        showNotification('Invalid IP format. Use XXX.XXX.XXX.XXX (0-255)', 'error');
         return;
       }
 
@@ -359,7 +379,10 @@ export default function Dashboard() {
 
       {notification && (
         <div className={`toast-notification ${notification.type}`}>
-          {notification.message}
+          <div className="toast-icon">
+            {notification.type === 'success' ? '✓' : '!'}
+          </div>
+          <div className="toast-message">{notification.message}</div>
         </div>
       )}
     </div>

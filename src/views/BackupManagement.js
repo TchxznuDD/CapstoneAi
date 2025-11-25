@@ -82,9 +82,7 @@ export default function BackupManagement() {
   const [backupTime, setBackupTime] = useState('17:00');
 
   function handleSaveSettings() {
-    // for now just log the settings (replace with API call as needed)
-    console.log('Saving backup settings', { autoEnabled, frequency, backupTime });
-    alert(`Settings saved:\nEnabled: ${autoEnabled}\nFrequency: ${frequency}\nTime: ${backupTime}`);
+    showNotification('Backup settings saved successfully!', 'success');
   }
 
   function handleViewBackups() {
@@ -306,7 +304,7 @@ export default function BackupManagement() {
             </div>
             <div className="form-actions">
               <button className="btn" onClick={() => setDeleting(null)}>Cancel</button>
-              <button className="btn primary" onClick={() => { setHistoryList(prev => prev.filter(i => i.id !== deleting)); setDeleting(null); }}>Delete</button>
+              <button className="btn primary" onClick={() => { setHistoryList(prev => prev.filter(i => i.id !== deleting)); showNotification('Backup deleted successfully!', 'success'); setDeleting(null); }}>Delete</button>
             </div>
           </div>
         </div>

@@ -136,14 +136,13 @@ export default function LoginPage() {
 
           <button type="submit" className="login-btn">Login</button>
         </form>
-            {toast && (
-              <div className="toast top-right" role="status" aria-live="polite">
-                <button className="toast-close" aria-label="Close notification" onClick={clearToast}>×</button>
-                <div className="toast-content">{toast}</div>
-                <div key={toastKey} className="toast-progress" style={{animationDuration: '3500ms'}} aria-hidden="true"></div>
-              </div>
-            )}
       </div>
+      {toast && (
+        <div className="toast-notification error" role="status" aria-live="polite">
+          <div className="toast-icon">!</div>
+          <div className="toast-message">{toast}</div>
+        </div>
+      )}
     </div>
   );
 }

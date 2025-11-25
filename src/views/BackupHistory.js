@@ -186,7 +186,7 @@ export default function BackupHistory() {
             </div>
             <div className="form-actions">
               <button className="btn" onClick={() => setDeleting(null)}>Cancel</button>
-              <button className="btn primary" onClick={() => { removeDay(deleting.year, deleting.month, deleting.day); setDeleting(null); }}>Delete</button>
+              <button className="btn primary" onClick={() => { removeDay(deleting.year, deleting.month, deleting.day); showNotification('Backup deleted successfully!', 'success'); setDeleting(null); }}>Delete</button>
             </div>
           </div>
         </div>

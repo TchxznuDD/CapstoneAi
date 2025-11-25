@@ -624,6 +624,35 @@ body {
   border-left-color: #ff7b00;
 }
 
+.toast-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #0b8f36, #28a745);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.toast-notification.error .toast-icon {
+  background: linear-gradient(135deg, #d62828, #e53935);
+}
+
+.toast-notification.info .toast-icon {
+  background: linear-gradient(135deg, #ff7b00, #ff4b00);
+}
+
+.toast-message {
+  font-size: 14px;
+  font-weight: 600;
+  color: #222;
+  line-height: 1.4;
+}
+
 @keyframes toastSlideIn {
   from {
     transform: translateX(120%) translateY(-8px);
