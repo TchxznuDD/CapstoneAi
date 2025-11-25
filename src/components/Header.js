@@ -79,7 +79,7 @@ function AdminDropdown() {
     <div className="dropdown" ref={ref}>
       <button className="dropdown-toggle" onClick={() => setOpen(s => !s)} aria-haspopup="true" aria-expanded={open}>Admin ▾</button>
       <ul className={`dropdown-menu ${open ? 'open' : ''}`} role="menu" aria-hidden={!open}>
-        <li role="menuitem"><a href="#">Settings</a></li>
+        <li role="menuitem"><Link to="/settings" onClick={() => setOpen(false)}>Settings</Link></li>
         <li role="menuitem"><a href="#">Help</a></li>
         <li role="menuitem"><a href="#">User Manual</a></li>
         <li role="menuitem"><button className="link-like" onClick={handleLogout}>Logout</button></li>

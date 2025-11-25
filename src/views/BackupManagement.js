@@ -22,6 +22,32 @@ export default function BackupManagement() {
     { id:4, date:'2025-11-02', type:'manual', size:'2.2 GB' },
   ]);
   const [deleting, setDeleting] = useState(null);
+  const [notification, setNotification] = useState(null);
+  const [backupProgress, setBackupProgress] = useState(0);
+  const [isBackingUp, setIsBackingUp] = useState(false);
+
+  function showNotification(message, type = 'success') {
+    setNotification({ message, type });
+    setTimeout(() => setNotification(null), 4000);
+  }
+
+  function handleStartBackup() {
+    setIsBackingUp(true);
+    setBackupProgress(0);
+    
+    // Simulate backup progress
+    const interval = setInterval(() => {
+      setBackupProgress(prev => {
+        if (prev >= 100) {
+          clearInterval(interval);
+          setIsBackingUp(false);
+          showNotification('Backup Successfully Completed!', 'success');
+          return 100;
+        }
+        return prev + 10;
+      });
+    }, 200);
+  }
 
   function groupByYearMonth(items) {
     const map = {};
@@ -118,20 +144,22 @@ export default function BackupManagement() {
             </div>
             <div className="manual-inline">
               <div className="mini-progress" aria-hidden>
-                <div className="mini-fill" style={{width: '0%'}}></div>
+                <div className="mini-fill" style={{width: `${backupProgress}%`}}></div>
               </div>
-              <div className="mini-label muted small">0%</div>
+              <div className="mini-label muted small">{backupProgress}%</div>
             </div>
 
             <div className="manual-actions">
               <div className="backup-progress">
                 <div className="progress-bar" aria-hidden>
-                  <div className="progress" style={{width: '0%'}}></div>
+                  <div className="progress" style={{width: `${backupProgress}%`}}></div>
                 </div>
-                <div className="muted small">No recent successful backups</div>
+                <div className="muted small">{isBackingUp ? 'Backup in progress...' : 'No recent successful backups'}</div>
               </div>
               <div className="actions">
-                <button className="btn primary">Start Backup</button>
+                <button className="btn primary" onClick={handleStartBackup} disabled={isBackingUp}>
+                  {isBackingUp ? 'Backing up...' : 'Start Backup'}
+                </button>
                 <button className="btn secondary" onClick={handleViewBackups}>View Backups</button>
               </div>
             </div>
@@ -263,6 +291,14 @@ export default function BackupManagement() {
               <button className="btn danger" onClick={() => { setHistoryList(prev => prev.filter(i => i.id !== deleting)); setDeleting(null); }}>Delete</button>
             </div>
           </div>
+        </div>
+      )}
+      {notification && (
+        <div className={`toast-notification ${notification.type}`}>
+          <div className="toast-icon">
+            {notification.type === 'success' ? '✓' : '!'}
+          </div>
+          <div className="toast-message">{notification.message}</div>
         </div>
       )}
     </div>
