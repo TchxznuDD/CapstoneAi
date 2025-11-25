@@ -30,6 +30,22 @@ export default function BackupHistory() {
     { id: 6, date: '2024-11-15T11:00:00', size: '2.7 GB', type: 'automatic' },
   ]);
 
+  const [notification, setNotification] = useState(null);
+  const [isRestoring, setIsRestoring] = useState(false);
+
+  function showNotification(message, type = 'success') {
+    setNotification({ message, type });
+    setTimeout(() => setNotification(null), 4000);
+  }
+
+  function handleRestore() {
+    setIsRestoring(true);
+    setTimeout(() => {
+      setIsRestoring(false);
+      showNotification('Backup restored successfully!', 'success');
+    }, 2000);
+  }
+
   const [deleting, setDeleting] = useState(null);
 
   const location = useLocation();
@@ -136,7 +152,9 @@ export default function BackupHistory() {
                             <div style={{marginTop:'auto'}}>
                               <div className="hi-actions" style={{display:'flex', gap:8}}>
                                 <button className="btn danger" onClick={() => setDeleting({ year, month, day })}>Delete</button>
-                                <button className="btn primary">Restore</button>
+                                <button className="btn primary" onClick={handleRestore} disabled={isRestoring}>
+                                  {isRestoring ? 'Restoring...' : 'Restore'}
+                                </button>
                               </div>
                             </div>
                           </div>
@@ -150,20 +168,35 @@ export default function BackupHistory() {
         ))}
       </main>
       {deleting && (
-        <div className="modal" role="dialog" aria-modal="true">
+        <div className="modal modal-overlay" role="dialog" aria-modal="true">
           <div className="modal-content">
+            <h3>Delete Backups</h3>
             <div className="warning-row">
-              <div className="modal-icon" aria-hidden>!</div>
-              <div>
-                <h3>Delete Backups</h3>
-                <p>Are you sure you want to permanently delete all backups from <strong>{deleting.month} {deleting.day}, {deleting.year}</strong>? This cannot be undone.</p>
-              </div>
+              <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="16" cy="16" r="14" fill="url(#warnGradientHistory)"/>
+                <path d="M16 10v8M16 22v1" stroke="#fff" strokeWidth="2.5" strokeLinecap="round"/>
+                <defs>
+                  <linearGradient id="warnGradientHistory" x1="2" y1="2" x2="30" y2="30">
+                    <stop offset="0%" stopColor="#ff9800"/>
+                    <stop offset="100%" stopColor="#ff6b00"/>
+                  </linearGradient>
+                </defs>
+              </svg>
+              <p>Are you sure you want to permanently delete all backups from <strong>{deleting.month} {deleting.day}, {deleting.year}</strong>? This action cannot be undone.</p>
             </div>
-            <div className="modal-actions">
-              <button className="btn secondary" onClick={() => setDeleting(null)}>Cancel</button>
-              <button className="btn danger" onClick={() => { removeDay(deleting.year, deleting.month, deleting.day); setDeleting(null); }}>Delete</button>
+            <div className="form-actions">
+              <button className="btn" onClick={() => setDeleting(null)}>Cancel</button>
+              <button className="btn primary" onClick={() => { removeDay(deleting.year, deleting.month, deleting.day); setDeleting(null); }}>Delete</button>
             </div>
           </div>
+        </div>
+      )}
+      {notification && (
+        <div className={`toast-notification ${notification.type}`}>
+          <div className="toast-icon">
+            {notification.type === 'success' ? '✓' : '!'}
+          </div>
+          <div className="toast-message">{notification.message}</div>
         </div>
       )}
     </div>

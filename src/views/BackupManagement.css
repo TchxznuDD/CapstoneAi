@@ -302,23 +302,33 @@
 }
 
 /* Warning row inside modal */
-.warning-row { display:flex; gap:14px; align-items:flex-start; }
-.modal-icon {
-  width:48px;
-  height:48px;
-  border-radius:12px;
-  background: linear-gradient(180deg, #fff5f5, #ffecec);
-  color: #b91c1c;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-weight:900;
-  font-size:20px;
-  box-shadow: 0 8px 20px rgba(185,28,28,0.08);
-  flex:0 0 48px;
+.warning-row {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  margin: 12px 0 20px 0;
+  padding: 14px;
+  background: rgba(255, 152, 0, 0.04);
+  border-radius: 8px;
+  border-left: 3px solid #ff9800;
 }
-.modal-content h3 { margin:0 0 6px 0; color:#b91c1c }
-.modal-content p { margin:0; color:#3b1a1a }
+
+.warning-row p {
+  color: #333;
+  margin: 0;
+  line-height: 1.5;
+  font-size: 14px;
+}
+
+.warning-row strong {
+  color: #111;
+  font-weight: 700;
+}
+
+.modal-content h3 {
+  margin: 0 0 8px 0;
+  color: #b91c1c;
+}
 
 /* Smooth entrance animations for modals (applies on mount) */
 @keyframes overlayIn {

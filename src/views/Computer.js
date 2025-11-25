@@ -48,6 +48,14 @@ export default function Dashboard() {
 
   const [buildings, setBuildings] = useState(initialBuildings);
 
+  // Notification state
+  const [notification, setNotification] = useState(null);
+
+  function showNotification(message, type = 'success') {
+    setNotification({ message, type });
+    setTimeout(() => setNotification(null), 4000);
+  }
+
   // centralized edit selection modal state
   const [selectEditOpen, setSelectEditOpen] = useState(false);
   const [selectBuilding, setSelectBuilding] = useState('');
@@ -55,6 +63,10 @@ export default function Dashboard() {
   // options dropdown state
   const [optionsOpen, setOptionsOpen] = useState(false);
   const optionsRef = useRef(null);
+
+  // delete confirmation modal state
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [deleteTarget, setDeleteTarget] = useState({ buildingId: '', stationId: '', stationName: '' });
 
   // modal state for add / edit
   const [modalOpen, setModalOpen] = useState(false);
@@ -90,6 +102,20 @@ export default function Dashboard() {
 
   function handleSaveModal() {
     if (modalMode === 'add') {
+      // Validate required fields
+      if (!form.name || !form.name.trim()) {
+        showNotification('Please enter a computer name', 'error');
+        return;
+      }
+      if (!form.host || !form.host.trim()) {
+        showNotification('Please enter a computer ID', 'error');
+        return;
+      }
+      if (!form.ip || !form.ip.trim()) {
+        showNotification('Please enter an IP address', 'error');
+        return;
+      }
+
       setBuildings(prev => prev.map(b => {
         if (b.id !== modalBuilding) return b;
         const nextId = `${b.id}-${String(b.stations.length + 1).padStart(2,'0')}`;
@@ -100,7 +126,22 @@ export default function Dashboard() {
         const offlineCount = updatedStations.length - onlineCount;
         return { ...b, stations: updatedStations, online: onlineCount, offline: offlineCount };
       }));
+      showNotification('Computer added successfully!', 'success');
     } else if (modalMode === 'edit') {
+      // Validate required fields for edit
+      if (!form.name || !form.name.trim()) {
+        showNotification('Please enter a computer name', 'error');
+        return;
+      }
+      if (!form.host || !form.host.trim()) {
+        showNotification('Please enter a computer ID', 'error');
+        return;
+      }
+      if (!form.ip || !form.ip.trim()) {
+        showNotification('Please enter an IP address', 'error');
+        return;
+      }
+
       setBuildings(prev => prev.map(b => {
         if (b.id !== modalBuilding) return b;
         const updatedStations = b.stations.map(s => {
@@ -112,6 +153,7 @@ export default function Dashboard() {
         const offlineCount = updatedStations.length - onlineCount;
         return { ...b, stations: updatedStations, online: onlineCount, offline: offlineCount };
       }));
+      showNotification('Computer updated successfully!', 'success');
     }
     setModalOpen(false);
   }
@@ -130,6 +172,12 @@ export default function Dashboard() {
   }
 
   function handleSaveBuilding() {
+    // Validate building name
+    if (!buildingForm.name || !buildingForm.name.trim()) {
+      showNotification('Please enter a building name', 'error');
+      return;
+    }
+
     const name = (buildingForm.name || 'New Building').trim();
     const subtitle = (buildingForm.subtitle || '').trim();
     const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
@@ -138,6 +186,7 @@ export default function Dashboard() {
     setBuildings(prev => [...prev, newBuilding]);
     // make the new building selected for immediate Add PC actions
     setModalBuilding(id);
+    showNotification('Building added successfully!', 'success');
     setBuildingModalOpen(false);
   }
 
@@ -158,13 +207,43 @@ export default function Dashboard() {
   }
 
   function handleConfirmSelectEdit() {
-    if (!selectBuilding || !selectStationId) return;
+    if (!selectBuilding) {
+      showNotification('Please select a building', 'error');
+      return;
+    }
+    if (!selectStationId) {
+      showNotification('Please select a workstation', 'error');
+      return;
+    }
     const b = buildings.find(x => x.id === selectBuilding);
     const station = b?.stations.find(s => s.id === selectStationId);
     if (station) {
       openEditModal(selectBuilding, station);
     }
     setSelectEditOpen(false);
+  }
+
+  // --- Delete PC handlers ---
+  function openDeleteModal(buildingId, stationId, stationName) {
+    setDeleteTarget({ buildingId, stationId, stationName });
+    setDeleteModalOpen(true);
+  }
+
+  function closeDeleteModal() {
+    setDeleteModalOpen(false);
+    setDeleteTarget({ buildingId: '', stationId: '', stationName: '' });
+  }
+
+  function handleConfirmDelete() {
+    setBuildings(prev => prev.map(b => {
+      if (b.id !== deleteTarget.buildingId) return b;
+      const updatedStations = b.stations.filter(s => s.id !== deleteTarget.stationId);
+      const onlineCount = updatedStations.filter(s => s.status === 'online').length;
+      const offlineCount = updatedStations.length - onlineCount;
+      return { ...b, stations: updatedStations, online: onlineCount, offline: offlineCount };
+    }));
+    showNotification('Computer deleted successfully!', 'success');
+    closeDeleteModal();
   }
 
   return (
@@ -255,6 +334,11 @@ export default function Dashboard() {
                     </div>
                     <div style={{display:'flex',alignItems:'center',gap:8}}>
                       <p className={`pill ${s.status}`}>{s.status.toUpperCase()}</p>
+                      <button className="delete-icon-btn" onClick={() => openDeleteModal(b.id, s.id, s.name)} title="Delete PC">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M7 4V2H17V4H22V6H20V21C20 21.5523 19.5523 22 19 22H5C4.44772 22 4 21.5523 4 21V6H2V4H7ZM6 6V20H18V6H6ZM9 9H11V17H9V9ZM13 9H15V17H13V9Z" fill="currentColor"/>
+                        </svg>
+                      </button>
                     </div>
                   </div>
 
@@ -271,6 +355,13 @@ export default function Dashboard() {
       <AddEditModal open={modalOpen} mode={modalMode} buildings={buildings} buildingId={modalBuilding} setBuildingId={setModalBuilding} onClose={() => setModalOpen(false)} onSave={handleSaveModal} form={form} setForm={setForm} />
       <AddBuildingModal open={buildingModalOpen} onClose={closeBuildingModal} onSave={handleSaveBuilding} form={buildingForm} setForm={setBuildingForm} />
       <SelectEditModal open={selectEditOpen} onClose={closeSelectEditModal} buildings={buildings} buildingId={selectBuilding} setBuildingId={setSelectBuilding} stationId={selectStationId} setStationId={setSelectStationId} onConfirm={handleConfirmSelectEdit} />
+      <DeleteConfirmModal open={deleteModalOpen} onClose={closeDeleteModal} onConfirm={handleConfirmDelete} stationName={deleteTarget.stationName} />
+
+      {notification && (
+        <div className={`toast-notification ${notification.type}`}>
+          {notification.message}
+        </div>
+      )}
     </div>
   );
 }
@@ -355,6 +446,34 @@ function SelectEditModal({ open, onClose, buildings, buildingId, setBuildingId, 
         <div className="form-actions">
           <button className="btn" onClick={onClose}>Cancel</button>
           <button className="btn primary" onClick={onConfirm} disabled={!stationId}>Edit Selected</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function DeleteConfirmModal({ open, onClose, onConfirm, stationName }) {
+  if (!open) return null;
+  return (
+    <div className="modal modal-overlay" role="dialog" aria-modal="true">
+      <div className="modal-content">
+        <h3>Delete Computer</h3>
+        <div className="warning-row">
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="16" cy="16" r="14" fill="url(#warnGradient)"/>
+            <path d="M16 10v8M16 22v1" stroke="#fff" strokeWidth="2.5" strokeLinecap="round"/>
+            <defs>
+              <linearGradient id="warnGradient" x1="2" y1="2" x2="30" y2="30">
+                <stop offset="0%" stopColor="#ff9800"/>
+                <stop offset="100%" stopColor="#ff6b00"/>
+              </linearGradient>
+            </defs>
+          </svg>
+          <p>Are you sure you want to delete <strong>{stationName}</strong>? This action cannot be undone.</p>
+        </div>
+        <div className="form-actions">
+          <button className="btn" onClick={onClose}>Cancel</button>
+          <button className="btn primary" onClick={onConfirm}>Delete</button>
         </div>
       </div>
     </div>
