@@ -247,11 +247,11 @@
   z-index: 10000;
   min-width: 280px;
   animation: toastSlideIn 300ms cubic-bezier(.2,.9,.2,1) both;
-  border-left: 4px solid #0b8f36;
+  border-left: 4px solid #ff7b00;
 }
 
 .toast-notification.success {
-  border-left-color: #0b8f36;
+  border-left-color: #ff7b00;
 }
 
 .toast-notification.error {
@@ -266,7 +266,7 @@
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #0b8f36, #28a745);
+  background: linear-gradient(135deg, #ff7b00, #ff7b00);
   color: #fff;
   display: flex;
   align-items: center;
