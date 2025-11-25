@@ -22,7 +22,7 @@ export default function Header({ active }) {
   return (
     <header className="app-header">
       <Link to="/computer" className="brand" onClick={handleBrandClick} aria-label="Go to Computers">
-        <img src="fatima-logo.png" alt="logo" />
+        <img src="/fatima-logo.png" alt="logo" />
         <div>
           <h1>Barangay Fatima</h1>
           <p>Network Monitoring Dashboard</p>
@@ -79,7 +79,7 @@ function AdminDropdown() {
     <div className="dropdown" ref={ref}>
       <button className="dropdown-toggle" onClick={() => setOpen(s => !s)} aria-haspopup="true" aria-expanded={open}>Admin ▾</button>
       <ul className={`dropdown-menu ${open ? 'open' : ''}`} role="menu" aria-hidden={!open}>
-        <li role="menuitem"><a href="#">Settings</a></li>
+        <li role="menuitem"><Link to="/settings" onClick={() => setOpen(false)}>Settings</Link></li>
         <li role="menuitem"><a href="#">Help</a></li>
         <li role="menuitem"><a href="#">User Manual</a></li>
         <li role="menuitem"><button className="link-like" onClick={handleLogout}>Logout</button></li>

@@ -546,3 +546,91 @@ body {
   color: #d62828;
   margin-top: 6px;
 }
+
+/* Delete icon button */
+.delete-icon-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #999;
+  padding: 4px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 180ms ease;
+}
+
+.delete-icon-btn:hover {
+  background: rgba(214, 40, 40, 0.08);
+  color: #d62828;
+}
+
+.delete-icon-btn svg {
+  display: block;
+}
+
+/* Warning row inside modal */
+.warning-row {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  margin: 12px 0 20px 0;
+  padding: 14px;
+  background: rgba(255, 152, 0, 0.04);
+  border-radius: 8px;
+  border-left: 3px solid #ff9800;
+}
+
+.warning-row p {
+  color: #333;
+  margin: 0;
+  line-height: 1.5;
+  font-size: 14px;
+}
+
+.warning-row strong {
+  color: #111;
+  font-weight: 700;
+}
+
+/* Toast notification (top-right corner) */
+.toast-notification {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 18px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 12px 36px rgba(0,0,0,0.15);
+  z-index: 10000;
+  min-width: 280px;
+  animation: toastSlideIn 300ms cubic-bezier(.2,.9,.2,1) both;
+  border-left: 4px solid #ff7b00;
+}
+
+.toast-notification.success {
+  border-left-color: #ff7b00;
+}
+
+.toast-notification.error {
+  border-left-color: #d62828;
+}
+
+.toast-notification.info {
+  border-left-color: #ff7b00;
+}
+
+@keyframes toastSlideIn {
+  from {
+    transform: translateX(120%) translateY(-8px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0) translateY(0);
+    opacity: 1;
+  }
+}
