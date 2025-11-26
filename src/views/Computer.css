@@ -41,7 +41,8 @@ body {
   width: 52px;
   height: 52px;
   border-radius: 50%;
-  border: 2px solid rgba(255,255,255,0.12);
+  background: #fff;
+  border: 3px solid #fff;
   box-shadow: 0 6px 18px rgba(0,0,0,0.12);
 }
 
@@ -62,6 +63,212 @@ body {
 /* improve nav button spacing */
 .nav-item { padding: 8px 12px; border-radius: 8px; }
 .nav-item.active, .nav-item:focus { background: rgba(255,255,255,0.06); }
+
+/* header right section */
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Notification Bell */
+.notification-dropdown {
+  position: relative;
+}
+
+.notification-bell {
+  position: relative;
+  background: transparent;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 180ms ease;
+}
+
+.notification-bell:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.notification-badge {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  background: linear-gradient(135deg, #d62828, #e53935);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 800;
+  min-width: 16px;
+  height: 16px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+}
+
+.notification-panel {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 12px);
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 12px 36px rgba(0,0,0,0.15);
+  width: 360px;
+  max-height: 480px;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  transform: translateY(-12px) scale(0.95);
+  transform-origin: top right;
+  transition: opacity 200ms ease, transform 200ms ease;
+  pointer-events: none;
+  z-index: 1000;
+}
+
+.notification-panel.open {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+.notification-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 18px;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.notification-header h4 {
+  margin: 0;
+  font-size: 16px;
+  color: #222;
+  font-weight: 800;
+}
+
+.notification-count {
+  font-size: 12px;
+  color: #ff7b00;
+  font-weight: 700;
+  background: rgba(255, 123, 0, 0.1);
+  padding: 4px 10px;
+  border-radius: 12px;
+}
+
+.notification-list {
+  overflow-y: auto;
+  max-height: 360px;
+  padding: 8px 0;
+}
+
+.notification-item {
+  display: flex;
+  gap: 12px;
+  padding: 12px 18px;
+  border-bottom: 1px solid #f5f5f5;
+  transition: background 150ms ease;
+  cursor: pointer;
+}
+
+.notification-item:hover {
+  background: #fafafa;
+}
+
+.notification-item:last-child {
+  border-bottom: none;
+}
+
+.notif-icon {
+  font-size: 20px;
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background: #f5f5f5;
+}
+
+.notif-icon svg {
+  width: 18px;
+  height: 18px;
+  display: block;
+}
+
+.notification-item.offline .notif-icon {
+  background: rgba(214, 40, 40, 0.1);
+  color: #d62828;
+}
+
+.notification-item.online .notif-icon {
+  background: rgba(11, 143, 54, 0.1);
+  color: #0b8f36;
+}
+
+.notification-item.backup .notif-icon {
+  background: rgba(25, 118, 210, 0.1);
+  color: #1976d2;
+}
+
+.notification-item.warning .notif-icon {
+  background: rgba(255, 152, 0, 0.1);
+  color: #ff9800;
+}
+
+.notification-item.firewall .notif-icon {
+  background: rgba(255, 123, 0, 0.1);
+  color: #ff7b00;
+}
+
+.notif-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.notif-message {
+  margin: 0;
+  font-size: 14px;
+  color: #222;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.notif-time {
+  font-size: 12px;
+  color: #888;
+}
+
+.notification-footer {
+  padding: 12px 18px;
+  border-top: 2px solid #f0f0f0;
+  display: flex;
+  justify-content: center;
+}
+
+.view-all-btn {
+  background: transparent;
+  border: none;
+  color: #ff7b00;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 6px 12px;
+  border-radius: 6px;
+  transition: background 150ms ease;
+}
+
+.view-all-btn:hover {
+  background: rgba(255, 123, 0, 0.08);
+}
 
 /* dropdown */
 .dropdown { position: relative; }

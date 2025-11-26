@@ -199,7 +199,7 @@ export default function Settings() {
               <label>Refresh Interval (seconds)</label>
               <select value={refreshInterval} onChange={e => setRefreshInterval(e.target.value)} disabled={!autoRefresh}>
                 <option value="15">15 seconds</option>
-                <option value="30">30 seconds</option>
+                <option value="30">30 seconds (Default)</option>
                 <option value="60">1 minute</option>
                 <option value="300">5 minutes</option>
               </select>

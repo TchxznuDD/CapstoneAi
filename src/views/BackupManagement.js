@@ -22,6 +22,7 @@ export default function BackupManagement() {
     { id:4, date:'2025-11-02', type:'manual', size:'2.2 GB' },
   ]);
   const [deleting, setDeleting] = useState(null);
+  const [deletePassword, setDeletePassword] = useState('');
   const [notification, setNotification] = useState(null);
   const [backupProgress, setBackupProgress] = useState(0);
   const [isBackingUp, setIsBackingUp] = useState(false);
@@ -258,7 +259,7 @@ export default function BackupManagement() {
                                   <div className="muted small">{itemsForDay.map(it => it.size).join(', ')}</div>
                                   <div style={{marginTop:'auto'}}>
                                     <div className="hi-actions" style={{display:'flex', gap:8}}>
-                                      <button className="btn danger" onClick={() => setDeleting({ year, month, day })}>Delete</button>
+                                      <button className="btn danger" onClick={() => { setDeleting({ year, month, day }); setDeletePassword(''); }}>Delete</button>
                                       <button className="btn primary" onClick={handleRestore} disabled={isRestoring}>
                                         {isRestoring ? 'Restoring...' : 'Restore'}
                                       </button>
@@ -302,9 +303,28 @@ export default function BackupManagement() {
               </svg>
               <p>Are you sure you want to permanently delete this backup? This action cannot be undone.</p>
             </div>
+            <div className="form-row">
+              <label>Enter password to confirm:</label>
+              <input 
+                type="password" 
+                value={deletePassword} 
+                onChange={e => setDeletePassword(e.target.value)}
+                placeholder="Enter admin password"
+                autoFocus
+              />
+            </div>
             <div className="form-actions">
-              <button className="btn" onClick={() => setDeleting(null)}>Cancel</button>
-              <button className="btn primary" onClick={() => { setHistoryList(prev => prev.filter(i => i.id !== deleting)); showNotification('Backup deleted successfully!', 'success'); setDeleting(null); }}>Delete</button>
+              <button className="btn" onClick={() => { setDeleting(null); setDeletePassword(''); }}>Cancel</button>
+              <button className="btn primary" onClick={() => { 
+                if (deletePassword !== 'admin') {
+                  showNotification('Incorrect password. Please try again.', 'error');
+                  return;
+                }
+                setHistoryList(prev => prev.filter(i => i.id !== deleting)); 
+                showNotification('Backup deleted successfully!', 'success'); 
+                setDeleting(null);
+                setDeletePassword('');
+              }}>Delete</button>
             </div>
           </div>
         </div>

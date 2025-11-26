@@ -67,6 +67,7 @@ export default function Dashboard() {
   // delete confirmation modal state
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [deleteTarget, setDeleteTarget] = useState({ buildingId: '', stationId: '', stationName: '' });
+  const [deletePassword, setDeletePassword] = useState('');
 
   // modal state for add / edit
   const [modalOpen, setModalOpen] = useState(false);
@@ -246,15 +247,21 @@ export default function Dashboard() {
   // --- Delete PC handlers ---
   function openDeleteModal(buildingId, stationId, stationName) {
     setDeleteTarget({ buildingId, stationId, stationName });
+    setDeletePassword('');
     setDeleteModalOpen(true);
   }
 
   function closeDeleteModal() {
     setDeleteModalOpen(false);
     setDeleteTarget({ buildingId: '', stationId: '', stationName: '' });
+    setDeletePassword('');
   }
 
   function handleConfirmDelete() {
+    if (deletePassword !== 'admin') {
+      showNotification('Incorrect password. Please try again.', 'error');
+      return;
+    }
     setBuildings(prev => prev.map(b => {
       if (b.id !== deleteTarget.buildingId) return b;
       const updatedStations = b.stations.filter(s => s.id !== deleteTarget.stationId);
@@ -375,7 +382,7 @@ export default function Dashboard() {
       <AddEditModal open={modalOpen} mode={modalMode} buildings={buildings} buildingId={modalBuilding} setBuildingId={setModalBuilding} onClose={() => setModalOpen(false)} onSave={handleSaveModal} form={form} setForm={setForm} />
       <AddBuildingModal open={buildingModalOpen} onClose={closeBuildingModal} onSave={handleSaveBuilding} form={buildingForm} setForm={setBuildingForm} />
       <SelectEditModal open={selectEditOpen} onClose={closeSelectEditModal} buildings={buildings} buildingId={selectBuilding} setBuildingId={setSelectBuilding} stationId={selectStationId} setStationId={setSelectStationId} onConfirm={handleConfirmSelectEdit} />
-      <DeleteConfirmModal open={deleteModalOpen} onClose={closeDeleteModal} onConfirm={handleConfirmDelete} stationName={deleteTarget.stationName} />
+      <DeleteConfirmModal open={deleteModalOpen} onClose={closeDeleteModal} onConfirm={handleConfirmDelete} stationName={deleteTarget.stationName} password={deletePassword} setPassword={setDeletePassword} />
 
       {notification && (
         <div className={`toast-notification ${notification.type}`}>
@@ -475,7 +482,7 @@ function SelectEditModal({ open, onClose, buildings, buildingId, setBuildingId, 
   );
 }
 
-function DeleteConfirmModal({ open, onClose, onConfirm, stationName }) {
+function DeleteConfirmModal({ open, onClose, onConfirm, stationName, password, setPassword }) {
   if (!open) return null;
   return (
     <div className="modal modal-overlay" role="dialog" aria-modal="true">
@@ -493,6 +500,16 @@ function DeleteConfirmModal({ open, onClose, onConfirm, stationName }) {
             </defs>
           </svg>
           <p>Are you sure you want to delete <strong>{stationName}</strong>? This action cannot be undone.</p>
+        </div>
+        <div className="form-row">
+          <label>Enter password to confirm:</label>
+          <input 
+            type="password" 
+            value={password} 
+            onChange={e => setPassword(e.target.value)}
+            placeholder="Enter admin password"
+            autoFocus
+          />
         </div>
         <div className="form-actions">
           <button className="btn" onClick={onClose}>Cancel</button>
