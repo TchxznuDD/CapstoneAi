@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import { getAdminPassword } from "../utils/auth";
 import "./Computer.css";
 import Header from "../components/Header";
 import computerIcon from "../assets/computer.svg";
@@ -258,7 +259,7 @@ export default function Dashboard() {
   }
 
   function handleConfirmDelete() {
-    if (deletePassword !== 'admin') {
+    if (deletePassword !== getAdminPassword()) {
       showNotification('Incorrect password. Please try again.', 'error');
       return;
     }

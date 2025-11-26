@@ -143,8 +143,8 @@ export default function FirewallMonitor() {
   // State for notification toast
   const [notification, setNotification] = useState(null);
 
-  // State for last refresh time
-  const [lastRefresh, setLastRefresh] = useState(new Date());
+  // State for chart refresh counter
+  const [chartKey, setChartKey] = useState(0);
 
   /**
    * Show notification toast message
@@ -164,7 +164,7 @@ export default function FirewallMonitor() {
     // In a real app, this would fetch fresh data from API
     setRules([...mockFirewallRules]);
     setBlockedConnections([...mockBlockedConnections]);
-    setLastRefresh(new Date());
+    setChartKey(prev => prev + 1);
     showNotification('Dashboard refreshed successfully!', 'success');
   }
 
@@ -315,22 +315,34 @@ export default function FirewallMonitor() {
           </div>
         </section>
 
-        {/* Bandwidth Charts */}
-        <section className="charts-grid">
+        {/* Analytics Charts - Mixed Grid Layout */}
+        <section className="charts-grid-mixed">
           <div className="card chart-card">
             <div className="card-header">
               <h3>Bandwidth Usage (24h)</h3>
               <p className="muted small">Network traffic over the last 24 hours</p>
             </div>
-            <div className="card-body">
-              <Line 
+            <div className="card-body chart-compact">
+              <Line
+                key={`bandwidth-${chartKey}`}
                 data={mockBandwidthData} 
                 options={{
                   responsive: true,
                   maintainAspectRatio: true,
+                  aspectRatio: 1.3,
+                  animation: {
+                    duration: 750
+                  },
                   plugins: {
                     legend: {
                       position: 'top',
+                      labels: {
+                        boxWidth: 10,
+                        padding: 8,
+                        font: {
+                          size: 10
+                        }
+                      }
                     },
                   },
                   scales: {
@@ -338,7 +350,22 @@ export default function FirewallMonitor() {
                       beginAtZero: true,
                       title: {
                         display: true,
-                        text: 'Mbps'
+                        text: 'Mbps',
+                        font: {
+                          size: 10
+                        }
+                      },
+                      ticks: {
+                        font: {
+                          size: 9
+                        }
+                      }
+                    },
+                    x: {
+                      ticks: {
+                        font: {
+                          size: 9
+                        }
                       }
                     }
                   }
@@ -352,51 +379,83 @@ export default function FirewallMonitor() {
               <h3>Protocol Distribution</h3>
               <p className="muted small">Traffic breakdown by protocol type</p>
             </div>
-            <div className="card-body chart-doughnut">
-              <Doughnut 
+            <div className="card-body chart-doughnut chart-compact">
+              <Doughnut
+                key={`protocol-${chartKey}`}
                 data={mockProtocolData}
                 options={{
                   responsive: true,
                   maintainAspectRatio: true,
+                  aspectRatio: 1.3,
+                  animation: {
+                    duration: 750
+                  },
                   plugins: {
                     legend: {
-                      position: 'right',
+                      position: 'bottom',
+                      labels: {
+                        boxWidth: 10,
+                        padding: 6,
+                        font: {
+                          size: 10
+                        }
+                      }
                     },
                   },
                 }}
               />
             </div>
           </div>
-        </section>
 
-        {/* Blocked Attempts Chart */}
-        <section className="card chart-card">
-          <div className="card-header">
-            <h3>Blocked Attempts by Reason</h3>
-            <p className="muted small">Most common reasons for blocking connections</p>
-          </div>
-          <div className="card-body">
-            <Bar 
-              data={mockBlockedByReason}
-              options={{
-                responsive: true,
-                maintainAspectRatio: true,
-                plugins: {
-                  legend: {
-                    display: false,
+          <div className="card chart-card chart-full-width">
+            <div className="card-header">
+              <h3>Top Blocked Reasons</h3>
+              <p className="muted small">Most common blocking causes</p>
+            </div>
+            <div className="card-body chart-compact">
+              <Bar
+                key={`blocked-${chartKey}`}
+                data={mockBlockedByReason}
+                options={{
+                  responsive: true,
+                  maintainAspectRatio: true,
+                  aspectRatio: 1.3,
+                  indexAxis: 'y',
+                  animation: {
+                    duration: 750
                   },
-                },
-                scales: {
-                  y: {
-                    beginAtZero: true,
-                    title: {
-                      display: true,
-                      text: 'Number of Attempts'
+                  plugins: {
+                    legend: {
+                      display: false,
+                    },
+                  },
+                  scales: {
+                    x: {
+                      beginAtZero: true,
+                      title: {
+                        display: true,
+                        text: 'Attempts',
+                        font: {
+                          size: 10
+                        }
+                      },
+                      ticks: {
+                        font: {
+                          size: 9
+                        }
+                      }
+                    },
+                    y: {
+                      ticks: {
+                        font: {
+                          size: 9
+                        }
+                      }
                     }
                   }
-                }
-              }}
-            />
+                }}
+              />
+            </div>
           </div>
         </section>
 

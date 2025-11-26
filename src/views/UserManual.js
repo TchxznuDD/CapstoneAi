@@ -106,10 +106,13 @@ export default function UserManual() {
       title: 'Getting Started',
       iconType: 'rocket',
       items: [
-        'System Requirements',
-        'Installation Guide',
         'First Time Setup',
-        'Basic Navigation'
+        'Basic Navigation',
+        'Dashboard Overview',
+        'Understanding the Interface',
+        'Header Navigation Menu',
+        'Notification System',
+        'Refresh Functionality'
       ]
     },
     {
@@ -117,11 +120,16 @@ export default function UserManual() {
       title: 'Computer Monitoring',
       iconType: 'computer',
       items: [
-        'Viewing Computer Status',
-        'Adding New Computers',
+        'Viewing Computer Status by Building',
+        'Adding New Computers to Buildings',
         'Editing Computer Details',
-        'Deleting Computers (with password)',
-        'Building Management'
+        'Deleting Computers (Admin: password; Junior: Admin Passkey)',
+        'Building Management (Revenue, VAWC, Legislative)',
+        'Real-time Status Indicators (Online/Offline)',
+        'IP Address Management',
+        'Hostname and Uptime Tracking',
+        'Last Seen Information',
+        'Edit Selection Modal'
       ]
     },
     {
@@ -130,24 +138,33 @@ export default function UserManual() {
       iconType: 'server',
       items: [
         'Understanding Server Metrics',
-        'CPU & Memory Monitoring',
-        'Network Traffic Analysis',
-        'Troubleshooting Server Issues'
+        'CPU Usage Monitoring (Real-time)',
+        'Memory Usage Tracking (Used/Total GB)',
+        'Disk Space Monitoring',
+        'Network Traffic Analysis (In/Out)',
+        'Server Specifications Display',
+        'System Information (Kernel, Architecture)',
+        'Uptime and Last Boot Time',
+        'Load Average and Process Count',
+        'Ubuntu Server Details'
       ]
     },
     {
       id: 'firewall',
-    title: 'Firewall Monitoring',
-    iconType: 'firewall',
-    items: [
-    'Understanding Firewall Rules',
-    'Viewing Active Rules',
-    'Monitoring Blocked Connections',
-    'Protocol Types (TCP, UDP, ALL)',
-    'Action Types (ALLOW, BLOCK)',
-    'Traffic and Bandwidth Stats'
-    ]
-
+      title: 'Firewall Monitoring',
+      iconType: 'firewall',
+      items: [
+        'Understanding Firewall Rules',
+        'Viewing Active Rules',
+        'Monitoring Blocked Connections',
+        'Protocol Types (TCP, UDP, ICMP, ALL)',
+        'Action Types (ALLOW, BLOCK)',
+        'Traffic and Bandwidth Charts',
+        'Protocol Distribution Analysis',
+        'Blocked Attempts by Reason',
+        'Real-time Statistics Dashboard',
+        'Manual Refresh Functionality'
+      ]
     },
     {
       id: 'backup',
@@ -155,10 +172,16 @@ export default function UserManual() {
       iconType: 'backup',
       items: [
         'Starting Manual Backups',
-        'Viewing Backup History',
+        'Viewing Backup History (Grouped by Date)',
         'Restoring from Backup',
         'Automatic Backup Settings',
-        'Backup Schedule Configuration'
+        'Backup Schedule Configuration (Daily/Weekly/Monthly)',
+        'Time Selection for Auto Backups',
+        'Storage Usage Statistics',
+        'Backup Progress Indicator',
+        'Success Rate Tracking',
+        'Expandable History View',
+        'Junior Staff: Auto backups disabled; deletes require Admin Passkey'
       ]
     },
     {
@@ -168,9 +191,13 @@ export default function UserManual() {
       items: [
         'Changing Password',
         'Notification Preferences',
-        'Auto-refresh Settings',
+        'Auto-refresh Settings (30s default)',
         'Display Customization',
-        'System Preferences'
+        'System Preferences',
+        'Admin Passkey Management (Set/Reset)',
+        'Toast Notifications',
+        'Modal Dialogs',
+        'Form Validation'
       ]
     },
     {
@@ -178,11 +205,13 @@ export default function UserManual() {
       title: 'Security Best Practices',
       iconType: 'security',
       items: [
-        'Password Requirements',
-        'Delete Confirmation Protocol',
+        'Admin Passkey (Default: FATIMA-ADMIN-ONLY)',
         'User Access Control',
         'Firewall Rule Guidelines',
-        'Backup Security'
+        'Backup Security',
+        'IP Address Validation (0-255 per octet)',
+        'Protected Operations',
+        'Session Management'
       ]
     },
     {
@@ -193,8 +222,12 @@ export default function UserManual() {
         'Common Error Messages',
         'Connection Issues',
         'Backup Failures',
-        'IP Address Validation',
-        'Browser Compatibility'
+        'IP Address Validation Errors',
+        'Browser Compatibility',
+        'Chart Rendering Issues',
+        'Modal Dialog Problems',
+        'Form Submission Errors',
+        'Refresh and Reload Solutions'
       ]
     }
   ];
@@ -231,10 +264,11 @@ export default function UserManual() {
             </div>
             <div className="download-info">
               <h3>Barangay Fatima Dashboard User Manual</h3>
-              <p className="manual-meta">Version 1.0.0 • PDF Format • Last updated: November 2025</p>
+              <p className="manual-meta">Version 2.0.0 • PDF Format • Last updated: November 2025</p>
               <div className="manual-stats">
-                <span className="stat-badge">167 Pages</span>
+                <span className="stat-badge">185 Pages</span>
                 <span className="stat-badge">Comprehensive Guide</span>
+                <span className="stat-badge">Updated Features</span>
               </div>
             </div>
           </div>
@@ -305,9 +339,19 @@ export default function UserManual() {
                   <path d="M12.65 10C11.7 7.31 8.9 5.5 5.77 6.12c-2.29.46-4.15 2.29-4.63 4.58C.32 14.57 3.26 18 7 18c2.61 0 4.83-1.67 5.65-4H17v2c0 1.1.9 2 2 2s2-.9 2-2v-2c1.1 0 2-.9 2-2s-.9-2-2-2h-8.35zM7 14c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/>
                 </svg>
               </div>
-              <h4>Default Password</h4>
+              <h4>Admin Password (Default)</h4>
               <p className="ref-value">admin</p>
-              <p className="ref-desc">Used for delete confirmations</p>
+              <p className="ref-desc">Used for delete confirmations in Admin</p>
+            </div>
+            <div className="ref-item">
+              <div className="ref-icon orange">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12.65 10C11.7 7.31 8.9 5.5 5.77 6.12c-2.29.46-4.15 2.29-4.63 4.58C.32 14.57 3.26 18 7 18c2.61 0 4.83-1.67 5.65-4H17v2c0 1.1.9 2 2 2s2-.9 2-2v-2c1.1 0 2-.9 2-2s-.9-2-2-2h-8.35zM7 14c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/>
+                </svg>
+              </div>
+              <h4>Admin Passkey (Default)</h4>
+              <p className="ref-value">FATIMA-ADMIN-ONLY</p>
+              <p className="ref-desc">Required for delete confirmations in Junior</p>
             </div>
             <div className="ref-item">
               <div className="ref-icon blue">
