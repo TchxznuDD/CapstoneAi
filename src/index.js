@@ -7,7 +7,7 @@ import ServerStatus from "./views/ServerStatus";
 import BackupManagement from "./views/BackupManagement";
 import BackupHistory from "./views/BackupHistory";
 import Settings from "./views/Settings";
-import Firewall from "./views/Firewall";
+import FirewallMonitor from "./views/FirewallMonitor";
 import UserManual from "./views/UserManual";
 import NotFound from "./views/not-found";
 
@@ -20,7 +20,7 @@ ReactDOM.render(
       <Route path="/backup/history" component={BackupHistory} />
       <Route path="/backup" component={BackupManagement} />
       <Route path="/settings" component={Settings} />
-      <Route path="/firewall" component={Firewall} />
+      <Route path="/firewall/monitor" component={FirewallMonitor} />
       <Route path="/user-manual" component={UserManual} />
       <Route component={NotFound} />
     </Switch>

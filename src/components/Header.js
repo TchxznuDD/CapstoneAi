@@ -32,7 +32,7 @@ export default function Header({ active }) {
       <nav className="nav-links" aria-label="Main navigation">
         <Link to="/computer" className={`nav-item ${active === 'computers' ? 'active' : ''}`}>Computers</Link>
         <Link to="/server-status" className={`nav-item ${active === 'server-status' ? 'active' : ''}`}>Server Status</Link>
-        <Link to="/firewall" className={`nav-item ${active === 'firewall' ? 'active' : ''}`}>Firewall</Link>
+        <Link to="/firewall/monitor" className={`nav-item ${active === 'firewall-monitor' ? 'active' : ''}`}>Firewall Monitor</Link>
         <Link to="/backup" className={`nav-item ${active === 'backup' ? 'active' : ''}`}>Backup</Link>
       </nav>
 

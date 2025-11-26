@@ -137,17 +137,17 @@ export default function UserManual() {
     },
     {
       id: 'firewall',
-      title: 'Firewall Management',
-      iconType: 'firewall',
-      items: [
-        'Understanding Firewall Rules',
-        'Adding New Rules',
-        'Editing Existing Rules',
-        'Deleting Rules (with password)',
-        'Rule Priority Management',
-        'Protocol Types (TCP, UDP, ALL)',
-        'Action Types (ALLOW, BLOCK)'
-      ]
+    title: 'Firewall Monitoring',
+    iconType: 'firewall',
+    items: [
+    'Understanding Firewall Rules',
+    'Viewing Active Rules',
+    'Monitoring Blocked Connections',
+    'Protocol Types (TCP, UDP, ALL)',
+    'Action Types (ALLOW, BLOCK)',
+    'Traffic and Bandwidth Stats'
+    ]
+
     },
     {
       id: 'backup',
