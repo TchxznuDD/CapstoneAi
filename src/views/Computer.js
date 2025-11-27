@@ -170,6 +170,22 @@ export default function Dashboard() {
         return;
       }
 
+      // Check if any changes were made
+      const building = buildings.find(b => b.id === modalBuilding);
+      const currentStation = building?.stations.find(s => s.id === modalStationId);
+      if (currentStation) {
+        const noChanges = 
+          currentStation.name === form.name &&
+          currentStation.host === form.host &&
+          currentStation.ip === form.ip &&
+          currentStation.uptime === form.uptime;
+        
+        if (noChanges) {
+          showNotification('No changes were made', 'info');
+          return;
+        }
+      }
+
       setBuildings(prev => prev.map(b => {
         if (b.id !== modalBuilding) return b;
         const updatedStations = b.stations.map(s => {
