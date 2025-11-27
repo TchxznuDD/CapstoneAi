@@ -1,0 +1,476 @@
+/* Dark Mode Global Styles */
+
+.dark-mode {
+  --bg-primary: #1a1a1a;
+  --bg-secondary: #242424;
+  --bg-card: #2d2d2d;
+  --text-primary: #ffffff;
+  --text-secondary: #d0d0d0;
+  --text-muted: #a0a0a0;
+  --border-color: #3d3d3d;
+  --shadow: rgba(0, 0, 0, 0.5);
+  --orange-primary: #ff9800;
+  --orange-hover: #ffb74d;
+  --input-bg: #2d2d2d;
+  --input-border: #3d3d3d;
+}
+
+.dark-mode body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+.dark-mode .dashboard-root {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+.dark-mode .card,
+.dark-mode .settings-card,
+.dark-mode .stat-card,
+.dark-mode .metric-card,
+.dark-mode .station-card,
+.dark-mode .building {
+  background-color: var(--bg-card);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+.dark-mode .page-hero h2,
+.dark-mode .page-hero p,
+.dark-mode h3, .dark-mode h4, .dark-mode h1, .dark-mode h2,
+.dark-mode p, .dark-mode span, .dark-mode div,
+.dark-mode .device-title,
+.dark-mode .building-title {
+  color: var(--text-primary);
+}
+
+.dark-mode .muted,
+.dark-mode .muted.small {
+  color: var(--text-muted);
+}
+
+.dark-mode input,
+.dark-mode select,
+.dark-mode textarea {
+  background-color: var(--input-bg);
+  border-color: var(--input-border);
+  color: var(--text-primary);
+}
+
+.dark-mode input::placeholder {
+  color: var(--text-muted);
+}
+
+.dark-mode .btn {
+  background-color: var(--bg-card);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+.dark-mode .btn:hover {
+  background-color: var(--bg-secondary);
+}
+
+.dark-mode .btn.primary {
+  background-color: var(--orange-primary);
+  color: #ffffff;
+}
+
+.dark-mode .btn.primary:hover {
+  background-color: var(--orange-hover);
+}
+
+.dark-mode .stat-card,
+.dark-mode .metric-card {
+  box-shadow: 0 2px 8px var(--shadow);
+}
+
+.dark-mode .modal-content {
+  background-color: var(--bg-card);
+  color: var(--text-primary);
+}
+
+.dark-mode .modal-overlay {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.dark-mode .device-meta,
+.dark-mode .device-ip,
+.dark-mode .device-uptime {
+  color: var(--text-secondary);
+}
+
+.dark-mode .building-sub {
+  color: var(--text-secondary);
+}
+
+.dark-mode .label {
+  color: var(--text-secondary);
+}
+
+.dark-mode .value {
+  color: var(--text-primary);
+}
+
+.dark-mode .app-header {
+  background: var(--bg-card) !important;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.dark-mode .brand h1,
+.dark-mode .brand p {
+  color: var(--text-primary);
+}
+
+.dark-mode .nav-item {
+  color: var(--text-secondary);
+}
+
+.dark-mode .nav-item:hover,
+.dark-mode .nav-item.active {
+  color: var(--text-primary);
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.dark-mode .dropdown-toggle {
+  color: var(--text-primary);
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.dark-mode .dropdown-toggle:hover {
+  background-color: rgba(255, 255, 255, 0.12);
+}
+
+.dark-mode .dropdown-menu {
+  background-color: var(--bg-card);
+  border-color: var(--border-color);
+}
+
+.dark-mode .dropdown-menu li a,
+.dark-mode .dropdown-menu li button {
+  color: var(--text-primary);
+}
+
+.dark-mode .dropdown-menu li:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.dark-mode .login-card {
+  background-color: var(--bg-card);
+  color: var(--text-primary);
+}
+
+.dark-mode .toggle-switch .slider {
+  background-color: var(--border-color);
+}
+
+.dark-mode .toggle-switch input:checked + .slider {
+  background-color: var(--orange-primary);
+}
+
+.dark-mode strong {
+  color: var(--text-primary);
+}
+
+.dark-mode .spec {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+.dark-mode .spec h4 {
+  color: var(--text-secondary);
+}
+
+.dark-mode .spec p {
+  color: var(--text-primary);
+}
+
+.dark-mode .net-box {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+.dark-mode .net-label {
+  color: var(--text-secondary);
+}
+
+.dark-mode .net-value {
+  color: var(--text-primary);
+}
+
+.dark-mode .server-badge.online {
+  background-color: rgba(46, 125, 50, 0.2);
+  color: #66bb6a;
+}
+
+.dark-mode .server-badge.offline {
+  background-color: rgba(183, 28, 28, 0.2);
+  color: #ef5350;
+}
+
+.dark-mode .server-name {
+  color: var(--text-primary);
+}
+
+.dark-mode .server-sub {
+  color: var(--text-secondary);
+}
+
+.dark-mode .server-meta {
+  color: var(--text-secondary);
+}
+
+.dark-mode .metric-bar {
+  background-color: var(--bg-secondary);
+}
+
+.dark-mode .info-grid {
+  color: var(--text-primary);
+}
+
+.dark-mode .icon-bg {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.dark-mode .stat-card.stat-online .icon-bg {
+  background-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+.dark-mode .stat-card.stat-offline .icon-bg {
+  background-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+.dark-mode .card-header h3,
+.dark-mode .card-header p {
+  color: var(--text-primary);
+}
+
+.dark-mode .form-row label {
+  color: var(--text-primary);
+}
+
+.dark-mode .toggle-label {
+  color: var(--text-primary);
+}
+
+.dark-mode .toggle-info .muted {
+  color: var(--text-muted);
+}
+
+.dark-mode .monitor-data-table td {
+  color: var(--text-primary);
+}
+
+.dark-mode .monitor-data-table th {
+  color: var(--text-primary);
+  background-color: var(--bg-secondary);
+}
+
+.dark-mode .monitor-data-table code {
+  color: var(--text-primary);
+  background-color: var(--bg-secondary);
+}
+
+.dark-mode .monitor-data-table tbody tr {
+  border-bottom-color: var(--border-color);
+}
+
+.dark-mode .monitor-data-table tbody tr:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.dark-mode .rule-name-col {
+  color: var(--text-primary);
+}
+
+.dark-mode .download-card {
+  background: var(--bg-card);
+  border-color: var(--border-color);
+}
+
+.dark-mode .download-info h3 {
+  color: var(--text-primary);
+}
+
+.dark-mode .manual-meta {
+  color: var(--text-secondary);
+}
+
+.dark-mode .easter-egg {
+  background: var(--bg-card);
+  border-color: var(--border-color);
+}
+
+.dark-mode .egg-content h4 {
+  color: var(--orange-primary);
+}
+
+.dark-mode .egg-content p {
+  color: var(--text-secondary);
+}
+
+.dark-mode .section-title {
+  color: var(--text-primary);
+  border-bottom-color: var(--border-color);
+}
+
+.dark-mode .toc-section {
+  background-color: var(--bg-secondary);
+  border-color: var(--border-color);
+}
+
+.dark-mode .toc-section:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.dark-mode .toc-header h4 {
+  color: var(--text-primary);
+}
+
+.dark-mode .toc-items li {
+  color: var(--text-secondary);
+}
+
+.dark-mode .ref-item {
+  background-color: var(--bg-secondary);
+  border-color: var(--border-color);
+}
+
+.dark-mode .ref-item:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.dark-mode .ref-item h4 {
+  color: var(--text-primary);
+}
+
+.dark-mode .ref-desc {
+  color: var(--text-secondary);
+}
+
+.dark-mode .support-item {
+  background-color: var(--bg-secondary);
+  border-color: var(--border-color);
+}
+
+.dark-mode .support-item h4 {
+  color: var(--text-primary);
+}
+
+.dark-mode .support-item p {
+  color: var(--text-secondary);
+}
+
+.dark-mode .metric-card .stat-icon .icon-bg {
+  background-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+.dark-mode .metric-card .stat-icon .icon-bg svg {
+  filter: brightness(1.5);
+}
+
+.dark-mode .metric-card .label {
+  color: var(--text-secondary);
+}
+
+.dark-mode .metric-card .value {
+  color: var(--text-primary);
+}
+
+.dark-mode input[type="time"] {
+  color: var(--text-primary);
+  color-scheme: dark;
+}
+
+.dark-mode input[type="time"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+}
+
+.dark-mode select {
+  background-color: var(--input-bg);
+  color: var(--text-primary);
+  border-color: var(--input-border);
+}
+
+.dark-mode select option {
+  background-color: var(--input-bg);
+  color: var(--text-primary);
+}
+
+.dark-mode .auto-settings select,
+.dark-mode .auto-settings input[type="time"] {
+  background-color: var(--input-bg) !important;
+  color: var(--text-primary);
+  border-color: var(--input-border);
+}
+
+.dark-mode .backup-history h4 {
+  color: var(--text-primary) !important;
+}
+
+.dark-mode .hi-date {
+  color: var(--text-primary);
+}
+
+.dark-mode .day-entry {
+  color: var(--text-primary);
+}
+
+.dark-mode .entry-time {
+  color: var(--text-secondary) !important;
+}
+
+.dark-mode .type-pill {
+  color: var(--text-primary);
+}
+
+.dark-mode .history-item {
+  border-color: var(--border-color);
+}
+
+.dark-mode .hi-actions .btn {
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+.dark-mode .history-list > div > div > div[style*="color"] {
+  color: var(--text-primary) !important;
+}
+
+.dark-mode .notification-panel {
+  background-color: var(--bg-card);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.5);
+}
+
+.dark-mode .notification-header {
+  border-bottom-color: var(--border-color);
+}
+
+.dark-mode .notification-header h4 {
+  color: var(--text-primary);
+}
+
+.dark-mode .notification-item {
+  border-bottom-color: var(--border-color);
+}
+
+.dark-mode .notification-item:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.dark-mode .notif-icon {
+  background-color: var(--bg-secondary);
+}
+
+.dark-mode .notif-message {
+  color: var(--text-primary);
+}
+
+.dark-mode .notif-time {
+  color: var(--text-secondary);
+}
+
+.dark-mode .notification-footer {
+  border-top-color: var(--border-color);
+}

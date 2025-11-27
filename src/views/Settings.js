@@ -3,6 +3,7 @@ import Header from '../components/Header';
 import './Settings.css';
 import { getDeletePasskey, setDeletePasskey, resetDeletePasskey, DEFAULT_PASSKEY } from '../utils/passkey';
 import { getAdminPassword, setAdminPassword, getJuniorPassword, setJuniorPassword, DEFAULT_JUNIOR_PASSWORD } from '../utils/auth';
+import { getDarkMode, setDarkMode } from '../utils/theme';
 
 export default function Settings() {
   // Password change state
@@ -25,6 +26,7 @@ export default function Settings() {
   // Display settings
   const [compactView, setCompactView] = useState(false);
   const [showUptime, setShowUptime] = useState(true);
+  const [darkMode, setDarkModeState] = useState(false);
 
   // Notification toast state
   const [notification, setNotification] = useState(null);
@@ -44,6 +46,7 @@ export default function Settings() {
   useEffect(() => {
     setCurrentPasskey(getDeletePasskey());
     setJuniorCurrent(getJuniorPassword());
+    setDarkModeState(getDarkMode());
   }, []);
 
   function showNotification(message, type = 'success') {
@@ -377,6 +380,17 @@ export default function Settings() {
               </div>
               <label className="toggle-switch">
                 <input type="checkbox" checked={showUptime} onChange={e => setShowUptime(e.target.checked)} />
+                <span className="slider" aria-hidden></span>
+              </label>
+            </div>
+
+            <div className="toggle-row">
+              <div className="toggle-info">
+                <div className="toggle-label">Dark Mode</div>
+                <div className="muted small">Use dark color scheme</div>
+              </div>
+              <label className="toggle-switch">
+                <input type="checkbox" checked={darkMode} onChange={e => { setDarkModeState(e.target.checked); setDarkMode(e.target.checked); }} />
                 <span className="slider" aria-hidden></span>
               </label>
             </div>

@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import "./login-page.css";
+import fatimaLogo from "../assets/fatima-logo.png";
 
 export default function LoginPage() {
   const history = useHistory();
@@ -14,6 +15,11 @@ export default function LoginPage() {
   const [toastKey, setToastKey] = useState(0);
   const formRef = useRef(null);
   const usernameRef = useRef(null);
+
+  // Remove dark mode on login page
+  useEffect(() => {
+    document.documentElement.classList.remove('dark-mode');
+  }, []);
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -110,7 +116,7 @@ export default function LoginPage() {
   return (
     <div className="login-root">
       <div className="login-card">
-        <img src="/fatima-logo.png" alt="Fatima Logo" className="login-logo" />
+        <img src={fatimaLogo} alt="Fatima Logo" className="login-logo" />
         <h2>Welcome to Barangay Fatima</h2>
         <form ref={formRef} onSubmit={handleSubmit}>
           <div className="input-row">

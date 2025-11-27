@@ -58,7 +58,6 @@ export default function ServerStatus() {
 
       <main className="buildings-col">
         <article className="building">
-          <div className="server-card">
           <header className="server-head">
               <div style={{display:'flex', alignItems:'center', gap:12}}>
               <span className="server-thumb station-thumb" aria-hidden="true">
@@ -143,7 +142,6 @@ export default function ServerStatus() {
               <div><strong>Processes</strong><div>{server.system.processes}</div></div>
             </div>
           </section>
-          </div>
         </article>
       </main>
     </div>

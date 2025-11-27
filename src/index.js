@@ -10,6 +10,11 @@ import Settings from "./views/Settings";
 import FirewallMonitor from "./views/FirewallMonitor";
 import UserManual from "./views/UserManual";
 import NotFound from "./views/not-found";
+import { getDarkMode, applyDarkMode } from "./utils/theme";
+import "./dark-mode.css";
+
+// Apply dark mode on initial load
+applyDarkMode(getDarkMode());
 
 ReactDOM.render(
   <Router>

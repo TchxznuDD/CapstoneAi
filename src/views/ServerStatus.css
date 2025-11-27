@@ -7,14 +7,6 @@
 .hero-sub { margin: 6px 0 0; opacity: 0.95; }
 
 .server-container { max-width: 1200px; margin: 18px auto; }
-.server-card {
-  /* make server card visually match building sections from Computer.css */
-  background: #fffaf6;
-  padding: 28px;
-  border-radius: 16px;
-  box-shadow: 0 20px 40px rgba(255,122,0,0.08);
-  border: 1px solid rgba(255,122,0,0.06);
-}
 .server-head { display:flex; justify-content:space-between; align-items:flex-start; border-bottom:1px solid rgba(0,0,0,0.04); padding-bottom:14px; }
 .server-name { margin:0; font-size:20px; }
 .server-sub { color: #666; margin-top:6px; display:flex; align-items:center; gap:10px; }

@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { getAdminPassword } from "../utils/auth";
+import { getDarkMode, applyDarkMode } from "../utils/theme";
 import "./Computer.css";
 import Header from "../components/Header";
 import computerIcon from "../assets/computer.svg";
@@ -51,6 +52,11 @@ export default function Dashboard() {
 
   // Notification state
   const [notification, setNotification] = useState(null);
+
+  // Re-apply dark mode when page loads (in case coming from login)
+  useEffect(() => {
+    applyDarkMode(getDarkMode());
+  }, []);
 
   function showNotification(message, type = 'success') {
     setNotification({ message, type });
@@ -418,7 +424,7 @@ function AddEditModal({ open, mode, buildings, buildingId, setBuildingId, onClos
           <input name="host" value={form.host} onChange={e => setForm(f => ({...f, host: e.target.value}))} />
         </div>
         <div className="form-row">
-          <label>IP</label>
+          <label>IPv4 Address</label>
           <input name="ip" value={form.ip} onChange={e => setForm(f => ({...f, ip: e.target.value}))} />
         </div>
         {/* Status is assigned automatically based on IP presence; user cannot set it manually. */}
