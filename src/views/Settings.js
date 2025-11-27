@@ -27,6 +27,7 @@ export default function Settings() {
   const [compactView, setCompactView] = useState(false);
   const [showUptime, setShowUptime] = useState(true);
   const [darkMode, setDarkModeState] = useState(false);
+  const [sessionTimeout, setSessionTimeout] = useState('60'); // in minutes, default 1 hour
 
   // Notification toast state
   const [notification, setNotification] = useState(null);
@@ -393,6 +394,20 @@ export default function Settings() {
                 <input type="checkbox" checked={darkMode} onChange={e => { setDarkModeState(e.target.checked); setDarkMode(e.target.checked); }} />
                 <span className="slider" aria-hidden></span>
               </label>
+            </div>
+
+            <div className="form-row">
+              <label>Session Timeout</label>
+              <select value={sessionTimeout} onChange={e => setSessionTimeout(e.target.value)}>
+                <option value="never">Never (Not Recommended)</option>
+                <option value="15">15 minutes</option>
+                <option value="30">30 minutes</option>
+                <option value="60">1 hour (Default)</option>
+                <option value="120">2 hours</option>
+                <option value="240">4 hours</option>
+                <option value="480">8 hours</option>
+              </select>
+              <div className="muted small" style={{marginTop: '6px'}}>Automatically log out after period of inactivity</div>
             </div>
 
             <div className="card-actions">
