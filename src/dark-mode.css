@@ -384,7 +384,7 @@
 }
 
 .dark-mode input[type="time"]::-webkit-calendar-picker-indicator {
-  filter: invert(1);
+  filter: brightness(0) invert(1);
 }
 
 .dark-mode select {
@@ -473,4 +473,14 @@
 
 .dark-mode .notification-footer {
   border-top-color: var(--border-color);
+}
+
+.dark-mode .toast-notification {
+  background-color: var(--bg-card);
+  color: var(--text-primary);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+}
+
+.dark-mode .toast-message {
+  color: var(--text-primary);
 }

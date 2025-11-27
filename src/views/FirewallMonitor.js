@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Header from '../components/Header';
 import './FirewallMonitor.css';
+import { getDarkMode, applyDarkMode } from '../utils/theme';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -145,6 +146,29 @@ export default function FirewallMonitor() {
 
   // State for chart refresh counter
   const [chartKey, setChartKey] = useState(0);
+
+  // Re-apply dark mode and configure charts for dark mode
+  useEffect(() => {
+    applyDarkMode(getDarkMode());
+    updateChartColors();
+  }, []);
+
+  // Function to update chart colors based on dark mode
+  const updateChartColors = () => {
+    const isDark = document.documentElement.classList.contains('dark-mode');
+    if (isDark) {
+      ChartJS.defaults.color = '#ffffff';
+      ChartJS.defaults.borderColor = '#3d3d3d';
+      ChartJS.defaults.plugins.legend.labels.color = '#ffffff';
+      ChartJS.defaults.scale.ticks.color = '#ffffff';
+    } else {
+      ChartJS.defaults.color = '#666';
+      ChartJS.defaults.borderColor = '#e0e0e0';
+      ChartJS.defaults.plugins.legend.labels.color = '#666';
+      ChartJS.defaults.scale.ticks.color = '#666';
+    }
+    setChartKey(prev => prev + 1); // Force chart re-render
+  };
 
   /**
    * Show notification toast message
