@@ -15,6 +15,37 @@
   padding-bottom:18px;
 }
 
+.backup-history .page-hero {
+  margin-top: 12px;
+  padding: 6px 6px 0 6px;
+  display: block;
+  text-align: left !important;
+}
+
+.backup-history .page-hero.header-text {
+  text-align: left !important;
+}
+
+.backup-history .hero-text {
+  text-align: left !important;
+}
+
+.backup-history .hero-text h2 {
+  margin: 0;
+  font-size: 36px;
+  font-weight: 900;
+  color: #fff;
+  line-height: 1.05;
+  text-align: left !important;
+}
+
+.backup-history .hero-text p {
+  margin: 8px 0 0 0;
+  color: rgba(255,255,255,0.95);
+  font-size: 14px;
+  text-align: left !important;
+}
+
 /* Main content padding to match dashboard margins */
 
 /* Match Computer.css inner content horizontal padding (use same as BackupManagement) */
@@ -69,6 +100,21 @@
 
 /* Buttons in the history card should sit at the bottom-right */
 .backup-history .hi-actions { display:flex; gap:8px }
+
+/* Override any global hero-row styles */
+.backup-history .hero-row .page-hero {
+  display: block !important;
+  justify-content: flex-start !important;
+  align-items: flex-start !important;
+}
+
+.backup-history .hero-row .page-hero,
+.backup-history .hero-row .page-hero.header-text,
+.backup-history .hero-row .hero-text,
+.backup-history .hero-row .hero-text h2,
+.backup-history .hero-row .hero-text p {
+  text-align: left !important;
+}
 
 /* Responsive guard */
 @media (max-width: 980px) {
