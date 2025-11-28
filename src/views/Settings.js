@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Header from '../components/Header';
 import './Settings.css';
-import { getDeletePasskey, setDeletePasskey, resetDeletePasskey, DEFAULT_PASSKEY } from '../utils/passkey';
-import { getAdminPassword, setAdminPassword, getJuniorPassword, setJuniorPassword, DEFAULT_JUNIOR_PASSWORD } from '../utils/auth';
+import { getAdminPassword, setAdminPassword } from '../utils/auth';
 import { getDarkMode, setDarkMode } from '../utils/theme';
 
 export default function Settings() {
@@ -32,21 +31,9 @@ export default function Settings() {
   // Notification toast state
   const [notification, setNotification] = useState(null);
 
-  // Admin Passkey state
-  const [currentPasskey, setCurrentPasskey] = useState('');
-  const [newPasskey, setNewPasskey] = useState('');
-  const [confirmPasskey, setConfirmPasskey] = useState('');
-  const [showPasskey, setShowPasskey] = useState(false);
-
-  // Junior Staff password state
-  const [juniorCurrent, setJuniorCurrent] = useState('');
-  const [juniorNew, setJuniorNew] = useState('');
-  const [juniorConfirm, setJuniorConfirm] = useState('');
-  const [showJuniorPassword, setShowJuniorPassword] = useState(false);
+  // Removed Admin Passkey and Junior Staff password state
 
   useEffect(() => {
-    setCurrentPasskey(getDeletePasskey());
-    setJuniorCurrent(getJuniorPassword());
     setDarkModeState(getDarkMode());
   }, []);
 
@@ -83,65 +70,10 @@ export default function Settings() {
     setPasswordForm({ currentPassword: '', newPassword: '', confirmPassword: '' });
   }
 
-  function handleSaveNotifications() {
-    showNotification('Notification settings saved!', 'success');
-  }
+  // Removed explicit save handlers for notifications/display/refresh —
+  // settings now apply immediately without extra clicks.
 
-  function handleSaveDisplay() {
-    showNotification('Display settings saved!', 'success');
-  }
-
-  function handleSaveRefresh() {
-    showNotification('Auto-refresh settings saved!', 'success');
-  }
-
-  function handleSavePasskey() {
-    if (!newPasskey || !newPasskey.trim()) {
-      showNotification('Please enter a new Admin Passkey.', 'error');
-      return;
-    }
-    if (newPasskey !== confirmPasskey) {
-      showNotification('Admin Passkey and confirmation do not match.', 'error');
-      return;
-    }
-    if (newPasskey.trim().length < 6) {
-      showNotification('Admin Passkey must be at least 6 characters.', 'error');
-      return;
-    }
-    setDeletePasskey(newPasskey.trim());
-    setCurrentPasskey(getDeletePasskey());
-    setNewPasskey('');
-    setConfirmPasskey('');
-    showNotification('Admin Passkey updated successfully!', 'success');
-  }
-
-  function handleResetPasskey() {
-    resetDeletePasskey();
-    setCurrentPasskey(getDeletePasskey());
-    setNewPasskey('');
-    setConfirmPasskey('');
-    showNotification(`Admin Passkey reset to default (${DEFAULT_PASSKEY}).`, 'success');
-  }
-
-  function handleSaveJuniorPassword() {
-    if (!juniorNew || !juniorNew.trim()) {
-      showNotification('Please enter a new Junior Staff password.', 'error');
-      return;
-    }
-    if (juniorNew !== juniorConfirm) {
-      showNotification('Junior Staff password and confirmation do not match.', 'error');
-      return;
-    }
-    if (juniorNew.trim().length < 4) {
-      showNotification('Junior Staff password must be at least 4 characters.', 'error');
-      return;
-    }
-    setJuniorPassword(juniorNew.trim());
-    setJuniorCurrent(getJuniorPassword());
-    setJuniorNew('');
-    setJuniorConfirm('');
-    showNotification('Junior Staff password updated successfully!', 'success');
-  }
+  // Removed Admin Passkey and Junior Staff password handlers
 
   return (
     <div className="dashboard-root settings-root">
@@ -157,71 +89,7 @@ export default function Settings() {
       </div>
 
       <main className="settings-grid">
-        {/* Junior Staff Password Section */}
-        <section className="settings-card">
-          <div className="card-header">
-            <h3>Junior Staff Password</h3>
-            <p className="muted small">Controls login for Junior Staff app (no username enforcement)</p>
-          </div>
-          <div className="card-body">
-            <div className="form-row">
-              <label>Current Password</label>
-              <div style={{display:'flex', gap:8}}>
-                <input type={showJuniorPassword ? 'text' : 'password'} value={juniorCurrent} readOnly />
-                <button className="btn" onClick={() => setShowJuniorPassword(s => !s)}>{showJuniorPassword ? 'Hide' : 'Show'}</button>
-              </div>
-            </div>
-            <div className="form-row">
-              <label>New Password</label>
-              <input type="password" value={juniorNew} onChange={e => setJuniorNew(e.target.value)} placeholder="Enter new junior staff password" />
-            </div>
-            <div className="form-row">
-              <label>Confirm New Password</label>
-              <input type="password" value={juniorConfirm} onChange={e => setJuniorConfirm(e.target.value)} placeholder="Confirm new junior staff password" />
-            </div>
-            <div className="card-actions">
-              <button className="btn primary" onClick={handleSaveJuniorPassword}>Save Junior Password</button>
-            </div>
-          </div>
-        </section>
-        {/* Admin Passkey Section */}
-        <section className="settings-card">
-          <div className="card-header">
-            <h3>Admin Passkey</h3>
-            <p className="muted small">Used to authorize deletes in Admin and Junior Staff apps</p>
-          </div>
-          <div className="card-body">
-            <div className="form-row">
-              <label>Current Passkey</label>
-              <div style={{display:'flex', gap:8}}>
-                <input type={showPasskey ? 'text' : 'password'} value={currentPasskey} readOnly />
-                <button className="btn" onClick={() => setShowPasskey(s => !s)}>{showPasskey ? 'Hide' : 'Show'}</button>
-              </div>
-            </div>
-            <div className="form-row">
-              <label>New Passkey</label>
-              <input
-                type="password"
-                value={newPasskey}
-                onChange={e => setNewPasskey(e.target.value)}
-                placeholder="Enter new admin passkey"
-              />
-            </div>
-            <div className="form-row">
-              <label>Confirm New Passkey</label>
-              <input
-                type="password"
-                value={confirmPasskey}
-                onChange={e => setConfirmPasskey(e.target.value)}
-                placeholder="Confirm new admin passkey"
-              />
-            </div>
-            <div className="card-actions" style={{display:'flex', gap:8}}>
-              <button className="btn primary" onClick={handleSavePasskey}>Save Passkey</button>
-              <button className="btn" onClick={handleResetPasskey}>Reset to Default</button>
-            </div>
-          </div>
-        </section>
+        {/* Removed Junior Staff Password and Admin Passkey sections */}
         {/* Password Section */}
         <section className="settings-card">
           <div className="card-header">
@@ -316,9 +184,7 @@ export default function Settings() {
               </label>
             </div>
 
-            <div className="card-actions">
-              <button className="btn primary" onClick={handleSaveNotifications}>Save Notifications</button>
-            </div>
+            {/* Save button removed: changes apply immediately */}
           </div>
         </section>
 
@@ -350,9 +216,7 @@ export default function Settings() {
               </select>
             </div>
 
-            <div className="card-actions">
-              <button className="btn primary" onClick={handleSaveRefresh} disabled={!autoRefresh}>Save Auto-Refresh</button>
-            </div>
+            {/* Save button removed: changes apply immediately */}
           </div>
         </section>
 
@@ -410,9 +274,7 @@ export default function Settings() {
               <div className="muted small" style={{marginTop: '6px'}}>Automatically log out after period of inactivity</div>
             </div>
 
-            <div className="card-actions">
-              <button className="btn primary" onClick={handleSaveDisplay}>Save Display</button>
-            </div>
+            {/* Save button removed: changes apply immediately */}
           </div>
         </section>
       </main>
