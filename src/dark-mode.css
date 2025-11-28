@@ -387,6 +387,21 @@
   filter: brightness(0) invert(1);
 }
 
+/* Make date/datetime/month picker icons white in dark mode */
+.dark-mode input[type="date"],
+.dark-mode input[type="datetime-local"],
+.dark-mode input[type="month"] {
+  color: var(--text-primary);
+  color-scheme: dark; /* ensures native controls render for dark surfaces */
+}
+
+.dark-mode input[type="date"]::-webkit-calendar-picker-indicator,
+.dark-mode input[type="datetime-local"]::-webkit-calendar-picker-indicator,
+.dark-mode input[type="month"]::-webkit-calendar-picker-indicator {
+  filter: brightness(0) invert(1);
+  opacity: 1; /* ensure icon remains visible on dark backgrounds */
+}
+
 .dark-mode select {
   background-color: var(--input-bg);
   color: var(--text-primary);
