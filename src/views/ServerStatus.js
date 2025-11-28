@@ -3,6 +3,7 @@ import Header from '../components/Header';
 import './Computer.css';
 import './ServerStatus.css';
 import { ReactComponent as ServerIcon } from '../assets/ServerIcon.svg';
+import { ReactComponent as RouterIcon } from '../assets/Router.svg';
 
 export default function ServerStatus() {
   const server = {
@@ -34,6 +35,30 @@ export default function ServerStatus() {
 
   const pct = (used, total) => Math.round((used / total) * 1000) / 10;
 
+  // Mikrotik Router sample data
+  const router = {
+    name: 'MikroTik RB750Gr3',
+    subtitle: 'RouterOS v7.14 (hEX)',
+    status: 'online',
+    ip: '192.168.1.1',
+    uptime: '31 days, 8 hours',
+    cpu: 19.2,
+    memory: { usedMB: 84, totalMB: 256 },
+    net: {
+      wanIn: '42.8 MB/s',
+      wanOut: '38.4 MB/s',
+      lanIn: '112.5 MB/s',
+      lanOut: '128.9 MB/s'
+    },
+    system: {
+      model: 'RB750Gr3 (hEX)',
+      firmware: '7.14 (stable)',
+      temperature: '46°C',
+      dhcpLeases: 58,
+      activeConns: 1342
+    }
+  };
+
   // Render ServerIcon inline as a React component to avoid runtime img loading
   // and intermittent disappearance during dev/HMR cycles.
 
@@ -44,8 +69,8 @@ export default function ServerStatus() {
       <div className="hero-row">
         <div className="page-hero">
           <div className="hero-text">
-            <h2>Server Status</h2>
-            <p>Real-time monitoring of server infrastructure</p>
+            <h2>Infrastructure Status</h2>
+            <p>Real-time monitoring: Server and MikroTik Router</p>
           </div>
         </div>
 
@@ -57,6 +82,7 @@ export default function ServerStatus() {
       {/* stats cards removed for Server Status as requested */}
 
       <main className="buildings-col">
+        {/* Server Section */}
         <article className="building">
           <header className="server-head">
               <div style={{display:'flex', alignItems:'center', gap:12}}>
@@ -140,6 +166,93 @@ export default function ServerStatus() {
               <div><strong>Last Boot</strong><div>{server.system.lastBoot}</div></div>
               <div><strong>Load Average</strong><div>{server.system.loadAvg}</div></div>
               <div><strong>Processes</strong><div>{server.system.processes}</div></div>
+            </div>
+          </section>
+        </article>
+
+        {/* Router Section */}
+        <article className="building">
+          <header className="server-head">
+            <div style={{display:'flex', alignItems:'center', gap:12}}>
+              <span className="server-thumb station-thumb" aria-hidden="true">
+                <RouterIcon className="server-svg" aria-hidden="true" />
+              </span>
+              <div>
+                <h2 className="server-name">{router.name}</h2>
+                <div className="server-sub">{router.subtitle} <span className={`server-badge ${router.status}`}>{router.status}</span></div>
+              </div>
+            </div>
+            <div className="server-meta">
+              <div>IP Address<br/><strong>{router.ip}</strong></div>
+              <div>Uptime<br/><strong>{router.uptime}</strong></div>
+            </div>
+          </header>
+
+          <section className="specs-grid">
+            <div className="spec">
+              <h4>Model</h4>
+              <p>{router.system.model}</p>
+            </div>
+            <div className="spec">
+              <h4>Firmware</h4>
+              <p>{router.system.firmware}</p>
+            </div>
+            <div className="spec">
+              <h4>Temperature</h4>
+              <p>{router.system.temperature}</p>
+            </div>
+            <div className="spec">
+              <h4>DHCP Leases</h4>
+              <p>{router.system.dhcpLeases} active</p>
+            </div>
+          </section>
+
+          <section className="metrics">
+            <h3>Performance & Throughput</h3>
+            <div className="metric">
+              <div className="metric-row">
+                <span>CPU Usage</span>
+                <span className="metric-value">{router.cpu}%</span>
+              </div>
+              <div className="metric-bar"><div className="metric-fill cpu" style={{width:`${router.cpu}%`}}/></div>
+            </div>
+
+            <div className="metric">
+              <div className="metric-row">
+                <span>Memory Usage</span>
+                <span className="metric-value">{router.memory.usedMB} MB / {router.memory.totalMB} MB ({pct(router.memory.usedMB, router.memory.totalMB)}%)</span>
+              </div>
+              <div className="metric-bar"><div className="metric-fill mem" style={{width:`${pct(router.memory.usedMB, router.memory.totalMB)}%`}}/></div>
+            </div>
+
+            <div className="network-row">
+              <div className="net-box">
+                <div className="net-label">WAN In</div>
+                <div className="net-value">{router.net.wanIn}</div>
+              </div>
+              <div className="net-box">
+                <div className="net-label">WAN Out</div>
+                <div className="net-value">{router.net.wanOut}</div>
+              </div>
+            </div>
+            <div className="network-row">
+              <div className="net-box">
+                <div className="net-label">LAN In</div>
+                <div className="net-value">{router.net.lanIn}</div>
+              </div>
+              <div className="net-box">
+                <div className="net-label">LAN Out</div>
+                <div className="net-value">{router.net.lanOut}</div>
+              </div>
+            </div>
+          </section>
+
+          <section className="system-info">
+            <h4>System Information</h4>
+            <div className="info-grid">
+              <div><strong>Active Connections</strong><div>{router.system.activeConns}</div></div>
+              <div><strong>Firmware</strong><div>{router.system.firmware}</div></div>
+              <div><strong>Model</strong><div>{router.system.model}</div></div>
             </div>
           </section>
         </article>
