@@ -63,7 +63,7 @@ export default function ServerStatus() {
   // and intermittent disappearance during dev/HMR cycles.
 
   return (
-    <div className="dashboard-root">
+    <div className="dashboard-root server-status-root">
       <Header active="server-status" />
 
       <div className="hero-row">

@@ -6,18 +6,32 @@ import fatimaLogo from '../assets/fatima-logo.png';
 export default function Header({ active }) {
   const history = useHistory();
 
+  function scrollTop() {
+    try { window.scrollTo({ top: 0, behavior: 'smooth' }); } catch (err) { window.scrollTo(0, 0); }
+  }
+
   function handleBrandClick(e) {
     // Prevent default Link navigation so we can control scroll behaviour
     e.preventDefault();
     const target = '/computer';
     if (history.location && history.location.pathname === target) {
       // already on computer page — scroll to top smoothly
-      try { window.scrollTo({ top: 0, behavior: 'smooth' }); } catch (err) { window.scrollTo(0, 0); }
+      scrollTop();
       return;
     }
     // navigate then scroll to top after a short delay so the target page rendered
     history.push(target);
-    setTimeout(() => { try { window.scrollTo({ top: 0, behavior: 'smooth' }); } catch (err) { window.scrollTo(0, 0); } }, 120);
+    setTimeout(scrollTop, 120);
+  }
+
+  function handleNavClick(e, target) {
+    e.preventDefault();
+    if (history.location && history.location.pathname === target) {
+      scrollTop();
+      return;
+    }
+    history.push(target);
+    setTimeout(scrollTop, 120);
   }
 
   return (
@@ -31,10 +45,10 @@ export default function Header({ active }) {
       </Link>
 
       <nav className="nav-links" aria-label="Main navigation">
-        <Link to="/computer" className={`nav-item ${active === 'computers' ? 'active' : ''}`}>Computers</Link>
-        <Link to="/server-status" className={`nav-item ${active === 'server-status' ? 'active' : ''}`}>Infrastructure</Link>
-        <Link to="/firewall/monitor" className={`nav-item ${active === 'firewall-monitor' ? 'active' : ''}`}>Firewall Monitor</Link>
-        <Link to="/backup" className={`nav-item ${active === 'backup' ? 'active' : ''}`}>Backup</Link>
+        <Link to="/computer" onClick={(e)=>handleNavClick(e, '/computer')} className={`nav-item ${active === 'computers' ? 'active' : ''}`}>Computers</Link>
+        <Link to="/server-status" onClick={(e)=>handleNavClick(e, '/server-status')} className={`nav-item ${active === 'server-status' ? 'active' : ''}`}>Infrastructure</Link>
+        <Link to="/firewall/monitor" onClick={(e)=>handleNavClick(e, '/firewall/monitor')} className={`nav-item ${active === 'firewall-monitor' ? 'active' : ''}`}>Firewall Monitor</Link>
+        <Link to="/backup" onClick={(e)=>handleNavClick(e, '/backup')} className={`nav-item ${active === 'backup' ? 'active' : ''}`}>Backup</Link>
       </nav>
 
       <div className="header-right">
@@ -201,8 +215,8 @@ function AdminDropdown() {
     <div className="dropdown" ref={ref}>
       <button className="dropdown-toggle" onClick={() => setOpen(s => !s)} aria-haspopup="true" aria-expanded={open}>Admin ▾</button>
       <ul className={`dropdown-menu ${open ? 'open' : ''}`} role="menu" aria-hidden={!open}>
-        <li role="menuitem"><Link to="/settings" onClick={() => setOpen(false)}>Settings</Link></li>
-        <li role="menuitem"><Link to="/user-manual" onClick={() => setOpen(false)}>User Manual</Link></li>
+        <li role="menuitem"><Link to="/settings" onClick={(e)=>{ e.preventDefault(); setOpen(false); history.push('/settings'); setTimeout(()=>{ try{ window.scrollTo({top:0, behavior:'smooth'});}catch(_){ window.scrollTo(0,0);} }, 120); }}>Settings</Link></li>
+        <li role="menuitem"><Link to="/user-manual" onClick={(e)=>{ e.preventDefault(); setOpen(false); history.push('/user-manual'); setTimeout(()=>{ try{ window.scrollTo({top:0, behavior:'smooth'});}catch(_){ window.scrollTo(0,0);} }, 120); }}>User Manual</Link></li>
         <li role="menuitem"><button className="link-like" onClick={handleLogout}>Logout</button></li>
       </ul>
     </div>
