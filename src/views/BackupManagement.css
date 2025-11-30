@@ -213,6 +213,34 @@
 .auto-settings .dropdown-menu .link-like { display:block; width:100%; text-align:left; padding:6px 12px; border-radius:6px; background:transparent; border:none; color:inherit }
 .auto-settings .dropdown-menu .link-like:hover { background: rgba(0,0,0,0.04) }
 
+/* Dark mode adjustments for custom frequency dropdown */
+html.dark-mode .backup-root .dropdown-toggle {
+  color: #fff;
+  background-color: #2a2a2a;
+  border-color: #444;
+}
+
+html.dark-mode .backup-root .dropdown-menu {
+  background-color: #1f1f1f;
+  color: #fff;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.4);
+  border: 1px solid #333;
+}
+
+html.dark-mode .backup-root .dropdown-menu li {
+  padding: 6px 12px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+html.dark-mode .backup-root .dropdown-menu li:last-child { border-bottom: none }
+
+html.dark-mode .backup-root .dropdown-menu .link-like {
+  color: #fff;
+}
+html.dark-mode .backup-root .dropdown-menu .link-like:hover,
+html.dark-mode .backup-root .dropdown-menu .link-like:focus {
+  background-color: #2a2a2a;
+}
+
 /* compact inline controls placed at top-right of the automatic card */
 .auto-inline { position: absolute; top: 12px; right: 18px; display:flex; align-items:center; gap:10px }
 .auto-inline .auto-inline-label { font-size:13px; color:#666; margin-right:6px }
