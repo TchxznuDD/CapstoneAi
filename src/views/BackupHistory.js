@@ -33,18 +33,29 @@ export default function BackupHistory() {
   const [notification, setNotification] = useState(null);
   const [isRestoring, setIsRestoring] = useState(false);
   const [deletePassword, setDeletePassword] = useState('');
+  const [restoring, setRestoring] = useState(null);
 
   function showNotification(message, type = 'success') {
     setNotification({ message, type });
     setTimeout(() => setNotification(null), 4000);
   }
 
-  function handleRestore() {
+  function handleRestore(backupDate, backupSize) {
+    setRestoring({ date: backupDate, size: backupSize });
+  }
+
+  function confirmRestore() {
     setIsRestoring(true);
+    setRestoring(null);
     setTimeout(() => {
       setIsRestoring(false);
       showNotification('Backup restored successfully!', 'success');
     }, 2000);
+  }
+
+  function cancelRestore() {
+    setRestoring(null);
+    showNotification('Restore operation cancelled.', 'info');
   }
 
   const [deleting, setDeleting] = useState(null);
@@ -153,7 +164,7 @@ export default function BackupHistory() {
                             <div style={{marginTop:'auto'}}>
                               <div className="hi-actions" style={{display:'flex', gap:8}}>
                                 <button className="btn danger" onClick={() => { setDeleting({ year, month, day }); setDeletePassword(''); }}>Delete</button>
-                                <button className="btn primary" onClick={handleRestore} disabled={isRestoring}>
+                                <button className="btn primary" onClick={() => handleRestore(`${month} ${day}, ${year}`, itemsForDay[0].size)} disabled={isRestoring}>
                                   {isRestoring ? 'Restoring...' : 'Restore'}
                                 </button>
                               </div>
@@ -168,6 +179,30 @@ export default function BackupHistory() {
           </section>
         ))}
       </main>
+      {restoring && (
+        <div className="modal modal-overlay" role="dialog" aria-modal="true">
+          <div className="modal-content">
+            <h3>Restore Backup</h3>
+            <div className="warning-row">
+              <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="16" cy="16" r="14" fill="url(#restoreGradient)"/>
+                <path d="M16 10v8M16 22v1" stroke="#fff" strokeWidth="2.5" strokeLinecap="round"/>
+                <defs>
+                  <linearGradient id="restoreGradient" x1="2" y1="2" x2="30" y2="30">
+                    <stop offset="0%" stopColor="#ff7b00"/>
+                    <stop offset="100%" stopColor="#ff4b00"/>
+                  </linearGradient>
+                </defs>
+              </svg>
+              <p>Are you sure you want to restore the backup from <strong>{restoring.date}</strong> ({restoring.size})? This will replace your current data.</p>
+            </div>
+            <div className="form-actions">
+              <button className="btn" onClick={cancelRestore}>Cancel</button>
+              <button className="btn primary" onClick={confirmRestore}>Restore</button>
+            </div>
+          </div>
+        </div>
+      )}
       {deleting && (
         <div className="modal modal-overlay" role="dialog" aria-modal="true">
           <div className="modal-content">

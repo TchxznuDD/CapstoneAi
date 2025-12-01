@@ -9,27 +9,31 @@ import { ReactComponent as OfflineIcon } from "../assets/offline.svg";
 // header is provided by shared component
 
 export default function Dashboard() {
-  const stats = { total: 8, online: 6, offline: 2 };
+  const stats = { total: 12, online: 9, offline: 3 };
   const initialBuildings = [
     {
       id: 'rev',
       name: 'Revenue Building',
       subtitle: 'Main Office Complex',
-      online: 2,
+      online: 4,
       offline: 0,
       stations: [
         { id:'rev-01', name:'Revenue Workstation 1', host:'REV-01', ip:'192.168.1.10', uptime:'45h 23m', status:'online', lastSeen:'Active now'},
-        { id:'rev-02', name:'Revenue Workstation 2', host:'REV-02', ip:'192.168.1.11', uptime:'45h 20m', status:'online', lastSeen:'Active now'}
+        { id:'rev-02', name:'Revenue Workstation 2', host:'REV-02', ip:'192.168.1.11', uptime:'45h 20m', status:'online', lastSeen:'Active now'},
+        { id:'rev-03', name:'Revenue Workstation 3', host:'REV-03', ip:'192.168.1.12', uptime:'38h 15m', status:'online', lastSeen:'Active now'},
+        { id:'rev-04', name:'Revenue Workstation 4', host:'REV-04', ip:'192.168.1.13', uptime:'52h 30m', status:'online', lastSeen:'Active now'}
       ]
     },
     {
       id: 'vawc',
       name: 'VAWC Building',
       subtitle: 'Community Center',
-      online: 0,
-      offline: 1,
+      online: 1,
+      offline: 2,
       stations: [
-        { id:'vawc-01', name:'VAWC Station', host:'VAWC-01', ip:'192.168.1.20', uptime:'0h 0m', status:'offline', lastSeen:'2 hours ago'}
+        { id:'vawc-01', name:'VAWC Station', host:'VAWC-01', ip:'192.168.1.20', uptime:'0h 0m', status:'offline', lastSeen:'2 hours ago'},
+        { id:'vawc-02', name:'VAWC Workstation 2', host:'VAWC-02', ip:'192.168.1.21', uptime:'24h 45m', status:'online', lastSeen:'Active now'},
+        { id:'vawc-03', name:'VAWC Workstation 3', host:'VAWC-03', ip:'192.168.1.22', uptime:'0h 0m', status:'offline', lastSeen:'5 hours ago'}
       ]
     },
     {
