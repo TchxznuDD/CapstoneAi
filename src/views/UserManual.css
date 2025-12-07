@@ -2,6 +2,15 @@
 
 .usermanual-root {
   min-height: 100vh;
+  padding: 0;
+}
+
+.usermanual-root .hero-row {
+  padding: 24px 48px 18px 48px;
+}
+
+.usermanual-root main {
+  padding: 0 48px 48px 48px;
 }
 
 /* Download Card */
