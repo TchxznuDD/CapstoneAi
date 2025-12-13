@@ -6,6 +6,25 @@ import fatimaLogo from '../assets/fatima-logo.png';
 export default function Header({ active }) {
   const history = useHistory();
 
+  // Real-time clock and date state (24-hour, white, small)
+  const [currentTime, setCurrentTime] = useState(() => {
+    const now = new Date();
+    return now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
+  });
+  const [currentDate, setCurrentDate] = useState(() => {
+    const now = new Date();
+    return now.toLocaleDateString([], { year: 'numeric', month: 'short', day: '2-digit' });
+  });
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      const now = new Date();
+      setCurrentTime(now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }));
+      setCurrentDate(now.toLocaleDateString([], { year: 'numeric', month: 'short', day: '2-digit' }));
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
   function scrollTop() {
     try { window.scrollTo({ top: 0, behavior: 'smooth' }); } catch (err) { window.scrollTo(0, 0); }
   }
@@ -51,7 +70,12 @@ export default function Header({ active }) {
         <Link to="/backup" onClick={(e)=>handleNavClick(e, '/backup')} className={`nav-item ${active === 'backup' ? 'active' : ''}`}>Backup</Link>
       </nav>
 
-      <div className="header-right">
+      <div className="header-right" style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+        {/* Real-time clock, left of NotificationBell */}
+        <span style={{ color: 'white', fontSize: '0.95em', fontWeight: 400, letterSpacing: '0.05em', minWidth: 90, textAlign: 'right', display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
+          <span>{currentTime}</span>
+          <span style={{ fontSize: '0.8em', opacity: 0.85 }}>{currentDate}</span>
+        </span>
         <NotificationBell />
         <AdminDropdown />
       </div>
