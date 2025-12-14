@@ -312,6 +312,7 @@ body {
   pointer-events: auto;
 }
 
+
 .header-text h2 {
   margin: 0;
   font-size: 28px;
@@ -326,8 +327,8 @@ body {
 }
 
 .refresh-btn {
-  background: linear-gradient(90deg, #ff7b00 0%, #ff4b00 100%) !important;
-  border: 2px solid #ff7b00 !important;
+  background: linear-gradient(90deg, #ff9800 0%, #ff6b00 100%) !important;
+  border: 2px solid #ff9800 !important;
   color: #fff !important;
   padding: 8px 14px;
   border-radius: 18px;
@@ -335,9 +336,13 @@ body {
   font-weight: 800;
   display: inline-block;
   visibility: visible;
+  transition: background 0.2s, border-color 0.2s;
 }
 
-.refresh-btn:hover { background: linear-gradient(90deg, #ff6b00 0%, #ff3b00 100%) !important; border-color: #ff6b00 !important; }
+.refresh-btn:hover {
+  background: linear-gradient(90deg, #ffb347 0%, #ff9800 100%) !important;
+  border-color: #ff9800 !important;
+}
 
 /* external refresh placed outside the header */
 .external-refresh {

@@ -1,3 +1,12 @@
+/* Remove glow from Backup Management heading */
+.backup-root .hero-row .page-hero,
+.backup-root .hero-row .header-text,
+.backup-root .hero-row .hero-text,
+.backup-root .hero-row h2 {
+  box-shadow: none !important;
+  text-shadow: none !important;
+  filter: none !important;
+}
 /* Backup Management styles */
 
 /* match Computer.css dashboard padding and hero spacing */
