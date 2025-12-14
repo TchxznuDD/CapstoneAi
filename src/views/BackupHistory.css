@@ -16,6 +16,57 @@
   font-size: 14px;
 }
 
+/* Date picker in hero */
+.backup-history .date-picker input[type="date"] {
+  padding: 6px 8px;
+  border-radius: 8px;
+  border: 1px solid #e6e6e6;
+  background: #fff;
+  color: #111;
+}
+.backup-history .date-picker .btn { padding:6px 10px; }
+
+/* clickable area: make whole date-picker feel interactive but keep input/button pointers normal */
+.backup-history .date-picker { cursor: pointer; }
+.backup-history .date-picker input[type="date"],
+.backup-history .date-picker .btn { cursor: auto; }
+
+/* default (light) icon/text color for date-picker */
+.backup-history .date-picker { color: #111; }
+.backup-history .date-picker svg { color: inherit; fill: currentColor; }
+/* Dark mode adjustments */
+.dark-mode .backup-history .date-picker input[type="date"] {
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
+  color: var(--text-primary);
+}
+.dark-mode .backup-history .date-picker input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1) opacity(0.85);
+}
+.dark-mode .backup-history .date-picker .btn {
+  background: var(--bg-card);
+  color: var(--text-primary);
+  border: 1px solid var(--input-border);
+}
+
+/* dark-mode icon/text color */
+.dark-mode .backup-history .date-picker { color: var(--text-primary); }
+.dark-mode .backup-history .date-picker svg { color: inherit; fill: currentColor; }
+
+/* Hide native calendar icon in WebKit browsers so our SVG shows and can be themed */
+.backup-history .date-picker input[type="date"]::-webkit-calendar-picker-indicator {
+  opacity: 0;
+  pointer-events: none;
+  display: block; /* keep layout but invisible */
+}
+
+/* For Firefox, reduce prominence of the native widget by removing appearance (keeps functionality) */
+.backup-history .date-picker input[type="date"] {
+  -webkit-appearance: textfield;
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
 /* Card defaults consistent with Computer view */
 .backup-history .card {
   padding: 18px;
@@ -25,6 +76,64 @@
   margin-bottom: 18px;
   box-sizing: border-box;
 }
+
+/* Dark-mode card + hero overrides to preserve theming */
+.dark-mode .backup-history .card {
+  background: var(--bg-card);
+  box-shadow: 0 12px 30px rgba(2,6,23,0.6);
+  border: 1px solid var(--input-border);
+  color: var(--text-primary);
+}
+
+.dark-mode .backup-history .hero-text h2 { color: var(--text-primary); }
+.dark-mode .backup-history .hero-text p { color: var(--muted); }
+
+/* Calendar popup styles */
+.calendar-popup {
+  position: absolute;
+  top: 44px;
+  right: 0;
+  width: 280px;
+  background: #fff;
+  border: 1px solid #e6e6e6;
+  box-shadow: 0 8px 24px rgba(11,22,39,0.06);
+  border-radius: 8px;
+  padding: 12px;
+  z-index: 40;
+}
+.calendar-header { display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:8px }
+.cal-nav { background:transparent; border:none; padding:6px 8px; cursor:pointer }
+.cal-month { font-weight:700 }
+.calendar-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:6px }
+.cal-weekday { font-size:12px; color:#666; text-align:center }
+.cal-day { border:none; background:transparent; padding:8px 6px; border-radius:6px; cursor:pointer; text-align:center }
+.cal-day.empty { background:transparent; cursor:default }
+.cal-day:hover { background:#f3f4f6 }
+.cal-day.selected { background:#2563eb; color:#fff }
+
+/* Dark mode for calendar */
+.dark-mode .calendar-popup { background: var(--bg-card); border: 1px solid var(--input-border); box-shadow: 0 8px 24px rgba(2,6,23,0.6); color: var(--text-primary) }
+.dark-mode .cal-day:hover { background: rgba(255,255,255,0.04) }
+.dark-mode .cal-day.selected { background: var(--accent-primary); color: var(--bg-default) }
+
+/* Remove default focus outlines and white highlight boxes to match dark UI */
+.backup-history .date-picker .btn:focus,
+.backup-history .cal-day:focus,
+.backup-history .cal-nav:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+/* Ensure the calendar popup has a dark panel in dark mode so controls remain readable */
+.dark-mode .backup-history .calendar-popup {
+  background: var(--bg-card);
+  border: 1px solid var(--input-border);
+  box-shadow: 0 8px 24px rgba(2,6,23,0.6);
+}
+
+/* Date-button colors: ensure visible in both themes */
+.backup-history .date-picker .btn { background: rgba(255,255,255,0.02); color: #111; border: 1px solid rgba(0,0,0,0.06) }
+.dark-mode .backup-history .date-picker .btn { background: rgba(255,255,255,0.04); color: var(--text-primary); border: 1px solid var(--input-border) }
 
 /* Day entries and actions spacing */
 .backup-history .history-item { align-items: flex-start; padding:10px; border-radius:8px; border:1px solid #f0f0f0 }
