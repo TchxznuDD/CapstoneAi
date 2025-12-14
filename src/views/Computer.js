@@ -301,7 +301,7 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="dashboard-root">
+    <div className="dashboard-root computers-view">
       <Header active="computers" />
 
       <div className="hero-row">
@@ -526,7 +526,7 @@ function DeleteConfirmModal({ open, onClose, onConfirm, stationName, password, s
               </linearGradient>
             </defs>
           </svg>
-          <p>Are you sure you want to delete <strong>{stationName}</strong>? This action cannot be undone.</p>
+          <p>Are you sure you want to delete <strong style={{ color: '#e53935' }}>{stationName}</strong>? This action cannot be undone.</p>
         </div>
         <div className="form-row">
           <label>Enter password to confirm:</label>
