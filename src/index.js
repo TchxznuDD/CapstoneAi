@@ -4,6 +4,8 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import PrivateRoute from "./components/PrivateRoute";
 import Computer from "./views/Computer";
 import LoginPage from "./views/login-page";
+import Home from "./views/Home";
+import RiskAssessment from "./views/RiskAssessment";
 import ServerStatus from "./views/ServerStatus";
 import BackupManagement from "./views/BackupManagement";
 import BackupHistory from "./views/BackupHistory";
@@ -21,7 +23,9 @@ ReactDOM.render(
   <Router>
     <Switch>
       <Route exact path="/" component={LoginPage} />
+      <PrivateRoute path="/home" component={Home} />
       <PrivateRoute path="/computer" component={Computer} />
+      <PrivateRoute path="/risk-assessment" component={RiskAssessment} />
       <PrivateRoute path="/server-status" component={ServerStatus} />
       <PrivateRoute path="/backup/history" component={BackupHistory} />
       <PrivateRoute path="/backup" component={BackupManagement} />

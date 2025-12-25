@@ -135,6 +135,18 @@
   background: rgba(214,40,40,0.08);
 }
 
+/* Paler variant for Risk Assessment stats (Extreme/High/Medium/Low) */
+.stat-card.stat-extreme .icon-bg { background: rgba(214,40,40,0.12); }
+.stat-card.stat-high .icon-bg    { background: rgba(255,152,0,0.12); }
+.stat-card.stat-medium .icon-bg  { background: rgba(25,118,210,0.12); }
+.stat-card.stat-low .icon-bg     { background: rgba(11,143,54,0.12); }
+
+/* Ensure the pale color shows in dark mode (override generic dark-mode rule) */
+.dark-mode .stat-card.stat-extreme .icon-bg { background: rgba(214,40,40,0.10) !important; }
+.dark-mode .stat-card.stat-high .icon-bg    { background: rgba(255,152,0,0.08) !important; }
+.dark-mode .stat-card.stat-medium .icon-bg  { background: rgba(25,118,210,0.08) !important; }
+.dark-mode .stat-card.stat-low .icon-bg     { background: rgba(11,143,54,0.08) !important; }
+
 .stat-card.stat-attackers .icon-bg {
   background: rgba(255,152,0,0.08);
 }
@@ -239,6 +251,21 @@
 }
 
 .chart-doughnut {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Ensure Chart.js canvas elements are centered inside card bodies */
+.chart-card .card-body canvas {
+  display: block;
+  margin: 0 auto;
+  max-width: 100% !important;
+  height: auto !important;
+}
+
+/* Explicit centering for compact chart bodies */
+.chart-card .card-body.chart-compact {
   display: flex;
   align-items: center;
   justify-content: center;

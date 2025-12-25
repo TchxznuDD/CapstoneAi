@@ -104,9 +104,9 @@ export default function LoginPage() {
     setLockoutEndTime(null);
     localStorage.removeItem('bfris_lockout_end');
     localStorage.removeItem('bfris_failed_attempts');
-    // simple client-side 'login' behavior: navigate to computer dashboard
+    // simple client-side 'login' behavior: navigate to home dashboard
     setAuthenticated(true);
-    history.push('/computer');
+    history.push('/home');
   }
 
   // Prevent Enter from submitting the form when fields are empty

@@ -1,0 +1,871 @@
+/* ============================================
+   Risk Assessment Page Styles - Optimized Layout
+   ============================================ */
+
+:root {
+  --card-bg: #ffffff;
+  --text-muted: #64748b;
+  --text-dark: #1e293b;
+  --accent-orange: #ff9800;
+  --border-light: #e2e8f0;
+  --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.06);
+  --shadow-md: 0 4px 16px rgba(15, 23, 42, 0.08);
+  /* Layout tuning variables - change these to move margins/padding */
+  --page-gutter: 48px; /* left/right page margin */
+  --card-padding: 24px; /* primary card padding (reduced so content fits) */
+  --card-padding-sm: 16px; /* table/card inner padding (smaller for table) */
+  --right-col-width: 480px; /* width of the right column in the form grid */
+  --form-gap: 32px; /* gap between columns in the form grid */
+  --left-col-width: 520px; /* fixed left card width for the two-column layout */
+  --form-right-width: 160px; /* width of the right-side action column inside the form */
+}
+
+/* Layout Container */
+.risk-stats-section,
+.risk-content-section {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 var(--page-gutter);
+}
+
+.risk-stats-section {
+  margin-top: 32px;
+}
+
+.risk-content-section {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  margin-top: 40px;
+  margin-bottom: 60px;
+}
+
+/* ============================================
+   Stats Grid
+   ============================================ */
+.risk-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+
+/* Two column layout for Risk Assessment (left) and Recorded Risks (right) */
+.two-column-cards {
+  display: grid;
+  grid-template-columns: var(--left-col-width) 1fr;
+  gap: 40px;
+  margin-top: 28px;
+  padding: 0 var(--page-gutter);
+  align-items: start;
+}
+
+/* Increase chart-card header/body padding to create larger cards */
+.chart-card .card-header {
+  padding: 18px 22px;
+  border-bottom: 1.5px solid rgba(0,0,0,0.06);
+}
+
+.chart-card .card-body {
+  padding: var(--card-padding-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Ensure card bodies in this view align content to the top (override monitor defaults) */
+.chart-left .card-body,
+.chart-right .card-body,
+.chart-card .card-body {
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+/* ensure left card has enough vertical space so Add button is visible */
+.chart-left .card-body {
+  min-height: 480px;
+  overflow: visible;
+}
+
+.chart-left .form-grid { grid-template-columns: 1fr var(--form-right-width); gap: 20px; }
+
+.chart-right .card-body { overflow: visible; height: auto; min-height: 0; }
+
+/* table area should scroll if content exceeds available space (inside taller card) */
+.chart-right .table-wrapper { max-height: 640px; overflow: auto; }
+
+.stat-card {
+  background: var(--card-bg);
+  padding: 28px 32px;
+  border-radius: 16px;
+  box-shadow: var(--shadow-md);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.12);
+}
+
+.stat-content {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.stat-label {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin: 0;
+}
+
+.stat-value {
+  font-size: 42px;
+  font-weight: 800;
+  margin: 0;
+  line-height: 1;
+  letter-spacing: -1px;
+}
+
+/* ============================================
+   Form Card - Two Column Layout
+   ============================================ */
+.form-card {
+  background: var(--card-bg);
+  border-radius: 20px;
+  box-shadow: var(--shadow-md);
+  padding: var(--card-padding);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr var(--right-col-width);
+  gap: var(--form-gap);
+  align-items: start;
+}
+
+/* Left Side - Form Fields */
+.form-left {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-left .row {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  position: relative;
+}
+
+.form-left .row.two-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.form-left .row.two-cols > div {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.form-left label {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-dark);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  letter-spacing: 0.3px;
+}
+
+.info-icon {
+  color: var(--accent-orange);
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.info-icon:hover {
+  color: #e67c00;
+  transform: scale(1.1);
+}
+
+.form-left select,
+.form-left input {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #e6e6e6;
+  border-radius: 8px;
+  font-size: 15px;
+  background: var(--card-bg);
+  transition: all 0.2s ease;
+  font-family: inherit;
+  color: var(--text-dark);
+  font-weight: 500;
+}
+
+.form-left select:focus,
+.form-left input:focus {
+  outline: none;
+  border-color: var(--accent-orange);
+  box-shadow: 0 0 0 4px rgba(255, 152, 0, 0.08);
+  background: #fffbf5;
+}
+
+.form-left select:hover,
+.form-left input:hover {
+  border-color: #cbd5e1;
+}
+
+/* Dropdown list appearance - make options look like the example image */
+.form-left select {
+  background: #ffffff;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  padding-right: 12px;
+  border: 1px solid #e6e6e6;
+  cursor: pointer;
+  transition: none !important;
+  box-sizing: border-box;
+}
+
+.form-left select option {
+  background: #ffffff;
+  color: #111827;
+  padding: 10px 14px;
+}
+
+.form-left select option:hover {
+  background: #f8f9fb;
+}
+
+/* Keep the dropdown visually above other elements when opened */
+.form-left select:focus {
+  outline: none;
+  box-shadow: none !important;
+  border-color: #ff9800;
+}
+
+/* wrapper for select so we can show a persistent arrow icon */
+.select-wrapper {
+  position: relative;
+}
+.select-wrapper::after {
+  content: '';
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 12px;
+  height: 8px;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path fill='%23777' d='M6 8L0 0h12z'/></svg>");
+  background-repeat: no-repeat;
+  pointer-events: none;
+}
+
+/* ensure wrapper doesn't clip dropdown on some browsers */
+.select-wrapper select { width: 100%; }
+
+/* vulnerability help tooltip shown when user clicks the info icon */
+.vuln-tooltip{
+  /* float above the field so it doesn't push other content */
+  position: absolute;
+  left: 12px;
+  bottom: calc(100% + 8px);
+  top: auto;
+  margin: 0;
+  background: #fff9f2;
+  border: 1px solid rgba(255,152,0,0.16);
+  padding: 12px 14px;
+  border-radius: 10px;
+  color: #1f2937;
+  box-shadow: 0 8px 20px rgba(15,23,42,0.06);
+  font-size: 14px;
+  z-index: 160; /* ensure it sits above other elements */
+  max-width: 760px;
+  width: auto;
+  white-space: normal;
+  word-wrap: break-word;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  box-sizing: border-box;
+  min-height: 120px; /* ensure enough vertical space for long messages */
+  animation: tooltipFadeIn 160ms ease both;
+}
+.vuln-tooltip p { margin: 0; color: #334155; line-height: 1.4; }
+
+/* small inline button inside vuln tooltip */
+.vuln-tooltip .btn.small {
+  background: linear-gradient(135deg, var(--accent-orange) 0%, #f57c00 100%);
+  color: #ffffff;
+  padding: 8px 12px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+  display: inline-block;
+  min-width: 72px;
+  text-align: center;
+  border: none;
+  box-shadow: 0 6px 18px rgba(255,152,0,0.18);
+}
+.vuln-tooltip .btn.small:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 22px rgba(255,152,0,0.22);
+}
+
+/* small caret pointing down toward the field (visible when tooltip is above) */
+.vuln-tooltip::after{
+  content: '';
+  position: absolute;
+  left: 20px;
+  bottom: -8px;
+  width: 12px;
+  height: 8px;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path fill='%23fff9f2' d='M6 8L0 0h12z'/></svg>");
+  background-repeat: no-repeat;
+  filter: drop-shadow(0 -1px 0 rgba(0,0,0,0.04));
+}
+
+/* If viewport is narrow, show tooltip below the field instead */
+@media (max-width: 720px) {
+  .vuln-tooltip{
+    top: calc(100% + 8px);
+    bottom: auto;
+    left: 0;
+  }
+  .vuln-tooltip::after{
+    top: -8px;
+    bottom: auto;
+    transform: rotate(180deg);
+    left: 12px;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path fill='%23fff9f2' d='M6 8L0 0h12z'/></svg>");
+  }
+}
+
+@keyframes tooltipFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Right Side - Suggestions & Actions */
+.form-right {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  height: 100%;
+}
+
+.suggestions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
+}
+
+.chip {
+  background: linear-gradient(135deg, rgba(255, 152, 0, 0.08) 0%, rgba(255, 152, 0, 0.04) 100%);
+  color: #f57c00;
+  border: 1px solid rgba(255, 152, 0, 0.2);
+  padding: 12px 18px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+  letter-spacing: 0.3px;
+  white-space: normal;
+  word-wrap: break-word;
+  line-height: 1.4;
+}
+
+.chip:hover {
+  background: linear-gradient(135deg, rgba(255, 152, 0, 0.15) 0%, rgba(255, 152, 0, 0.08) 100%);
+  border-color: rgba(255, 152, 0, 0.4);
+  transform: translateX(4px);
+}
+
+.form-actions {
+  display: flex;
+  justify-content: stretch;
+  margin-top: auto;
+}
+
+.btn-add {
+  background: linear-gradient(135deg, var(--accent-orange) 0%, #f57c00 100%);
+  color: #ffffff;
+  font-weight: 800;
+  border-radius: 12px;
+  font-size: 15px;
+  padding: 14px 32px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(255, 152, 0, 0.3);
+  transition: all 0.2s ease;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  width: 100%;
+}
+
+.btn-add:hover {
+  background: linear-gradient(135deg, #f57c00 0%, #e65100 100%);
+  box-shadow: 0 6px 20px rgba(255, 152, 0, 0.4);
+  transform: translateY(-2px);
+}
+
+.btn-add:active {
+  transform: translateY(0);
+}
+
+/* ============================================
+   Table Card
+   ============================================ */
+.risk-table-card {
+  background: var(--card-bg);
+  border-radius: 20px;
+  box-shadow: var(--shadow-md);
+  padding: var(--card-padding-sm);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  border-radius: 12px;
+  border: 1px solid var(--border-light);
+}
+
+.risk-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: auto;
+}
+
+.risk-table th,
+.risk-table td {
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+/* header styles */
+.risk-table thead th{
+  background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+  padding: 18px 20px;
+  text-align: left;
+  font-weight: 700;
+  font-size: 13px;
+  color: #475569;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-bottom: 2px solid #cbd5e1;
+}
+
+/* make vulnerability column take more space when possible */
+.risk-table th:nth-child(2), .risk-table td:nth-child(2) { width: 50%; }
+
+/* Allocate remaining table column widths to avoid header wrapping */
+.risk-table th:nth-child(1), .risk-table td:nth-child(1) { width: 18%; }
+.risk-table th:nth-child(3), .risk-table td:nth-child(3) { width: 10%; }
+.risk-table th:nth-child(4), .risk-table td:nth-child(4) { width: 10%; }
+.risk-table th:nth-child(5), .risk-table td:nth-child(5) { width: 10%; }
+.risk-table th:nth-child(6), .risk-table td:nth-child(6) { width: 6%; }
+
+/* Keep header labels on a single line to avoid awkward wraps */
+.risk-table thead th { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* Center the actions header and action buttons */
+.risk-table th.actions-col {
+  text-align: center;
+}
+.risk-table td:last-child {
+  text-align: center;
+  padding-right: 12px;
+}
+.risk-table td:last-child .delete-icon-btn { margin-left: 0; }
+
+.risk-table thead th:first-child {
+  border-top-left-radius: 12px;
+}
+
+.risk-table thead th:last-child {
+  border-top-right-radius: 12px;
+}
+
+/* small delete button for table actions */
+.delete-icon-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #999;
+  padding: 6px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 180ms ease;
+}
+
+.delete-icon-btn:hover {
+  background: rgba(214, 40, 40, 0.08);
+  color: #d62828;
+}
+
+.delete-icon-btn svg { display: block; }
+
+/* increase table wrapper height so more records are visible */
+.chart-right .table-wrapper { max-height: none; overflow: visible; }
+
+/* Remove extra horizontal margins from the nested monitor-table so card content sits correctly */
+.chart-right .monitor-table { margin: 0; padding: 0; }
+.chart-right .monitor-table .card-header { padding: 8px 12px; }
+
+.risk-table tbody tr {
+  border-bottom: 1px solid #f1f5f9;
+  transition: all 0.2s ease;
+}
+
+.risk-table tbody tr:hover {
+  background-color: #fafbfc;
+}
+
+.risk-table tbody tr:last-child {
+  border-bottom: none;
+}
+
+.risk-table tbody td {
+  padding: 16px 20px;
+  font-size: 14px;
+  color: #334155;
+  vertical-align: middle;
+  font-weight: 500;
+}
+
+.risk-table tbody td.no-records {
+  text-align: center;
+  color: #94a3b8;
+  font-style: italic;
+  padding: 24px 12px;
+  font-size: 15px;
+}
+
+/* Risk Badges */
+.risk-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 14px;
+  border-radius: 18px;
+  font-weight: 800;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  white-space: nowrap;
+  min-width: 56px;
+}
+
+.risk-low {
+  background: linear-gradient(135deg, rgba(11, 143, 54, 0.15) 0%, rgba(11, 143, 54, 0.08) 100%);
+  color: #0b8f36;
+  border: 1px solid rgba(11, 143, 54, 0.3);
+}
+
+.risk-medium {
+  background: linear-gradient(135deg, rgba(25, 118, 210, 0.15) 0%, rgba(25, 118, 210, 0.08) 100%);
+  color: #1976d2;
+  border: 1px solid rgba(25, 118, 210, 0.3);
+}
+
+.risk-high {
+  background: linear-gradient(135deg, rgba(255, 152, 0, 0.15) 0%, rgba(255, 152, 0, 0.08) 100%);
+  color: #f57c00;
+  border: 1px solid rgba(255, 152, 0, 0.3);
+}
+
+.risk-extreme {
+  background: linear-gradient(135deg, rgba(214, 40, 40, 0.15) 0%, rgba(214, 40, 40, 0.08) 100%);
+  color: #d32f2f;
+  border: 1px solid rgba(214, 40, 40, 0.3);
+}
+
+.risk-unknown {
+  background: linear-gradient(135deg, rgba(100, 116, 139, 0.15) 0%, rgba(100, 116, 139, 0.08) 100%);
+  color: #64748b;
+  border: 1px solid rgba(100, 116, 139, 0.3);
+}
+
+/* ============================================
+   Responsive Design
+   ============================================ */
+@media (max-width: 1200px) {
+  .risk-stats-section,
+  .risk-content-section {
+    padding: 0 24px;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr 360px;
+    gap: 32px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .form-right {
+    order: -1;
+  }
+
+  .suggestions {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .chip {
+    flex: 0 1 auto;
+  }
+}
+
+@media (max-width: 900px) {
+  .risk-stats-section,
+  .risk-content-section {
+    padding: 0 16px;
+  }
+
+  .risk-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  .form-card,
+  .risk-table-card {
+    padding: 24px;
+  }
+
+  .form-left .row.two-cols {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .risk-stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .stat-value {
+    font-size: 32px;
+  }
+
+  .form-card,
+  .risk-table-card {
+    padding: 20px;
+    border-radius: 16px;
+  }
+
+  .risk-table {
+    min-width: 700px;
+  }
+}
+
+/* Dark mode overrides */
+.dark-mode {
+  --card-bg: #2a2a2a; /* match card/padding color from reference screenshot */
+  --text-muted: #9aa4b2;
+  --text-dark: #e6eef8;
+  --accent-orange: #ffb347;
+  --border-light: rgba(255,255,255,0.03);
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.7);
+  --shadow-md: 0 6px 20px rgba(0,0,0,0.75);
+}
+
+.dark-mode .stat-card {
+  background: var(--card-bg);
+  border: 1px solid rgba(255,255,255,0.04);
+  box-shadow: var(--shadow-md);
+}
+
+.dark-mode .stat-label { color: var(--text-muted); }
+.dark-mode .stat-value { color: var(--text-dark); }
+
+.dark-mode .form-card,
+.dark-mode .risk-table-card,
+.dark-mode .chart-card {
+  background: var(--card-bg);
+  border: 1px solid rgba(255,255,255,0.04);
+  box-shadow: var(--shadow-md);
+}
+
+.dark-mode .form-left select:focus,
+.dark-mode .form-left input:focus {
+  background: rgba(255,152,0,0.04);
+  box-shadow: 0 0 0 4px rgba(255,152,0,0.04);
+}
+
+.dark-mode .form-left select,
+.dark-mode .form-left input {
+  background: var(--card-bg); /* use the card/padding color */
+  border-color: rgba(255,255,255,0.03);
+  color: var(--text-dark);
+}
+
+/* Ensure dropdown options are readable in dark mode and match field background */
+.dark-mode .form-left select option {
+  background: var(--card-bg);
+  color: var(--text-dark);
+}
+
+/* make the persistent select arrow lighter in dark mode so it remains visible */
+.dark-mode .select-wrapper::after {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path fill='%23cfcfcf' d='M6 8L0 0h12z'/></svg>");
+}
+
+/* Improve risk-badge contrast in dark mode: stronger colored pills with white text */
+.dark-mode .risk-badge {
+  box-shadow: none;
+  color: #ffffff;
+}
+
+.dark-mode .risk-low {
+  background: linear-gradient(135deg, rgba(11,143,54,0.32) 0%, rgba(11,143,54,0.18) 100%);
+  border: 1px solid rgba(11,143,54,0.22);
+}
+
+.dark-mode .risk-medium {
+  background: linear-gradient(135deg, rgba(25,118,210,0.32) 0%, rgba(25,118,210,0.18) 100%);
+  border: 1px solid rgba(25,118,210,0.22);
+}
+
+.dark-mode .risk-high {
+  background: linear-gradient(135deg, rgba(255,152,0,0.32) 0%, rgba(255,152,0,0.18) 100%);
+  border: 1px solid rgba(255,152,0,0.22);
+}
+
+.dark-mode .risk-extreme {
+  background: linear-gradient(135deg, rgba(214,40,40,0.34) 0%, rgba(214,40,40,0.18) 100%);
+  border: 1px solid rgba(214,40,40,0.24);
+}
+
+.dark-mode .risk-unknown {
+  background: linear-gradient(135deg, rgba(100,116,139,0.28) 0%, rgba(100,116,139,0.14) 100%);
+  border: 1px solid rgba(100,116,139,0.18);
+}
+
+/* Tweak select arrow color for stronger contrast */
+.dark-mode .select-wrapper::after {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path fill='%23fff' d='M6 8L0 0h12z'/></svg>");
+}
+
+.dark-mode .vuln-tooltip{
+  /* higher-contrast dark tooltip for readability */
+  background: rgba(12,12,12,0.92);
+  border: 1px solid rgba(255,152,0,0.14);
+  color: #ffffff;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.85);
+}
+
+.dark-mode .vuln-tooltip p { color: #f1f6ff; }
+
+.dark-mode .select-wrapper::after {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path fill='%23fff' d='M6 8L0 0h12z'/></svg>");
+}
+
+/* Dark mode: style the small tooltip button */
+.dark-mode .vuln-tooltip .btn.small {
+  /* keep primary orange button in dark mode for visibility */
+  background: linear-gradient(135deg, var(--accent-orange) 0%, #f57c00 100%);
+  color: #fff;
+  border: none;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.6);
+}
+.dark-mode .vuln-tooltip .btn.small:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 28px rgba(0,0,0,0.65);
+}
+
+.dark-mode .risk-table thead th{
+  background: linear-gradient(180deg,#0b1112 0%, #0f1213 100%); /* much darker header */
+  color: var(--text-dark);
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+}
+
+.dark-mode .risk-table tbody td {
+  color: var(--text-dark);
+}
+
+.dark-mode .risk-table tbody tr:hover {
+  background-color: rgba(255,255,255,0.02);
+}
+
+.dark-mode .delete-icon-btn:hover { background: rgba(214,40,40,0.06); color: #ffb4b4; }
+
+
+/* Fix table header / row contrast in dark mode */
+.dark-mode .chart-right .monitor-table,
+.dark-mode .monitor-table,
+.dark-mode .risk-table-card {
+  background: var(--card-bg);
+  border: 1px solid rgba(255,255,255,0.03);
+}
+
+.dark-mode .chart-right .monitor-table .card-header,
+.dark-mode .monitor-table .card-header {
+  background: transparent;
+  color: var(--text-muted);
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+}
+
+.dark-mode .risk-table thead th{
+  background: linear-gradient(180deg,#2a2a2a 0%, #303232 100%); /* dark grey header */
+  color: var(--text-dark);
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+
+.dark-mode .risk-table tbody tr {
+  background: transparent;
+  border-bottom: 1px solid rgba(255,255,255,0.02);
+}
+
+.dark-mode .risk-table tbody tr:nth-child(even) {
+  background: rgba(255,255,255,0.01);
+}
+
+.dark-mode .risk-table tbody td {
+  color: var(--text-dark);
+}
+
+.dark-mode .risk-table tbody td.no-records {
+  color: #9aa4b2;
+}
+
+/* Apply the dark background across the dashboard root so the page matches the screenshot */
+.dark-mode .firewall-monitor-root,
+.dark-mode .dashboard-root {
+  background: #0b0b0b; /* darker page background */
+  color: var(--text-dark);
+  min-height: 100vh;
+}
+
+/* Slightly lift cards from the page with a subtle inner shadow */
+.dark-mode .stat-card,
+.dark-mode .form-card,
+.dark-mode .risk-table-card,
+.dark-mode .chart-card {
+  box-shadow: 0 8px 24px rgba(0,0,0,0.7);
+}

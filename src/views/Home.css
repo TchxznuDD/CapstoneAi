@@ -1,0 +1,128 @@
+/* Home-specific styles — keep layout consistent with site while isolating home visuals */
+.dashboard-root .hero-row .page-hero .hero-text h2 { margin: 0 0 6px 0; font-size: 1.6rem; }
+.dashboard-root .hero-row .page-hero .hero-text p { margin: 0; color: #666; }
+
+/* Page gutter used to align blocks (keeps stats aligned with cards above) */
+:root { --home-gutter: 32px; }
+
+/* Stats grid on Home */
+.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin: 20px 0; }
+.stat-card { background: var(--card-bg, #fff); border-radius: 16px; padding: 28px 32px; box-shadow: 0 12px 30px rgba(15,23,42,0.08); display:flex; justify-content:space-between; align-items:center; }
+.stat-card .label { font-size: 14px; color: #666; font-weight:700; }
+.stat-card .value { font-size: 28px; font-weight:800; }
+.stat-icon { display:flex; align-items:center; }
+.icon-bg { width:56px; height:56px; border-radius:12px; display:flex; align-items:center; justify-content:center; background: rgba(0,0,0,0.04); }
+.stat-svg { width:28px; height:28px; color:currentColor; }
+
+/* Small human-friendly description under each stat to help non-pro users */
+.stat-desc { margin-top:8px; color:#666; font-size:14px; }
+
+/* Recent alerts list */
+.recent-alerts { display:none; }
+
+/* Compact progress bar */
+.progress-bar { width:100%; background: rgba(0,0,0,0.06); height:12px; border-radius:8px; overflow:hidden; margin-top:10px; }
+.progress-fill { height:100%; background: linear-gradient(90deg,#4caf50,#8bc34a); width:0%; transition:width 400ms ease; }
+
+/* Home-specific card padding to keep uniform spacing and professional appearance */
+.pro-card { padding: 28px 32px; border-radius: 16px; box-shadow: 0 12px 34px rgba(15,23,42,0.08); background: var(--card-bg, #fff); }
+.statistics-grid.single-pane .stats-pane { padding: 28px; }
+
+
+.statistics-grid { display:grid; grid-template-columns: 1fr; gap:18px; }
+
+/* Ensure statistics pane aligns with the card row above using the same horizontal gutter */
+.statistics-overview { padding-left: var(--home-gutter); padding-right: var(--home-gutter); }
+.statistics-overview .stats-pane { max-width: 1200px; margin-left: auto; margin-right: auto; }
+.stat-row { display:flex; align-items:center; gap:14px; margin:12px 0; }
+.stat-label { width:120px; font-weight:800; color:#333; font-size:15px; }
+.stat-bar { flex:1; height:18px; background: rgba(0,0,0,0.06); border-radius:10px; overflow:hidden; }
+.stat-fill { height:100%; background: linear-gradient(90deg,#f06262,#ff8a80); width:0%; }
+.stat-fill.high { background: linear-gradient(90deg,#ffb74d,#ffcc80); }
+.stat-fill.medium { background: linear-gradient(90deg,#64b5f6,#90caf9); }
+.stat-fill.low { background: linear-gradient(90deg,#81c784,#b9f6ca); }
+.stat-value { width:64px; text-align:right; font-weight:800; font-size:15px; }
+/* top-vulns removed from Home per request */
+
+/* Two-column dashboard panels */
+.home-panels { display: grid; grid-template-columns: 420px 1fr; gap: 20px; padding-left: var(--home-gutter); padding-right: var(--home-gutter); }
+.left-panel .health-card { display:flex; flex-direction:column; }
+.health-row { display:flex; gap:18px; align-items:center; }
+.gauge { width:120px; height:120px; position:relative; }
+.gauge-track, .gauge-fill { position:absolute; left:0; top:0; width:100%; height:100%; border-radius:50%; box-sizing:border-box; }
+.gauge-track { border: 10px solid rgba(0,0,0,0.06); }
+.gauge-fill { border: 10px solid transparent; border-top-color: #4caf50; transform-origin:50% 50%; transition: transform 600ms cubic-bezier(.2,.9,.2,1); }
+.gauge-center { position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); display:flex; align-items:center; justify-content:center; }
+.gauge-value { font-weight:800; font-size:20px; }
+.health-legend .label { font-weight:700; margin-bottom:6px; }
+.health-legend .muted { color:#666; margin:0 0 12px 0; }
+.quick-actions { display:flex; gap:8px; flex-wrap:wrap; }
+.action-btn { background: linear-gradient(90deg,#ff9800,#ffb74d); color:white; padding:8px 12px; border-radius:8px; border:none; cursor:pointer; text-decoration:none; display:inline-flex; align-items:center; gap:8px; font-weight:700; }
+.action-btn[onClick] { cursor:pointer; }
+
+.right-panel .alerts-card { margin-bottom:12px; }
+.alerts-list { list-style:none; padding:0; margin:8px 0 0 0; }
+.alert-item { display:flex; gap:12px; padding:8px 0; border-bottom:1px solid rgba(0,0,0,0.04); }
+.alert-left { width:64px; display:flex; align-items:center; justify-content:center; }
+.alert-pill { padding:6px 8px; border-radius:999px; font-weight:700; font-size:12px; }
+.alert-pill.extreme { background:#ffdede; color:#d62828; }
+.alert-pill.high { background:#fff3e0; color:#ff9800; }
+.alert-pill.medium { background:#e8f3ff; color:#1976d2; }
+.alert-pill.low { background:#eaffef; color:#0b8f36; }
+.alert-body .alert-title { font-weight:700; }
+.alert-meta { font-size:13px; color:#666; }
+
+.recent-risks { list-style:none; padding:0; margin:8px 0 0 0; display:flex; flex-direction:column; gap:8px; }
+.recent-risks .muted { color:#666; font-size:13px; }
+
+@media (max-width: 1000px) {
+  .home-panels { grid-template-columns: 1fr; padding-left: 16px; padding-right: 16px; }
+  .gauge { width:100px; height:100px; }
+}
+
+/* MikroTik compact card styles */
+.mikrotik-card .mikro-row { display:flex; gap:18px; align-items:flex-start; }
+.mikro-meta { flex:1; }
+.mikro-name { font-size:18px; font-weight:800; margin-bottom:6px; }
+.mikro-sub { color:#666; margin-bottom:10px; }
+.mikro-info { display:flex; gap:12px; flex-direction:column; color:#444; margin-bottom:12px; }
+.mikro-actions { display:flex; gap:8px; }
+.mikro-side { width:140px; display:flex; flex-direction:column; gap:10px; align-items:flex-end; }
+.mikro-sched { text-align:right; }
+.sched-label { font-size:12px; color:#666; }
+.sched-time { font-weight:800; font-size:16px; }
+.mikro-stats { display:flex; gap:8px; margin-top:8px; }
+.mini-stat { background: rgba(0,0,0,0.03); padding:8px 10px; border-radius:8px; text-align:center; font-weight:700; }
+.mikro-recent { margin-top:14px; }
+.mikro-recent ul { list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:8px; }
+.mikro-recent .muted { color:#666; font-size:13px; }
+
+@media (max-width: 900px) {
+  .statistics-grid { grid-template-columns: 1fr; }
+}
+
+/* Home card link wrapper */
+.home-card-link { display:block; text-decoration:none; color:inherit; }
+.home-card-link .stat-card { transition: transform 180ms ease, box-shadow 180ms ease; }
+.home-card-link .stat-card:hover { transform: translateY(-6px); box-shadow: 0 14px 36px rgba(15,23,42,0.12); }
+.home-card-link .stat-card:focus-within { outline: 3px solid rgba(255,152,0,0.12); }
+
+/* Risk summary badges */
+.home-summary-badges { display:flex; gap:8px; margin-top:8px; flex-wrap:wrap; }
+.home-badge { padding:6px 8px; border-radius:999px; font-weight:700; font-size:11px; color:#222; }
+.home-badge.extreme { background:#ffdede; color:#d62828; }
+.home-badge.high { background:#fff3e0; color:#ff9800; }
+.home-badge.medium { background:#e8f3ff; color:#1976d2; }
+.home-badge.low { background:#eaffef; color:#0b8f36; }
+
+/* Risk table card on Home — keep compact */
+.risk-table-card.risk-table-wide.pro-card { padding:18px; margin-top:10px; }
+.risk-table { width:100%; border-collapse:collapse; font-size:14px; }
+.risk-table thead th { text-align:left; padding:10px 12px; font-weight:700; color:#444; background:transparent; }
+.risk-table td { padding:10px 12px; border-top:1px solid rgba(0,0,0,0.04); }
+.risk-badge { display:inline-block; padding:6px 10px; border-radius:999px; font-weight:700; font-size:12px; }
+
+@media (max-width: 900px) {
+  .stats-grid { grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); }
+  .home-summary-badges { gap:6px; }
+}
