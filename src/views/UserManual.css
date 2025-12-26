@@ -208,10 +208,16 @@
   flex-shrink: 0;
 }
 
+.toc-icon {
+  /* Use accent color for icons; fall back to orange if variable missing */
+  color: var(--accent, #ff7b00);
+}
+
 .toc-icon svg {
   width: 24px;
   height: 24px;
-  color: #ffffff;
+  /* Make SVG shapes inherit text color */
+  fill: currentColor;
 }
 
 .toc-header h4 {
@@ -237,7 +243,7 @@
 }
 
 .bullet {
-  color: #ffffff;
+  color: var(--accent, #ff7b00);
   font-weight: 900;
   flex-shrink: 0;
 }

@@ -143,7 +143,6 @@ export default function UserManual() {
         'Server Specs and System Info (Kernel, Arch, Processes)',
         'Router Metrics: CPU, Memory, WAN/LAN throughput',
         'Router System Info: Model, Firmware, Temperature, DHCP leases',
-        
       ]
     },
     {
