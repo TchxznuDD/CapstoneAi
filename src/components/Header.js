@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import '../views/Computer.css';
+import './Header.css';
 import fatimaLogo from '../assets/fatima-logo.png';
 
 export default function Header({ active }) {

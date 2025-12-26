@@ -1,0 +1,209 @@
+/* Header-specific styles extracted from Computer.css to avoid cross-file imports */
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(90deg, #ff7b00 0%, #ff4b00 100%);
+  padding: 28px 48px;
+  border-radius: 0;
+  color: #fff;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+  margin: 0;
+}
+
+/* Hamburger button and side-drawer */
+.hamburger-btn {
+  background: transparent;
+  border: none;
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  margin-right: 8px;
+  cursor: pointer;
+  border-radius: 8px;
+}
+.hamburger-btn:hover { background: rgba(255,255,255,0.04); }
+
+.side-drawer {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 280px;
+  background: #fff;
+  transform: translateX(-110%);
+  transition: transform 240ms cubic-bezier(.2,.9,.2,1);
+  z-index: 1200;
+  box-shadow: 8px 0 28px rgba(0,0,0,0.12);
+  display: flex;
+  flex-direction: column;
+}
+.side-drawer.open { transform: translateX(0); }
+.drawer-header { padding: 18px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #f2f2f2 }
+.drawer-close { background: transparent; border: none; font-size: 18px; cursor: pointer }
+.drawer-links { padding: 12px 16px; display:flex; flex-direction:column; gap:8px }
+.drawer-links .nav-item { color: #222; background: transparent; padding: 10px 12px; border-radius:8px; font-weight:700; display:flex; align-items:center; gap:10px }
+.drawer-links .nav-item .nav-icon { width:20px; height:20px; display:inline-flex; align-items:center; justify-content:center; color: inherit }
+.drawer-links .nav-item.active { background: rgba(255,123,0,0.08); color: #ff7b00 }
+.drawer-links .nav-item svg { display:block; width:18px; height:18px; fill: currentColor; color: inherit }
+.drawer-close { color: #444 }
+.drawer-header strong { color: #222 }
+.drawer-links .nav-item.active { background: rgba(255,123,0,0.12); color: #d95a00 }
+.drawer-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0); pointer-events: none; transition: background 200ms ease; z-index: 1100 }
+.drawer-backdrop.open { background: rgba(0,0,0,0.32); pointer-events: auto }
+
+/* Dark mode support for drawer */
+.dark-mode .side-drawer {
+  background: var(--bg-card);
+  color: var(--text-primary);
+  border-right: 1px solid var(--border-color);
+}
+.dark-mode .drawer-header { border-bottom-color: var(--border-color) }
+.dark-mode .drawer-links .nav-item { color: var(--text-secondary) }
+.dark-mode .drawer-links .nav-item.active { background: rgba(255,255,255,0.06); color: var(--orange-primary) }
+.dark-mode .drawer-backdrop.open { background: rgba(0,0,0,0.6) }
+.dark-mode .drawer-close { color: var(--text-secondary) }
+
+.header-nav-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #fff;
+}
+
+.brand img {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: #fff;
+  border: 3px solid #fff;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+}
+
+/* center nav */
+.nav-links {
+  display: flex;
+  gap: 22px;
+  align-items: center;
+}
+.nav-item {
+  color: rgba(255,255,255,0.95);
+  text-decoration: none;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+}
+.nav-item:hover { text-decoration: underline; }
+.nav-item { padding: 8px 12px; border-radius: 8px; }
+.nav-item.active, .nav-item:focus { background: rgba(255,255,255,0.06); }
+
+/* header right section */
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Notification Bell */
+.notification-dropdown {
+  position: relative;
+}
+
+.notification-bell {
+  position: relative;
+  background: transparent;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 180ms ease;
+}
+
+.notification-bell:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.notification-badge {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  background: linear-gradient(135deg, #d62828, #e53935);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 800;
+  min-width: 16px;
+  height: 16px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+}
+
+.notification-panel {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 12px);
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 12px 36px rgba(0,0,0,0.15);
+  width: 360px;
+  max-height: 480px;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  transform: translateY(-12px) scale(0.95);
+  transform-origin: top right;
+  transition: opacity 200ms ease, transform 200ms ease;
+  pointer-events: none;
+  z-index: 1000;
+}
+
+.notification-panel.open {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+.notification-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 18px;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.notification-header h4 {
+  margin: 0;
+  font-size: 16px;
+  color: #222;
+  font-weight: 800;
+}
+
+.notification-count {
+  font-size: 12px;
+  color: #ff7b00;
+  font-weight: 700;
+  background: rgba(255, 123, 0, 0.1);
+}
+
+/* small responsive tweak for header gutters */
+@media (max-width: 900px) {
+  .app-header { padding: 18px 20px; }
+  .brand img { width: 44px; height: 44px; }
+}

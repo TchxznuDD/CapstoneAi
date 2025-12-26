@@ -183,7 +183,7 @@ export default function LoginPage() {
           </div>
         </div>
         <span style={{ color: 'white', fontSize: '0.95em', fontWeight: 400, letterSpacing: '0.05em', minWidth: 90, textAlign: 'right', display: 'flex', alignItems: 'center' }}>
-          BFRIS+S v1.2
+          BFRIS+S v1.3.1
         </span>
       </header>
 

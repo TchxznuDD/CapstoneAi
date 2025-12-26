@@ -90,9 +90,6 @@
 
 .chart-right .card-body { overflow: visible; height: auto; min-height: 0; }
 
-/* table area should scroll if content exceeds available space (inside taller card) */
-.chart-right .table-wrapper { max-height: 640px; overflow: auto; }
-
 .stat-card {
   background: var(--card-bg);
   padding: 28px 32px;
@@ -526,12 +523,24 @@
 
 .delete-icon-btn svg { display: block; }
 
-/* increase table wrapper height so more records are visible */
-.chart-right .table-wrapper { max-height: none; overflow: visible; }
+/* table wrapper: limit height and enable scrolling when records exceed available space */
+.chart-right .table-wrapper {
+  /* Cap vertical growth so horizontal scrollbar remains visible; allow scrolling */
+  width: 100%;
+  max-height: 60vh; /* let the table grow but not beyond viewport; adjust if needed */
+  overflow-x: auto; /* horizontal scroll when table wider than container */
+  overflow-y: auto; /* vertical scroll when rows exceed max-height */
+  -webkit-overflow-scrolling: touch;
+  box-sizing: border-box;
+  padding-bottom: 8px;
+}
+
+/* Ensure the table can grow wider than the container so users can scroll left/right */
+.chart-right .table-wrapper .risk-table { min-width: 900px; }
 
 /* Remove extra horizontal margins from the nested monitor-table so card content sits correctly */
 .chart-right .monitor-table { margin: 0; padding: 0; }
-.chart-right .monitor-table .card-header { padding: 8px 12px; }
+.chart-right .monitor-table .card-header { padding: 12px 16px; }
 
 .risk-table tbody tr {
   border-bottom: 1px solid #f1f5f9;
@@ -684,6 +693,11 @@
   }
 }
 
+@media (max-width: 900px) {
+  /* On smaller screens, reduce the minimum scrollable width so tables fit */
+  .chart-right .table-wrapper .risk-table { min-width: 900px; }
+}
+
 /* Dark mode overrides */
 .dark-mode {
   --card-bg: #2a2a2a; /* match card/padding color from reference screenshot */
@@ -799,6 +813,126 @@
   box-shadow: 0 10px 28px rgba(0,0,0,0.65);
 }
 
+/* --- Minimal FirewallMonitor selectors (copied) --- */
+/* Keep RiskAssessment self-contained without importing FirewallMonitor.css */
+.firewall-monitor-root {
+  padding: 0;
+}
+
+.hero-row .page-hero {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.external-refresh {
+  display: flex;
+  justify-content: flex-end;
+  margin: 0;
+}
+.external-refresh .refresh-btn {
+  background: linear-gradient(90deg, #ff9800 0%, #ff6b00 100%) !important;
+  border: 2px solid #ff9800 !important;
+  color: #fff !important;
+  padding: 10px 18px;
+  border-radius: 18px;
+  font-size: 15px;
+  box-shadow: 0 6px 18px rgba(255, 152, 0, 0.18);
+  font-weight: 800;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.external-refresh .refresh-btn:hover {
+  background: linear-gradient(90deg, #ffb347 0%, #ff9800 100%) !important;
+  border-color: #ff9800 !important;
+}
+
+.monitor-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 12px;
+  margin-top: 24px;
+  padding: 0 48px;
+}
+
+.stat-icon .icon-bg {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 18px rgba(15,23,42,0.06);
+}
+
+.stat-icon svg,
+.stat-icon .stat-svg {
+  width: 20px;
+  height: 20px;
+  display: block;
+}
+
+/* chart-card basics relied on by RiskAssessment */
+.chart-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 12px 30px rgba(15,23,42,0.06);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.chart-card .card-header {
+  padding: 12px 16px 12px 16px;
+  border-bottom: 1.5px solid rgba(0,0,0,0.06);
+  min-height: 50px;
+}
+
+.chart-card .card-body {
+  padding: 12px;
+  height: auto;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  overflow: visible;
+  position: relative;
+}
+
+.monitor-table {
+  margin-top: 12px;
+  margin-left: 48px;
+  margin-right: 48px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 12px 30px rgba(15,23,42,0.06);
+  overflow: hidden;
+}
+
+.monitor-table .card-header {
+  padding: 12px 16px 12px 16px;
+  border-bottom: 1.5px solid rgba(0,0,0,0.06);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Toast and button basics (ensure RiskAssessment buttons match app look) */
+.btn { padding: 10px 18px; border-radius: 8px; border: none; font-weight: 700; font-size: 14px; cursor: pointer; transition: transform 140ms ease, box-shadow 140ms ease; display: inline-flex; align-items: center; justify-content: center; }
+.btn.primary { background: linear-gradient(90deg, #ff7b00, #ff4b00); color: #fff; box-shadow: 0 8px 20px rgba(255,123,0,0.10); }
+.btn.small { padding: 8px 14px; font-size: 13px; }
+
+.chart-right .table-wrapper {
+  /* Let the table height grow with new rows; allow horizontal scrolling for wide tables */
+  width: 100%;
+  overflow-x: auto; /* horizontal scroll when table wider than container */
+  overflow-y: visible; /* allow the wrapper to expand vertically with added rows */
+  -webkit-overflow-scrolling: touch;
+  box-sizing: border-box;
+  padding-bottom: 8px;
+}
 .dark-mode .risk-table thead th{
   background: linear-gradient(180deg,#0b1112 0%, #0f1213 100%); /* much darker header */
   color: var(--text-dark);
@@ -869,3 +1003,125 @@
 .dark-mode .chart-card {
   box-shadow: 0 8px 24px rgba(0,0,0,0.7);
 }
+
+/* --- Additional copied selectors from FirewallMonitor (to avoid relying on FirewallMonitor.css) --- */
+/* Toast notification */
+.toast-notification {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 18px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 12px 36px rgba(0,0,0,0.15);
+  z-index: 10000;
+  min-width: 280px;
+  animation: toastSlideIn 300ms cubic-bezier(.2,.9,.2,1) both;
+  border-left: 4px solid #ff7b00;
+}
+.toast-notification.success { border-left-color: #0b8f36; }
+.toast-notification.error { border-left-color: #d62828; }
+.toast-notification.info { border-left-color: #ff7b00; }
+.toast-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #0b8f36, #28a745);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+.toast-notification.error .toast-icon { background: linear-gradient(135deg, #d62828, #e53935); }
+.toast-notification.info .toast-icon { background: linear-gradient(135deg, #ff7b00, #ff4b00); }
+.toast-message { font-size: 14px; font-weight: 600; color: #222; line-height: 1.4; }
+
+@keyframes toastSlideIn {
+  from { transform: translateX(120%) translateY(-8px); opacity: 0; }
+  to { transform: translateX(0) translateY(0); opacity: 1; }
+}
+
+/* Monitor data table styles (used by some table elements) */
+.monitor-data-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.monitor-data-table thead { background: #f8f9fa; }
+.monitor-data-table th { padding: 10px 12px; text-align: left; font-weight: 700; color: #555; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 2px solid rgba(0,0,0,0.08); }
+.monitor-data-table tbody tr { border-bottom: 1px solid rgba(0,0,0,0.04); transition: background 140ms ease; }
+.monitor-data-table tbody tr:hover { background: rgba(255, 123, 0, 0.02); }
+.monitor-data-table td { padding: 10px 12px; color: #333; }
+.monitor-data-table code { background: rgba(0,0,0,0.04); padding: 4px 8px; border-radius: 4px; font-size: 13px; font-family: 'Consolas', 'Monaco', monospace; color: #222; }
+.monitor-data-table code.ip-blocked { background: rgba(214, 40, 40, 0.08); color: #d62828; font-weight: 600; }
+.rule-name-col { font-weight: 600; color: #222; }
+.time-col { font-family: 'Consolas', 'Monaco', monospace; font-size: 13px; color: #666; white-space: nowrap; }
+.reason-col { color: #d62828; font-weight: 500; }
+.no-data { text-align: center; padding: 32px !important; color: #999; font-style: italic; }
+
+/* Badges */
+.badge { padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 700; background: rgba(255, 123, 0, 0.12); color: #ff7b00; }
+.badge.red { background: rgba(214, 40, 40, 0.12); color: #d62828; }
+.protocol-badge { display: inline-block; padding: 4px 10px; border-radius: 4px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+.protocol-badge.tcp { background: rgba(54, 162, 235, 0.12); color: #36a2eb; }
+.protocol-badge.udp { background: rgba(255, 206, 86, 0.12); color: #d89e00; }
+.protocol-badge.icmp { background: rgba(153, 102, 255, 0.12); color: #9966ff; }
+.protocol-badge.all { background: rgba(0, 0, 0, 0.08); color: #555; }
+.action-badge { display: inline-block; padding: 4px 10px; border-radius: 4px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+.action-badge.allow { background: rgba(11, 143, 54, 0.12); color: #0b8f36; }
+.action-badge.block { background: rgba(214, 40, 40, 0.12); color: #d62828; }
+.status-badge { display: inline-block; padding: 4px 10px; border-radius: 4px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+.status-badge.active { background: rgba(11, 143, 54, 0.12); color: #0b8f36; }
+
+/* Additional monitor/table helpers copied from FirewallMonitor to preserve layout */
+.chart-card .card-header .muted {
+  font-size: 10px;
+  color: #999;
+  margin: 0;
+}
+
+/* Ensure Chart.js canvas elements are centered inside card bodies */
+.chart-card .card-body canvas {
+  display: block;
+  margin: 0 auto;
+  max-width: 100% !important;
+  height: auto !important;
+}
+
+/* Monitor table header text */
+.monitor-table .card-header h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 800;
+  color: #222;
+}
+
+.table-responsive { overflow-x: auto; }
+
+/* Keep table header visual consistent (thin bottom border) */
+.monitor-data-table thead { background: #f8f9fa; }
+
+/* Smaller-screen tweak to keep monitor table spacing */
+@media (max-width: 768px) {
+  .monitor-table { margin-left: 24px; margin-right: 24px; }
+  .chart-card .card-body { min-height: 180px; }
+}
+
+/* When the monitor table is the nested table inside the right chart card, remove extra side margins
+   so the table aligns with the card inner padding (prevents the 'third' indentation). */
+.chart-right .monitor-table {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  margin-top: 12px;
+  box-shadow: none; /* keep visual elevation handled by the parent card */
+  overflow: visible !important; /* allow inner .table-wrapper to scroll without being clipped */
+}
+
+/* Ensure the right card gives some vertical room for the table wrapper to layout */
+.chart-right .card-body {
+  /* increase vertical space for the right card so the table wrapper can expand */
+  min-height: 520px;
+}
+

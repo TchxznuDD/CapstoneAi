@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect, useLayoutEffect } from 'react';
 import { FaInfoCircle } from 'react-icons/fa';
 import Header from '../components/Header';
-import './FirewallMonitor.css';
 import './RiskAssessment.css';
 import { mockRecords, assets, riskMatrix } from '../data/Matrix';
 
