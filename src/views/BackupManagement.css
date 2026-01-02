@@ -1,16 +1,40 @@
+/* Remove glow from Backup Management heading */
+.backup-root .hero-row .page-hero,
+.backup-root .hero-row .header-text,
+.backup-root .hero-row .hero-text,
+.backup-root .hero-row h2 {
+  box-shadow: none !important;
+  text-shadow: none !important;
+  filter: none !important;
+}
 /* Backup Management styles */
 
 /* match Computer.css dashboard padding and hero spacing */
-.backup-root { padding: 20px; }
-.backup-root .hero-row { display:flex; align-items:center; justify-content:space-between; gap:18px; margin-bottom:32px; border-bottom:1.5px solid rgba(0,0,0,0.06); padding-bottom:18px }
+.backup-root { padding: 0; }
+.backup-root .hero-row { display:flex; align-items:center; justify-content:space-between; gap:18px; margin-bottom:32px; border-bottom:1.5px solid rgba(0,0,0,0.06); padding-bottom:18px; padding-left: 48px; padding-right: 48px; padding-top: 24px; }
 
-/* Ensure BackupHistory main padding matches the dashboard margins from Computer.css
-   BackupHistory.js uses an inline padding; override it here to keep layouts consistent */
-.backup-history main {
-  padding: 0 20px 40px 20px !important;
+/* BackupManagement grid padding - matches .buildings-col from Computer.css */
+.backup-root:not(.backup-history) .backup-grid { 
+  display: grid; 
+  grid-template-columns: 1fr; 
+  gap: 20px; 
+  align-items: start; 
+  margin-top: 20px;
+  padding-left: 48px;
+  padding-right: 48px;
+  padding-bottom: 48px;
 }
 
-.backup-grid { display: grid; grid-template-columns: 1fr; gap: 20px; align-items: start; }
+/* BackupHistory uses same padding */
+.backup-history .backup-grid {
+  display: grid; 
+  grid-template-columns: 1fr; 
+  gap: 20px; 
+  align-items: start;
+  padding-left: 48px;
+  padding-right: 48px;
+  padding-bottom: 48px;
+}
 
 .metrics-cards { display: flex; gap: 18px; margin-bottom: 12px; }
 .metric-card { background: #fff; padding: 18px; border-radius: 12px; box-shadow: 0 12px 30px rgba(15,23,42,0.06); flex:1; position: relative; }
@@ -20,7 +44,7 @@
 .metric-card .value { font-size:28px; font-weight:800; margin:6px 0 }
 .metric-card .note { font-size:13px; color:#15c112 }
 .metric-card .stat-icon { position:absolute; right:12px; top:12px }
-.metric-card .stat-icon .icon-bg { width:44px; height:44px; border-radius:10px; display:inline-flex; align-items:center; justify-content:center; box-shadow:0 8px 18px rgba(15,23,42,0.06); background: #e6f0ff }
+.metric-card .stat-icon .icon-bg { width:44px; height:44px; border-radius:10px; display:inline-flex; align-items:center; justify-content:center; box-shadow:0 8px 18px rgba(15,23,42,0.06); background: #f6f9ff }
 .metric-card .stat-icon .icon-bg.green { background: rgba(40,167,69,0.12) }
 .metric-card .stat-icon .icon-bg.storage { background: rgba(255,75,0,0.12) }
 .metric-card .stat-icon .icon-bg img { width:20px; height:20px; display:block; }
@@ -213,7 +237,52 @@
 .auto-settings .dropdown-menu .link-like { display:block; width:100%; text-align:left; padding:6px 12px; border-radius:6px; background:transparent; border:none; color:inherit }
 .auto-settings .dropdown-menu .link-like:hover { background: rgba(0,0,0,0.04) }
 
+/* Dark-mode overrides for the backup dropdown so options remain readable */
+.dark-mode .auto-settings .dropdown-toggle {
+  background-color: var(--bg-card);
+  color: var(--text-primary);
+  border-color: var(--border-color);
+}
+.dark-mode .auto-settings .dropdown-menu {
+  background-color: var(--bg-card) !important;
+  color: var(--text-primary) !important;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 12px 36px rgba(0,0,0,0.6);
+}
+.dark-mode .auto-settings .dropdown-menu .link-like {
+  color: var(--text-primary) !important;
+}
+.dark-mode .auto-settings .dropdown-menu .link-like:hover {
+  background: rgba(255,255,255,0.03) !important;
+}
+
 /* compact inline controls placed at top-right of the automatic card */
+
+/* Dark-mode: keep metric-card small icon backgrounds pale and readable
+   scoped to the BackupManagement view so other pages aren't affected */
+.dark-mode .dashboard-root.backup-root .metric-card .stat-icon .icon-bg { background: rgba(240,240,240,0.06) !important; }
+.dark-mode .dashboard-root.backup-root .metric-card.storage .stat-icon .icon-bg.storage { background: rgba(255,75,0,0.12) !important; }
+.dark-mode .dashboard-root.backup-root .metric-card .stat-icon .icon-bg.green { background: rgba(40,167,69,0.12) !important; }
+
+/* Make the middle (total) card slightly lighter so dark/black SVGs remain visible */
+.dark-mode .dashboard-root.backup-root .metric-card.total .stat-icon .icon-bg { background: rgba(250,250,250,0.12) !important; }
+
+/* Force SVG fills / colors to match accents where appropriate */
+.dark-mode .dashboard-root.backup-root .metric-card.storage .stat-icon .stat-svg,
+.dark-mode .dashboard-root.backup-root .metric-card.storage .stat-icon svg {
+  color: #ff6b00 !important;
+  fill: #ff6b00 !important;
+}
+.dark-mode .dashboard-root.backup-root .metric-card .stat-icon .icon-bg.green .stat-svg,
+.dark-mode .dashboard-root.backup-root .metric-card .stat-icon .icon-bg.green svg {
+  color: #0b8f36 !important;
+  fill: #0b8f36 !important;
+}
+.dark-mode .dashboard-root.backup-root .metric-card.total .stat-icon .stat-svg,
+.dark-mode .dashboard-root.backup-root .metric-card.total .stat-icon svg {
+  color: #111 !important;
+  fill: #111 !important;
+}
 .auto-inline { position: absolute; top: 12px; right: 18px; display:flex; align-items:center; gap:10px }
 .auto-inline .auto-inline-label { font-size:13px; color:#666; margin-right:6px }
 .auto-inline .toggle-switch { display:inline-block }

@@ -1,8 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import PrivateRoute from "./components/PrivateRoute";
 import Computer from "./views/Computer";
 import LoginPage from "./views/login-page";
+import Home from "./views/Home";
+import RiskAssessment from "./views/RiskAssessment";
 import ServerStatus from "./views/ServerStatus";
 import BackupManagement from "./views/BackupManagement";
 import BackupHistory from "./views/BackupHistory";
@@ -20,13 +23,15 @@ ReactDOM.render(
   <Router>
     <Switch>
       <Route exact path="/" component={LoginPage} />
-      <Route path="/computer" component={Computer} />
-      <Route path="/server-status" component={ServerStatus} />
-      <Route path="/backup/history" component={BackupHistory} />
-      <Route path="/backup" component={BackupManagement} />
-      <Route path="/settings" component={Settings} />
-      <Route path="/firewall/monitor" component={FirewallMonitor} />
-      <Route path="/user-manual" component={UserManual} />
+      <PrivateRoute path="/home" component={Home} />
+      <PrivateRoute path="/computer" component={Computer} />
+      <PrivateRoute path="/risk-assessment" component={RiskAssessment} />
+      <PrivateRoute path="/server-status" component={ServerStatus} />
+      <PrivateRoute path="/backup/history" component={BackupHistory} />
+      <PrivateRoute path="/backup" component={BackupManagement} />
+      <PrivateRoute path="/settings" component={Settings} />
+      <PrivateRoute path="/firewall/monitor" component={FirewallMonitor} />
+      <PrivateRoute path="/user-manual" component={UserManual} />
       <Route component={NotFound} />
     </Switch>
   </Router>,

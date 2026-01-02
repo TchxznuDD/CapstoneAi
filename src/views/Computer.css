@@ -1,13 +1,613 @@
+/* Centered card-based layout for Risk Assessment, matching Firewall Monitor */
+/* Professional, clean, and spacious Risk Assessment layout */
+.risk-centered {
+  /* Maximize usable width while keeping content centered like FirewallMonitor */
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 32px;
+  padding-right: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+@media (max-width: 1200px) {
+  .risk-centered { max-width: 1100px; }
+}
+@media (max-width: 900px) {
+  .risk-centered {
+    padding-left: 12px;
+    padding-right: 12px;
+    gap: 20px;
+  }
+}
+
+.risk-form-card.risk-form-wide.pro-card,
+.risk-table-card.risk-table-wide.pro-card {
+  /* Make cards wider and visually consistent with FirewallMonitor */
+  width: 100%;
+  max-width: 1200px;
+  margin-left: 0;
+  margin-right: 0;
+  font-size: 1.05em;
+  box-sizing: border-box;
+  margin-bottom: 28px;
+  background: #fff; /* white card for professional look */
+  border-radius: 14px;
+  box-shadow: 0 12px 36px rgba(15,23,42,0.06);
+  padding: 28px 36px;
+}
+
+.risk-form-row-wide {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(180px, 1fr)) 160px;
+  gap: 20px;
+  align-items: end;
+}
+
+.stats-grid.risk-stats-grid.risk-centered {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(220px, 1fr));
+  gap: 28px;
+  padding: 0 12px;
+}
+
+.risk-form .refresh-btn.pro-btn {
+  margin-top: 8px;
+  padding: 10px 28px;
+  font-size: 1em;
+}
+
+.vuln-suggestions-row { margin-top: 12px; }
+
+/* Improve table spacing */
+.risk-table-card.risk-table-wide.pro-card .risk-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.risk-table th, .risk-table td {
+  padding: 14px 16px;
+  vertical-align: middle;
+}
+.risk-table thead th {
+  background: linear-gradient(180deg, #fafafa 0%, #f3f3f3 100%);
+  border-bottom: 2px solid rgba(0,0,0,0.06);
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+}
+.risk-table tbody tr { border-bottom: 1px solid rgba(0,0,0,0.04); }
+
+/* Visual enhancements: subtle hover, zebra striping, compact badges */
+.risk-table tbody tr:hover { background: rgba(15,23,42,0.02); }
+.risk-table tbody tr:nth-child(odd) { background: rgba(0,0,0,0.01); }
+.risk-badge { display: inline-block; padding: 6px 10px; border-radius: 999px; font-weight: 700; font-size: 12px; }
+
+/* Home summary badge styles */
+.home-summary-badges { display:flex; gap:8px; margin-top:8px; flex-wrap:wrap; }
+.home-badge { padding:6px 8px; border-radius:999px; font-weight:700; font-size:11px; color:#222; }
+.home-badge.extreme { background:#ffdede; color:#d62828; }
+.home-badge.high { background:#fff3e0; color:#ff9800; }
+.home-badge.medium { background:#e8f3ff; color:#1976d2; }
+.home-badge.low { background:#eaffef; color:#0b8f36; }
+
+/* Stat icon sizing */
+.stat-icon .stat-svg { width:26px; height:26px; display:block; }
+.stat-card { display:flex; justify-content:space-between; align-items:center; }
+
+/* Clickable home summary card links */
+.home-card-link { display: block; text-decoration: none; color: inherit; }
+.home-card-link .stat-card { cursor: pointer; transition: transform 180ms ease, box-shadow 180ms ease; }
+.home-card-link .stat-card:hover { transform: translateY(-6px); box-shadow: 0 10px 30px rgba(15,23,42,0.12); }
+.home-card-link .stat-card:focus, .home-card-link .stat-card:focus-within { outline: 3px solid rgba(255,152,0,0.12); }
+.home-card-link .label { color: #666; font-weight:600; }
+.home-card-link .value { font-size: 22px; font-weight:800; }
+.home-card-link { display:block; color:inherit; text-decoration:none; }
+.home-card-link .stat-card { transition: transform .12s ease, box-shadow .12s ease; }
+.home-card-link:hover .stat-card { transform: translateY(-4px); box-shadow: 0 8px 26px rgba(15,23,42,0.08); }
+.home-card-link:focus { outline: 3px solid rgba(25,118,210,0.12); border-radius: 12px; }
+.home-card-link .label { color: rgba(0,0,0,0.7); }
+.home-card-link .value { color: inherit; }
+
+/* Keep tooltip inside card and slightly smaller */
+.vuln-tooltip { width: 280px; font-size: 13px; }
+
+/* Slightly enlarge stat cards */
+.stat-card { padding: 18px 20px; border-radius: 12px; }
+.stat-card .value { font-size: 30px; }
+
+/* Polishing: inputs, chips, tooltip, responsive stack */
+.risk-form label { display: flex; flex-direction: column; gap: 8px; }
+.risk-form select, .risk-form input.risk-vuln-input {
+  width: 100%;
+  max-width: 100%;
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid rgba(0,0,0,0.08);
+  background: #fff;
+}
+.vuln-chip {
+  display: inline-block;
+  white-space: normal;
+  padding: 6px 10px;
+  background: rgba(255,152,0,0.06);
+  color: #ff9800;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 12px;
+}
+.vuln-suggestions-row { display:flex; flex-wrap:wrap; gap:8px; }
+.vuln-label { position: relative; }
+.vuln-tooltip { right: 0; left: auto; top: 38px; }
+
+/* Make table responsive inside card */
+.risk-table-card .risk-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+.risk-table { width: 100%; min-width: 700px; }
+
+@media (max-width: 900px) {
+  .risk-form-row-wide { grid-template-columns: 1fr; }
+  .risk-form-card.risk-form-wide.pro-card,
+  .risk-table-card.risk-table-wide.pro-card { padding: 20px; }
+  .stats-grid.risk-stats-grid.risk-centered { grid-template-columns: repeat(auto-fit, minmax(180px,1fr)); }
+  .risk-table { min-width: 100%; }
+  .risk-centered { padding-left:12px; padding-right:12px; }
+}
+@media (max-width: 900px) {
+  .risk-centered {
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+}
+.risk-form-card.risk-form-wide.pro-card,
+.risk-table-card.risk-table-wide.pro-card {
+  max-width: 900px;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 1.08em;
+  box-sizing: border-box;
+  margin-bottom: 28px;
+}
+.risk-form-row-wide {
+  grid-template-columns: repeat(4, minmax(160px, 1fr)) 160px;
+}
+.stats-grid.risk-stats-grid.risk-centered {
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+  gap: 32px;
+  padding-left: 0;
+  padding-right: 0;
+}
+/* Professional two-column layout for Risk Assessment */
+.risk-assess-flex {
+  display: flex;
+  flex-direction: row;
+  gap: 32px;
+  align-items: flex-start;
+}
+@media (max-width: 1100px) {
+  .risk-assess-flex {
+    flex-direction: column;
+    gap: 24px;
+  }
+}
+.pro-card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(15,23,42,0.09);
+  padding: 32px 36px 24px 36px;
+  margin: 0;
+}
+.risk-form-wide.pro-card {
+  min-width: 340px;
+  max-width: 420px;
+  flex: 1 1 340px;
+}
+.risk-table-card.pro-card {
+  flex: 2 1 0;
+  min-width: 340px;
+  max-width: 100%;
+  padding: 32px 36px 24px 36px;
+}
+.pro-btn {
+  background: #ff9800;
+  color: #fff;
+  font-weight: 600;
+  border-radius: 8px;
+  font-size: 1.1em;
+  padding: 10px 32px;
+  box-shadow: 0 2px 8px rgba(255,152,0,0.08);
+  border: none;
+  transition: background 0.2s;
+}
+.pro-btn:hover {
+  background: #e67c00;
+}
+/* Risk Assessment Wide Layout Modernization */
+.risk-maxwidth {
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.risk-form-wide {
+  max-width: 100%;
+  width: 100%;
+  background: #fff8f0;
+  border-radius: 18px;
+  box-shadow: 0 8px 32px rgba(255,152,0,0.08);
+  padding: 24px 32px 18px 32px;
+  margin: 0 0 12px 0;
+}
+.risk-form-row-wide {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr) 140px;
+  gap: 24px;
+  align-items: end;
+}
+.vuln-label-span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.vuln-info-icon {
+  color: #ff9800;
+  cursor: pointer;
+  font-size: 1.1em;
+}
+.vuln-label {
+  position: relative;
+}
+.vuln-tooltip {
+  position: absolute;
+  top: 38px;
+  left: 0;
+  z-index: 10;
+  background: #fff;
+  border: 1px solid #ff9800;
+  border-radius: 8px;
+  padding: 12px;
+  font-size: 14px;
+  color: #333;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  width: 320px;
+}
+.vuln-suggestions-row {
+  margin-top: 8px;
+  font-size: 13px;
+  color: #888;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+.vuln-chip {
+  margin-right: 0;
+  background: #fff3e0;
+  padding: 2px 8px;
+  border-radius: 8px;
+  color: #ff9800;
+  font-weight: 500;
+  font-size: 13px;
+}
+/* Professional Risk Assessment Layout */
+.risk-stats-grid {
+  grid-template-columns: repeat(4, 1fr);
+  margin-bottom: 32px;
+}
+.risk-assess-section {
+  max-width: 900px;
+  margin: 0 auto 32px auto;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+.risk-form-card {
+  background: #fff8f0;
+  border-radius: 18px;
+  box-shadow: 0 8px 32px rgba(255,152,0,0.08);
+  padding: 32px 36px 18px 36px;
+  margin: 0 auto;
+  max-width: 540px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+.risk-form-card .risk-form {
+  background: none;
+  box-shadow: none;
+  padding: 0;
+  margin-bottom: 0;
+}
+.risk-form-row {
+  gap: 24px;
+}
+.risk-table-card.risk-table-wide {
+  margin-top: 0;
+  padding-left: 0;
+  padding-right: 0;
+}
+/* Align Overview hero like Computer */
+/* Remove .overview-align, use same .hero-row as Computer for Home */
+/* (Removed .home-hero-row border override; Home hero-row will now show divider) */
+/* Align hero text and actions to stats grid margin for Home */
+.hero-align {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding-left: 48px;
+  padding-right: 48px;
+  width: 100%;
+}
+@media (max-width: 900px) {
+  .hero-align {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+}
+/* --- Risk Assessment Marginalized Layout --- */
+.risk-hero {
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+/* Improved margin and centering for Risk Assessment */
+.risk-section.marginalized {
+  padding: 0 0 48px 0;
+  margin: 0;
+  background: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.risk-card-wide {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 8px 32px rgba(15,23,42,0.09);
+  padding: 32px 36px 18px 36px;
+  margin: 36px 0 28px 0;
+  max-width: 540px;
+  width: 100%;
+  min-width: 320px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+.risk-stats-row {
+  margin-top: 18px;
+  margin-bottom: 0;
+  justify-content: flex-start;
+}
+.risk-table-wide {
+  max-width: 1200px;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 32px;
+}
+.risk-table-card.risk-table-wide {
+  margin-top: 0;
+  padding-left: 24px;
+  padding-right: 24px;
+}
+@media (max-width: 900px) {
+  .risk-card-wide, .risk-table-wide, .risk-table-card.risk-table-wide {
+    padding-left: 2vw;
+    padding-right: 2vw;
+    max-width: 98vw;
+  }
+  .risk-card-wide { padding: 16px 2vw 10px 2vw; }
+}
+.risk-form-row {
+  justify-content: flex-start;
+}
+.risk-form label, .risk-form input, .risk-form select {
+  text-align: left;
+}
+.risk-form label {
+  align-items: flex-start;
+}
+.risk-form .refresh-btn {
+  align-self: flex-end;
+}
+@media (max-width: 900px) {
+  .risk-card-wide, .risk-table-wide, .risk-table-card.risk-table-wide {
+    padding-left: 6vw;
+    padding-right: 6vw;
+  }
+  .risk-card-wide { padding: 16px 6vw 10px 6vw; }
+}
+/* --- Risk Assessment Dark Mode & Layout Fixes --- */
+.dark-mode .risk-section {
+  background: var(--bg-main, #181c1f);
+}
+.dark-mode .risk-form,
+.dark-mode .risk-table-card,
+.dark-mode .risk-stat {
+  background: var(--bg-card, #23272b);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+}
+.dark-mode .risk-form label,
+.dark-mode .risk-label {
+  color: var(--text-secondary, #bbb);
+}
+.dark-mode .risk-form select,
+.dark-mode .risk-vuln-input {
+  background: #23272b;
+  color: var(--text-primary, #fff);
+  border: 1px solid #333;
+}
+.dark-mode .risk-table th {
+  background: #23272b;
+  color: #fff;
+  border-bottom: 2px solid #333;
+}
+.dark-mode .risk-table tr:nth-child(even) {
+  background: #23272b;
+}
+.dark-mode .risk-table tr {
+  border-top: 1px solid #222;
+}
+.dark-mode .risk-badge {
+  background: #23272b;
+  color: #fff;
+  border: 1px solid #444;
+}
+.dark-mode .risk-badge.risk-extreme { color: #ff6b6b; border-color: #ff6b6b; }
+.dark-mode .risk-badge.risk-high { color: #ffb347; border-color: #ffb347; }
+.dark-mode .risk-badge.risk-medium { color: #90caf9; border-color: #90caf9; }
+.dark-mode .risk-badge.risk-low { color: #7fffa2; border-color: #7fffa2; }
+
+.risk-form-row {
+  flex-wrap: wrap;
+  gap: 24px;
+}
+.risk-form label {
+  min-width: 180px;
+  flex: 1 1 180px;
+}
+.risk-vuln-input {
+  padding: 7px 10px;
+  border-radius: 7px;
+  border: 1px solid #e6e6e6;
+  font-size: 15px;
+  margin-top: 2px;
+  background: #fff;
+  color: #222;
+}
+.risk-form .refresh-btn {
+  min-width: 120px;
+  margin-left: 12px;
+}
+@media (max-width: 900px) {
+  .risk-section { padding: 18px 6vw 32px 6vw; }
+  .risk-form { padding: 14px 8px 6px 8px; }
+  .risk-stats-row { gap: 10px; }
+  .risk-table-card { padding: 8px 2px 2px 2px; }
+  .risk-form-row { gap: 12px; }
+  .risk-form label { min-width: 120px; }
+}
+/* --- Risk Assessment Styles --- */
+.risk-section {
+  padding: 32px 48px 48px 48px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.risk-form {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 8px 24px rgba(15,23,42,0.07);
+  padding: 22px 24px 10px 24px;
+  margin-bottom: 24px;
+}
+.risk-form-row {
+  display: flex;
+  gap: 18px;
+  align-items: flex-end;
+  flex-wrap: wrap;
+}
+.risk-form label {
+  display: flex;
+  flex-direction: column;
+  font-weight: 700;
+  color: #444;
+  font-size: 14px;
+  gap: 4px;
+}
+.risk-form select {
+  padding: 7px 10px;
+  border-radius: 7px;
+  border: 1px solid #e6e6e6;
+  font-size: 15px;
+  margin-top: 2px;
+}
+.risk-form .refresh-btn {
+  margin-top: 18px;
+  height: 38px;
+}
+.risk-stats-row {
+  display: flex;
+  gap: 18px;
+  margin-bottom: 18px;
+}
+.risk-stat {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 16px rgba(15,23,42,0.06);
+  padding: 18px 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 110px;
+}
+.risk-label {
+  font-size: 15px;
+  color: #888;
+  margin-bottom: 4px;
+}
+.risk-value {
+  font-size: 30px;
+  font-weight: 900;
+}
+.risk-extreme .risk-value, .risk-badge.risk-extreme { color: #d62828; }
+.risk-high .risk-value, .risk-badge.risk-high { color: #ff9800; }
+.risk-medium .risk-value, .risk-badge.risk-medium { color: #1976d2; }
+.risk-low .risk-value, .risk-badge.risk-low { color: #0b8f36; }
+.risk-table-card {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 8px 24px rgba(15,23,42,0.07);
+  padding: 18px 18px 8px 18px;
+  margin-top: 10px;
+}
+.risk-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 15px;
+}
+.risk-table th, .risk-table td {
+  padding: 12px 10px;
+  text-align: left;
+}
+.risk-table th {
+  background: #f7f7fa;
+  font-weight: 800;
+  color: #333;
+  border-bottom: 2px solid #f0f0f0;
+}
+.risk-table tr {
+  border-top: 1px solid #f2f2f2;
+}
+.risk-table tr:nth-child(even) {
+  background: #fafbfc;
+}
+.risk-badge {
+  display: inline-block;
+  font-weight: 800;
+  padding: 4px 14px;
+  border-radius: 16px;
+  font-size: 14px;
+  background: #f7f7fa;
+  letter-spacing: 0.5px;
+}
+.risk-badge.risk-extreme { background: #ffeaea; color: #d62828; }
+.risk-badge.risk-high { background: #fff3e0; color: #ff9800; }
+.risk-badge.risk-medium { background: #e3f2fd; color: #1976d2; }
+.risk-badge.risk-low { background: #eaffef; color: #0b8f36; }
 /* dashboard.css – extracted styling */
 
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  background: linear-gradient(135deg, #ff7b00, #ff4b00);
+  background: #f5f7fa;
 }
 
 .dashboard-root {
-  padding: 20px;
+  padding: 0;
 }
 
 .app-header {
@@ -15,25 +615,86 @@ body {
   align-items: center;
   justify-content: space-between;
   background: linear-gradient(90deg, #ff7b00 0%, #ff4b00 100%);
-  padding: 22px 36px;
-  border-radius: 10px;
+  padding: 28px 48px;
+  border-radius: 0;
   color: #fff;
   position: sticky;
   top: 0;
   z-index: 100;
   box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+  margin: 0;
 }
+
+/* Hamburger button and side-drawer */
+.hamburger-btn {
+  background: transparent;
+  border: none;
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  margin-right: 8px;
+  cursor: pointer;
+  border-radius: 8px;
+}
+.hamburger-btn:hover { background: rgba(255,255,255,0.04); }
+
+.side-drawer {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 280px;
+  background: #fff;
+  transform: translateX(-110%);
+  transition: transform 240ms cubic-bezier(.2,.9,.2,1);
+  z-index: 1200;
+  box-shadow: 8px 0 28px rgba(0,0,0,0.12);
+  display: flex;
+  flex-direction: column;
+}
+.side-drawer.open { transform: translateX(0); }
+.drawer-header { padding: 18px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #f2f2f2 }
+.drawer-close { background: transparent; border: none; font-size: 18px; cursor: pointer }
+.drawer-links { padding: 12px 16px; display:flex; flex-direction:column; gap:8px }
+.drawer-links .nav-item { color: #222; background: transparent; padding: 10px 12px; border-radius:8px; font-weight:700; display:flex; align-items:center; gap:10px }
+.drawer-links .nav-item .nav-icon { width:20px; height:20px; display:inline-flex; align-items:center; justify-content:center; color: inherit }
+.drawer-links .nav-item.active { background: rgba(255,123,0,0.08); color: #ff7b00 }
+
+/* Ensure SVG icons inside drawer inherit the visible color in light mode */
+.drawer-links .nav-item svg { display:block; width:18px; height:18px; fill: currentColor; color: inherit }
+.drawer-close { color: #444 }
+.drawer-header strong { color: #222 }
+
+/* Make active highlight slightly stronger on light backgrounds */
+.drawer-links .nav-item.active { background: rgba(255,123,0,0.12); color: #d95a00 }
+
+.drawer-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0); pointer-events: none; transition: background 200ms ease; z-index: 1100 }
+.drawer-backdrop.open { background: rgba(0,0,0,0.32); pointer-events: auto }
+
+/* Dark mode support for drawer */
+.dark-mode .side-drawer {
+  background: var(--bg-card);
+  color: var(--text-primary);
+  border-right: 1px solid var(--border-color);
+}
+.dark-mode .drawer-header { border-bottom-color: var(--border-color) }
+.dark-mode .drawer-links .nav-item { color: var(--text-secondary) }
+.dark-mode .drawer-links .nav-item.active { background: rgba(255,255,255,0.06); color: var(--orange-primary) }
+.dark-mode .drawer-backdrop.open { background: rgba(0,0,0,0.6) }
+.dark-mode .drawer-close { color: var(--text-secondary) }
 
 .header-nav-group {
   display: flex;
   align-items: center;
-  gap: 32px;
+  gap: 12px;
 }
 
 .brand {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 8px;
   color: #fff;
 }
 
@@ -311,6 +972,7 @@ body {
   pointer-events: auto;
 }
 
+
 .header-text h2 {
   margin: 0;
   font-size: 28px;
@@ -325,41 +987,52 @@ body {
 }
 
 .refresh-btn {
-  background: transparent;
-  border: 2px solid rgba(255,255,255,0.18);
-  color: #fff;
+  background: linear-gradient(90deg, #ff9800 0%, #ff6b00 100%) !important;
+  border: 2px solid #ff9800 !important;
+  color: #fff !important;
   padding: 8px 14px;
   border-radius: 18px;
   cursor: pointer;
   font-weight: 800;
+  display: inline-block;
+  visibility: visible;
+  transition: background 0.2s, border-color 0.2s;
 }
 
-.refresh-btn:hover { background: rgba(255,255,255,0.04); }
+.refresh-btn:hover {
+  background: linear-gradient(90deg, #ffb347 0%, #ff9800 100%) !important;
+  border-color: #ff9800 !important;
+}
 
 /* external refresh placed outside the header */
 .external-refresh {
   display: flex;
   justify-content: flex-end;
   margin: 0;
+  gap: 12px;
+  align-items: center;
+  flex-shrink: 0;
 }
 .external-refresh .refresh-btn {
   padding: 10px 18px;
   border-radius: 18px;
   font-size: 15px;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+  box-shadow: 0 4px 12px rgba(255, 123, 0, 0.25);
+  flex-shrink: 0;
 }
 
 .add-btn {
-  background: rgba(255,255,255,0.12);
+  background: #2c3e50;
   color: #fff;
   border: none;
   padding: 10px 14px;
   border-radius: 18px;
-  margin-right: 8px;
+  margin-right: 0;
   font-weight: 800;
   cursor: pointer;
+  box-shadow: 0 4px 12px rgba(44, 62, 80, 0.25);
 }
-.add-btn:hover { background: rgba(255,255,255,0.16); }
+.add-btn:hover { background: #1a252f; }
 
 /* Options dropdown styles (matches add-btn tone) */
 .options-menu{
@@ -425,6 +1098,14 @@ body {
   margin-bottom: 32px;
   border-bottom: 1.5px solid rgba(0,0,0,0.06);
   padding-bottom: 18px;
+  padding-left: 48px;
+  padding-right: 48px;
+  padding-top: 24px;
+}
+
+/* Add extra space below hero text before divider for Home only */
+.page-hero .hero-align, .page-hero .hero-text {
+  margin-bottom: 18px;
 }
 .page-hero {
   margin-top: 12px;
@@ -435,12 +1116,12 @@ body {
   margin: 0;
   font-size: 36px;
   font-weight: 900;
-  color: #fff;
+  color: #1a202c;
   line-height: 1.05;
 }
 .hero-text p {
   margin: 8px 0 0 0;
-  color: rgba(255,255,255,0.95);
+  color: #4a5568;
   font-size: 14px;
 }
 
@@ -454,6 +1135,8 @@ body {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 15px;
+  padding-left: 48px;
+  padding-right: 48px;
 }
 
 .stat-card {
@@ -526,6 +1209,9 @@ body {
   display: flex;
   flex-direction: column;
   gap: 40px; /* larger gap so building sections breathe */
+  padding-left: 48px;
+  padding-right: 48px;
+  padding-bottom: 48px;
 }
 
 .building {
@@ -775,6 +1461,51 @@ body {
 
 .delete-icon-btn svg {
   display: block;
+}
+
+/* Dark-mode: keep small icon backgrounds and status pills matching
+   their light-mode pale colors for uniformity (e.g. green svg bg -> pale green) */
+
+/* Dark-mode (Computer view only): keep small icon backgrounds and status pills matching
+   their light-mode pale colors for uniformity (e.g. green svg bg -> pale green) */
+
+.dark-mode .dashboard-root.computers-view .stat-card.stat-online .icon-bg { background: rgba(10,143,54,0.12) !important; }
+.dark-mode .dashboard-root.computers-view .stat-card.stat-offline .icon-bg { background: rgba(214,40,40,0.12) !important; }
+.dark-mode .dashboard-root.computers-view .stat-card.stat-total .icon-bg { background: rgba(255,123,0,0.12) !important; }
+
+.dark-mode .dashboard-root.computers-view .location-icon { background: #fff6f0 !important; }
+.dark-mode .dashboard-root.computers-view .station-thumb { background: rgba(40,167,69,0.16) !important; }
+
+.dark-mode .dashboard-root.computers-view .status-pill.online { background: rgba(10,143,54,0.12) !important; color: #0b8f36 !important; }
+.dark-mode .dashboard-root.computers-view .status-pill.offline { background: rgba(214,40,40,0.12) !important; color: #d62828 !important; }
+
+/* Stronger overrides (Computer view only) to ensure the small icon boxes keep pale colors in dark mode.
+   These use higher-specificity selectors and also force SVG fills to match. */
+.dark-mode .dashboard-root.computers-view .stat-card.stat-online .stat-icon .icon-bg,
+.dark-mode .dashboard-root.computers-view .stat-card.stat-online .icon-bg,
+.dark-mode .dashboard-root.computers-view .stat-icon .icon-bg.stat-online-ensure {
+  background: rgba(10,143,54,0.12) !important;
+  background-image: none !important;
+  opacity: 1 !important;
+}
+.dark-mode .dashboard-root.computers-view .stat-card.stat-offline .stat-icon .icon-bg,
+.dark-mode .dashboard-root.computers-view .stat-card.stat-offline .icon-bg,
+.dark-mode .dashboard-root.computers-view .stat-icon .icon-bg.stat-offline-ensure {
+  background: rgba(214,40,40,0.12) !important;
+  background-image: none !important;
+  opacity: 1 !important;
+}
+
+/* Force icon SVGs to use the intended accent colors inside the pale boxes (Computer view only) */
+.dark-mode .dashboard-root.computers-view .stat-card.stat-online .stat-icon .stat-svg,
+.dark-mode .dashboard-root.computers-view .stat-card.stat-online .stat-icon svg {
+  color: #0b8f36 !important;
+  fill: #0b8f36 !important;
+}
+.dark-mode .dashboard-root.computers-view .stat-card.stat-offline .stat-icon .stat-svg,
+.dark-mode .dashboard-root.computers-view .stat-card.stat-offline .stat-icon svg {
+  color: #d62828 !important;
+  fill: #d62828 !important;
 }
 
 /* Warning row inside modal */

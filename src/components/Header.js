@@ -1,43 +1,165 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import '../views/Computer.css';
+import './Header.css';
 import fatimaLogo from '../assets/fatima-logo.png';
 
 export default function Header({ active }) {
   const history = useHistory();
+  const [drawerOpen, setDrawerOpen] = useState(false);
+
+  // Real-time clock and date state (24-hour, white, small)
+  const [currentTime, setCurrentTime] = useState(() => {
+    const now = new Date();
+    return now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true });
+  });
+  const [currentDate, setCurrentDate] = useState(() => {
+    const now = new Date();
+    return now.toLocaleDateString([], { year: 'numeric', month: 'short', day: '2-digit' });
+  });
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      const now = new Date();
+      setCurrentTime(now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true }));
+      setCurrentDate(now.toLocaleDateString([], { year: 'numeric', month: 'short', day: '2-digit' }));
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  function scrollTop() {
+    try { window.scrollTo({ top: 0, behavior: 'smooth' }); } catch (err) { window.scrollTo(0, 0); }
+  }
 
   function handleBrandClick(e) {
     // Prevent default Link navigation so we can control scroll behaviour
     e.preventDefault();
-    const target = '/computer';
+    const target = '/home';
     if (history.location && history.location.pathname === target) {
       // already on computer page — scroll to top smoothly
-      try { window.scrollTo({ top: 0, behavior: 'smooth' }); } catch (err) { window.scrollTo(0, 0); }
+      scrollTop();
       return;
     }
     // navigate then scroll to top after a short delay so the target page rendered
     history.push(target);
-    setTimeout(() => { try { window.scrollTo({ top: 0, behavior: 'smooth' }); } catch (err) { window.scrollTo(0, 0); } }, 120);
+    setTimeout(scrollTop, 120);
   }
+
+  function handleNavClick(e, target) {
+    e.preventDefault();
+    if (history.location && history.location.pathname === target) {
+      scrollTop();
+      return;
+    }
+    history.push(target);
+    setTimeout(scrollTop, 120);
+  }
+
+  // Close drawer smoothly, then navigate so the closing animation is visible
+  function navigateClose(target) {
+    setDrawerOpen(false);
+    // match CSS transition (~220ms)
+    setTimeout(() => {
+      if (history.location && history.location.pathname === target) {
+        scrollTop();
+        return;
+      }
+      history.push(target);
+      setTimeout(scrollTop, 120);
+    }, 220);
+  }
+
+  // Close drawer with Escape and prevent body scroll while open
+  useEffect(() => {
+    function onKey(e) {
+      if (e.key === 'Escape') setDrawerOpen(false);
+    }
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, []);
+
+  useEffect(() => {
+    const prev = document.body.style.overflow;
+    if (drawerOpen) document.body.style.overflow = 'hidden';
+    else document.body.style.overflow = prev || '';
+    return () => { document.body.style.overflow = prev || ''; };
+  }, [drawerOpen]);
 
   return (
     <header className="app-header">
-      <Link to="/computer" className="brand" onClick={handleBrandClick} aria-label="Go to Computers">
-        <img src={fatimaLogo} alt="logo" />
-        <div>
-          <h1>Barangay Fatima</h1>
-          <p>Network Monitoring Dashboard</p>
+      <div className="header-nav-group">
+        <button className="hamburger-btn" aria-label="Open navigation" onClick={() => setDrawerOpen(s => !s)}>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>
+        </button>
+
+        <Link to="/home" className="brand" onClick={(e)=>{ setDrawerOpen(false); handleBrandClick(e); }} aria-label="Go to Home">
+          <img src={fatimaLogo} alt="logo" />
+          <div>
+            <h1>Barangay Fatima</h1>
+            <p>Network Monitoring Dashboard</p>
+          </div>
+        </Link>
+      </div>
+
+      
+
+      {/* Side drawer for small screens / hamburger menu */}
+      <div className={`side-drawer ${drawerOpen ? 'open' : ''}`} role="dialog" aria-hidden={!drawerOpen}>
+        <div className="drawer-header">
+          <strong>Menu</strong>
+          <button className="drawer-close" onClick={() => setDrawerOpen(false)} aria-label="Close menu">✕</button>
         </div>
-      </Link>
+        <div className="drawer-links">
+          <a href="/home" onClick={(e)=>{ e.preventDefault(); navigateClose('/home'); }} className={`nav-item ${active === 'home' ? 'active' : ''}`}>
+            <span className="nav-icon" aria-hidden>
+              <svg viewBox="0 0 24 24" width="18" height="18"><path d="M12 3l9 8h-3v7h-12v-7h-3l9-8z" fill="currentColor"/></svg>
+            </span>
+            Home
+          </a>
 
-      <nav className="nav-links" aria-label="Main navigation">
-        <Link to="/computer" className={`nav-item ${active === 'computers' ? 'active' : ''}`}>Computers</Link>
-        <Link to="/server-status" className={`nav-item ${active === 'server-status' ? 'active' : ''}`}>Server Status</Link>
-        <Link to="/firewall/monitor" className={`nav-item ${active === 'firewall-monitor' ? 'active' : ''}`}>Firewall Monitor</Link>
-        <Link to="/backup" className={`nav-item ${active === 'backup' ? 'active' : ''}`}>Backup</Link>
-      </nav>
+          <a href="/computer" onClick={(e)=>{ e.preventDefault(); navigateClose('/computer'); }} className={`nav-item ${active === 'computers' ? 'active' : ''}`}>
+            <span className="nav-icon" aria-hidden>
+              <svg viewBox="0 0 24 24" width="18" height="18"><path d="M3 5h18v11h-18zM1 19h22v2h-22z" fill="currentColor"/></svg>
+            </span>
+            Computers
+          </a>
 
-      <div className="header-right">
+          <a href="/server-status" onClick={(e)=>{ e.preventDefault(); navigateClose('/server-status'); }} className={`nav-item ${active === 'server-status' ? 'active' : ''}`}>
+            <span className="nav-icon" aria-hidden>
+              <svg viewBox="0 0 24 24" width="18" height="18"><path d="M4 6h16v4h-16zM4 12h16v2h-16zM4 16h16v2h-16z" fill="currentColor"/></svg>
+            </span>
+            Infrastructure
+          </a>
+
+          <a href="/firewall/monitor" onClick={(e)=>{ e.preventDefault(); navigateClose('/firewall/monitor'); }} className={`nav-item ${active === 'firewall-monitor' ? 'active' : ''}`}>
+            <span className="nav-icon" aria-hidden>
+              <svg viewBox="0 0 24 24" width="18" height="18"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z" fill="currentColor"/></svg>
+            </span>
+            Firewall Monitor
+          </a>
+
+          <a href="/risk-assessment" onClick={(e)=>{ e.preventDefault(); navigateClose('/risk-assessment'); }} className={`nav-item ${active === 'risk' ? 'active' : ''}`}>
+            <span className="nav-icon" aria-hidden>
+              <svg viewBox="0 0 24 24" width="18" height="18"><path d="M11 15h2v2h-2v-2zm0-8h2v6h-2V7zm1-5C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z" fill="currentColor"/></svg>
+            </span>
+            Risk Assessment
+          </a>
+
+          <a href="/backup" onClick={(e)=>{ e.preventDefault(); navigateClose('/backup'); }} className={`nav-item ${active === 'backup' ? 'active' : ''}`}>
+            <span className="nav-icon" aria-hidden>
+              <svg viewBox="0 0 24 24" width="18" height="18"><path d="M19 15v-2h-4v-3l-5 4 5 4v-3h4zM5 7v2h4v3l5-4-5-4v3h-4z" fill="currentColor"/></svg>
+            </span>
+            Backup
+          </a>
+        </div>
+      </div>
+      <div className={`drawer-backdrop ${drawerOpen ? 'open' : ''}`} onClick={() => setDrawerOpen(false)} />
+
+      <div className="header-right" style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+        {/* Real-time clock, left of NotificationBell */}
+        <span style={{ color: 'white', fontSize: '0.95em', fontWeight: 400, letterSpacing: '0.05em', minWidth: 90, textAlign: 'right', display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
+          <span>{currentTime}</span>
+          <span style={{ fontSize: '0.8em', opacity: 0.85 }}>{currentDate}</span>
+        </span>
         <NotificationBell />
         <AdminDropdown />
       </div>
@@ -201,8 +323,8 @@ function AdminDropdown() {
     <div className="dropdown" ref={ref}>
       <button className="dropdown-toggle" onClick={() => setOpen(s => !s)} aria-haspopup="true" aria-expanded={open}>Admin ▾</button>
       <ul className={`dropdown-menu ${open ? 'open' : ''}`} role="menu" aria-hidden={!open}>
-        <li role="menuitem"><Link to="/settings" onClick={() => setOpen(false)}>Settings</Link></li>
-        <li role="menuitem"><Link to="/user-manual" onClick={() => setOpen(false)}>User Manual</Link></li>
+        <li role="menuitem"><Link to="/settings" onClick={(e)=>{ e.preventDefault(); setOpen(false); history.push('/settings'); setTimeout(()=>{ try{ window.scrollTo({top:0, behavior:'smooth'});}catch(_){ window.scrollTo(0,0);} }, 120); }}>Settings</Link></li>
+        <li role="menuitem"><Link to="/user-manual" onClick={(e)=>{ e.preventDefault(); setOpen(false); history.push('/user-manual'); setTimeout(()=>{ try{ window.scrollTo({top:0, behavior:'smooth'});}catch(_){ window.scrollTo(0,0);} }, 120); }}>User Manual</Link></li>
         <li role="menuitem"><button className="link-like" onClick={handleLogout}>Logout</button></li>
       </ul>
     </div>

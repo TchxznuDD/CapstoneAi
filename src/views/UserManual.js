@@ -112,7 +112,8 @@ export default function UserManual() {
         'Understanding the Interface',
         'Header Navigation Menu',
         'Notification System',
-        'Refresh Functionality'
+        'Refresh Functionality',
+        'Header links auto-scroll to top after navigation'
       ]
     },
     {
@@ -134,19 +135,14 @@ export default function UserManual() {
     },
     {
       id: 'server-status',
-      title: 'Server Status',
+      title: 'Infrastructure Status',
       iconType: 'server',
       items: [
-        'Understanding Server Metrics',
-        'CPU Usage Monitoring (Real-time)',
-        'Memory Usage Tracking (Used/Total GB)',
-        'Disk Space Monitoring',
-        'Network Traffic Analysis (In/Out)',
-        'Server Specifications Display',
-        'System Information (Kernel, Architecture)',
-        'Uptime and Last Boot Time',
-        'Load Average and Process Count',
-        'Ubuntu Server Details'
+        'Two-panels (1×2) layout: Server + MikroTik Router',
+        'Server Metrics: CPU, Memory, Disk, Net In/Out',
+        'Server Specs and System Info (Kernel, Arch, Processes)',
+        'Router Metrics: CPU, Memory, WAN/LAN throughput',
+        'Router System Info: Model, Firmware, Temperature, DHCP leases',
       ]
     },
     {
@@ -180,8 +176,7 @@ export default function UserManual() {
         'Storage Usage Statistics',
         'Backup Progress Indicator',
         'Success Rate Tracking',
-        'Expandable History View',
-        'Junior Staff: Auto backups disabled; deletes require Admin Passkey'
+        'Expandable History View'
       ]
     },
     {
@@ -190,11 +185,11 @@ export default function UserManual() {
       iconType: 'settings',
       items: [
         'Changing Password',
-        'Notification Preferences',
-        'Auto-refresh Settings (30s default)',
-        'Display Customization',
+        'Notification Preferences (apply immediately — no Save button)',
+        'Auto-refresh Settings (apply immediately)',
+        'Display Customization (Dark Mode toggle)',
+        'Date/time pickers optimized for dark mode (white calendar icon)',
         'System Preferences',
-        'Admin Passkey Management (Set/Reset)',
         'Toast Notifications',
         'Modal Dialogs',
         'Form Validation'
@@ -205,7 +200,6 @@ export default function UserManual() {
       title: 'Security Best Practices',
       iconType: 'security',
       items: [
-        'Admin Passkey (Default: FATIMA-ADMIN-ONLY)',
         'User Access Control',
         'Firewall Rule Guidelines',
         'Backup Security',
@@ -342,16 +336,6 @@ export default function UserManual() {
               <h4>Admin Password (Default)</h4>
               <p className="ref-value">admin</p>
               <p className="ref-desc">Used for delete confirmations in Admin</p>
-            </div>
-            <div className="ref-item">
-              <div className="ref-icon orange">
-                <svg viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M12.65 10C11.7 7.31 8.9 5.5 5.77 6.12c-2.29.46-4.15 2.29-4.63 4.58C.32 14.57 3.26 18 7 18c2.61 0 4.83-1.67 5.65-4H17v2c0 1.1.9 2 2 2s2-.9 2-2v-2c1.1 0 2-.9 2-2s-.9-2-2-2h-8.35zM7 14c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/>
-                </svg>
-              </div>
-              <h4>Admin Passkey (Default)</h4>
-              <p className="ref-value">FATIMA-ADMIN-ONLY</p>
-              <p className="ref-desc">Required for delete confirmations in Junior</p>
             </div>
             <div className="ref-item">
               <div className="ref-icon blue">

@@ -1,0 +1,10 @@
+/* Global tokens and utilities for the prototype-web app */
+:root {
+  --home-gutter: 32px;
+  --card-bg: #ffffff;
+  --card-radius: 16px;
+  --shadow-1: 0 12px 30px rgba(15,23,42,0.08);
+}
+
+/* Small global utility that is intentionally broad */
+.container-center { max-width: 1200px; margin-left: auto; margin-right: auto; }

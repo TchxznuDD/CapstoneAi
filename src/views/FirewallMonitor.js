@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Header from '../components/Header';
 import './FirewallMonitor.css';
 import { getDarkMode, applyDarkMode } from '../utils/theme';
@@ -16,50 +16,53 @@ import {
 } from 'chart.js';
 import { Line, Bar, Doughnut } from 'react-chartjs-2';
 
-// Register Chart.js components
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend,
-  ArcElement
-);
+// Register Chart.js components (guarded for HMR / multiple imports)
+if (!ChartJS.__registered) {
+  ChartJS.register(
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
+    BarElement,
+    Title,
+    Tooltip,
+    Legend,
+    ArcElement
+  );
+  ChartJS.__registered = true;
+}
 
-// Mock data for active firewall rules
+// Mock data for MikroTik RouterOS firewall rules (stateful firewall)
 const mockFirewallRules = [
-  { id: 1, ruleName: 'Allow SSH', sourceIP: '0.0.0.0/0', destIP: '192.168.1.5', port: '22', protocol: 'TCP', action: 'ALLOW', status: 'Active' },
-  { id: 2, ruleName: 'Allow HTTP/HTTPS', sourceIP: '0.0.0.0/0', destIP: '192.168.1.5', port: '80,443', protocol: 'TCP', action: 'ALLOW', status: 'Active' },
-  { id: 3, ruleName: 'Block Telnet', sourceIP: '0.0.0.0/0', destIP: '192.168.1.5', port: '23', protocol: 'TCP', action: 'BLOCK', status: 'Active' },
-  { id: 4, ruleName: 'Allow DNS', sourceIP: '192.168.1.0/24', destIP: '8.8.8.8', port: '53', protocol: 'UDP', action: 'ALLOW', status: 'Active' },
-  { id: 5, ruleName: 'Allow MySQL (LAN)', sourceIP: '192.168.1.0/24', destIP: '192.168.1.5', port: '3306', protocol: 'TCP', action: 'ALLOW', status: 'Active' },
-  { id: 6, ruleName: 'Block External ICMP', sourceIP: '!192.168.1.0/24', destIP: '192.168.1.0/24', port: 'N/A', protocol: 'ICMP', action: 'BLOCK', status: 'Active' },
-  { id: 7, ruleName: 'SSH Brute-Force Protection', sourceIP: '0.0.0.0/0', destIP: '192.168.1.5', port: '22', protocol: 'TCP', action: 'BLOCK', status: 'Active' },
-  { id: 8, ruleName: 'API Rate Limiting', sourceIP: '0.0.0.0/0', destIP: '192.168.1.5', port: '8080', protocol: 'TCP', action: 'ALLOW', status: 'Active' },
-  { id: 9, ruleName: 'Allow ICMP (LAN)', sourceIP: '192.168.1.0/24', destIP: '192.168.1.0/24', port: 'N/A', protocol: 'ICMP', action: 'ALLOW', status: 'Active' },
-  { id: 10, ruleName: 'Block Suspicious IP', sourceIP: '203.0.113.45', destIP: '192.168.1.5', port: '*', protocol: 'ALL', action: 'BLOCK', status: 'Active' },
+  { id: 1, ruleName: 'Accept Established/Related', sourceIP: '0.0.0.0/0', destIP: '0.0.0.0/0', port: '*', protocol: 'TCP', action: 'ALLOW', status: 'Active', chain: 'input', connection: 'established,related' },
+  { id: 2, ruleName: 'Drop Invalid Connections', sourceIP: '0.0.0.0/0', destIP: '0.0.0.0/0', port: '*', protocol: 'ALL', action: 'BLOCK', status: 'Active', chain: 'input', connection: 'invalid' },
+  { id: 3, ruleName: 'Allow SSH from LAN', sourceIP: '192.168.1.0/24', destIP: '192.168.1.1', port: '22', protocol: 'TCP', action: 'ALLOW', status: 'Active', chain: 'input', connection: 'new' },
+  { id: 4, ruleName: 'Allow Winbox from LAN', sourceIP: '192.168.1.0/24', destIP: '192.168.1.1', port: '8291', protocol: 'TCP', action: 'ALLOW', status: 'Active', chain: 'input', connection: 'new' },
+  { id: 5, ruleName: 'Allow DNS', sourceIP: '192.168.1.0/24', destIP: '0.0.0.0/0', port: '53', protocol: 'UDP', action: 'ALLOW', status: 'Active', chain: 'forward', connection: 'new' },
+  { id: 6, ruleName: 'Allow HTTP/HTTPS', sourceIP: '192.168.1.0/24', destIP: '0.0.0.0/0', port: '80,443', protocol: 'TCP', action: 'ALLOW', status: 'Active', chain: 'forward', connection: 'new' },
+  { id: 7, ruleName: 'FastTrack Established', sourceIP: '0.0.0.0/0', destIP: '0.0.0.0/0', port: '*', protocol: 'ALL', action: 'ALLOW', status: 'Active', chain: 'forward', connection: 'established,related' },
+  { id: 8, ruleName: 'Drop Invalid Forward', sourceIP: '0.0.0.0/0', destIP: '0.0.0.0/0', port: '*', protocol: 'ALL', action: 'BLOCK', status: 'Active', chain: 'forward', connection: 'invalid' },
+  { id: 9, ruleName: 'Block Telnet from WAN', sourceIP: '0.0.0.0/0', destIP: '192.168.1.1', port: '23', protocol: 'TCP', action: 'BLOCK', status: 'Active', chain: 'input', connection: 'new' },
+  { id: 10, ruleName: 'NAT Masquerade', sourceIP: '192.168.1.0/24', destIP: '0.0.0.0/0', port: '*', protocol: 'ALL', action: 'ALLOW', status: 'Active', chain: 'srcnat', connection: 'new' },
 ];
 
-// Mock data for blocked connection attempts
+// Mock data for MikroTik blocked connection attempts (stateful firewall drops)
 const mockBlockedConnections = [
-  { id: 1, time: '2025-11-27 14:35:22', sourceIP: '203.0.113.45', destIP: '192.168.1.5', port: '22', protocol: 'TCP', reason: 'Blacklisted IP' },
-  { id: 2, time: '2025-11-27 14:32:18', sourceIP: '185.220.101.23', destIP: '192.168.1.5', port: '23', protocol: 'TCP', reason: 'Telnet blocked' },
-  { id: 3, time: '2025-11-27 14:28:45', sourceIP: '45.142.212.61', destIP: '192.168.1.5', port: '22', protocol: 'TCP', reason: 'SSH brute-force attempt' },
-  { id: 4, time: '2025-11-27 14:25:33', sourceIP: '91.203.5.165', destIP: '192.168.1.5', port: '3389', protocol: 'TCP', reason: 'Unauthorized port' },
-  { id: 5, time: '2025-11-27 14:22:11', sourceIP: '158.69.133.20', destIP: '192.168.1.5', port: '22', protocol: 'TCP', reason: 'SSH brute-force attempt' },
-  { id: 6, time: '2025-11-27 14:18:59', sourceIP: '203.0.113.45', destIP: '192.168.1.5', port: '80', protocol: 'TCP', reason: 'Blacklisted IP' },
-  { id: 7, time: '2025-11-27 14:15:42', sourceIP: '89.248.165.89', destIP: '192.168.1.5', port: '23', protocol: 'TCP', reason: 'Telnet blocked' },
-  { id: 8, time: '2025-11-27 14:12:27', sourceIP: '103.253.145.12', destIP: '192.168.1.5', port: '22', protocol: 'TCP', reason: 'SSH brute-force attempt' },
-  { id: 9, time: '2025-11-27 14:08:13', sourceIP: '45.142.212.61', destIP: '192.168.1.5', port: '445', protocol: 'TCP', reason: 'Unauthorized port' },
-  { id: 10, time: '2025-11-27 14:05:55', sourceIP: '185.220.101.23', destIP: '192.168.1.5', port: '22', protocol: 'TCP', reason: 'SSH brute-force attempt' },
-  { id: 11, time: '2025-11-27 14:02:38', sourceIP: '91.203.5.165', destIP: '192.168.1.5', port: '3389', protocol: 'TCP', reason: 'Unauthorized port' },
-  { id: 12, time: '2025-11-27 13:58:21', sourceIP: '158.69.133.20', destIP: '192.168.1.5', port: '23', protocol: 'TCP', reason: 'Telnet blocked' },
-  { id: 13, time: '2025-11-27 13:55:09', sourceIP: '103.253.145.12', destIP: '192.168.1.5', port: '22', protocol: 'TCP', reason: 'SSH brute-force attempt' },
-  { id: 14, time: '2025-11-27 13:51:44', sourceIP: '89.248.165.89', destIP: '192.168.1.5', port: '135', protocol: 'TCP', reason: 'Unauthorized port' },
-  { id: 15, time: '2025-11-27 13:48:22', sourceIP: '203.0.113.45', destIP: '192.168.1.5', port: '443', protocol: 'TCP', reason: 'Blacklisted IP' },
+  { id: 1, time: '2025-12-12 14:35:22', sourceIP: '203.0.113.45', destIP: '192.168.1.1', port: '8291', protocol: 'TCP', reason: 'Invalid connection state' },
+  { id: 2, time: '2025-12-12 14:32:18', sourceIP: '185.220.101.23', destIP: '192.168.1.1', port: '23', protocol: 'TCP', reason: 'Telnet blocked from WAN' },
+  { id: 3, time: '2025-12-12 14:28:45', sourceIP: '45.142.212.61', destIP: '192.168.1.1', port: '22', protocol: 'TCP', reason: 'SSH from untrusted source' },
+  { id: 4, time: '2025-12-12 14:25:33', sourceIP: '91.203.5.165', destIP: '192.168.1.5', port: '3389', protocol: 'TCP', reason: 'Invalid connection state' },
+  { id: 5, time: '2025-12-12 14:22:11', sourceIP: '158.69.133.20', destIP: '192.168.1.1', port: '80', protocol: 'TCP', reason: 'HTTP to router blocked' },
+  { id: 6, time: '2025-12-12 14:18:59', sourceIP: '203.0.113.45', destIP: '192.168.1.1', port: '8291', protocol: 'TCP', reason: 'Winbox from WAN blocked' },
+  { id: 7, time: '2025-12-12 14:15:42', sourceIP: '89.248.165.89', destIP: '192.168.1.1', port: '23', protocol: 'TCP', reason: 'Telnet blocked from WAN' },
+  { id: 8, time: '2025-12-12 14:12:27', sourceIP: '103.253.145.12', destIP: '192.168.1.10', port: '445', protocol: 'TCP', reason: 'Invalid connection state' },
+  { id: 9, time: '2025-12-12 14:08:13', sourceIP: '45.142.212.61', destIP: '192.168.1.15', port: '135', protocol: 'TCP', reason: 'Invalid connection state' },
+  { id: 10, time: '2025-12-12 14:05:55', sourceIP: '185.220.101.23', destIP: '192.168.1.1', port: '22', protocol: 'TCP', reason: 'SSH from untrusted source' },
+  { id: 11, time: '2025-12-12 14:02:38', sourceIP: '91.203.5.165', destIP: '192.168.1.20', port: '3389', protocol: 'TCP', reason: 'Invalid connection state' },
+  { id: 12, time: '2025-12-12 13:58:21', sourceIP: '158.69.133.20', destIP: '192.168.1.1', port: '8291', protocol: 'TCP', reason: 'Winbox from WAN blocked' },
+  { id: 13, time: '2025-12-12 13:55:09', sourceIP: '103.253.145.12', destIP: '192.168.1.1', port: '22', protocol: 'TCP', reason: 'SSH from untrusted source' },
+  { id: 14, time: '2025-12-12 13:51:44', sourceIP: '89.248.165.89', destIP: '192.168.1.8', port: '139', protocol: 'TCP', reason: 'Invalid connection state' },
+  { id: 15, time: '2025-12-12 13:48:22', sourceIP: '203.0.113.45', destIP: '192.168.1.1', port: '443', protocol: 'TCP', reason: 'HTTPS to router blocked' },
 ];
 
 // Mock bandwidth usage data (in Mbps over last 24 hours)
@@ -109,13 +112,13 @@ const mockProtocolData = {
   ],
 };
 
-// Mock blocked attempts by reason
+// Mock blocked attempts by reason (MikroTik stateful firewall)
 const mockBlockedByReason = {
-  labels: ['SSH Brute-Force', 'Blacklisted IP', 'Telnet Blocked', 'Unauthorized Port', 'Rate Limit'],
+  labels: ['Invalid Connection', 'WAN Access Blocked', 'SSH from Untrusted', 'Telnet Blocked', 'Winbox from WAN'],
   datasets: [
     {
       label: 'Blocked Attempts',
-      data: [45, 32, 28, 18, 12],
+      data: [52, 38, 28, 22, 15],
       backgroundColor: 'rgba(214, 40, 40, 0.8)',
       borderColor: 'rgb(214, 40, 40)',
       borderWidth: 1,
@@ -146,11 +149,36 @@ export default function FirewallMonitor() {
 
   // State for chart refresh counter
   const [chartKey, setChartKey] = useState(0);
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const lastRefreshRef = useRef(0);
+
+  // Refs to chart instances so we can destroy them before remounting
+  const bandwidthRef = useRef(null);
+  const protocolRef = useRef(null);
+  const blockedRef = useRef(null);
 
   // Re-apply dark mode and configure charts for dark mode
   useEffect(() => {
     applyDarkMode(getDarkMode());
     updateChartColors();
+    return () => {
+      // cleanup chart instances on unmount — try multiple ref shapes
+      try {
+        if (bandwidthRef.current?.destroy) bandwidthRef.current.destroy();
+        else if (bandwidthRef.current?.chartInstance?.destroy) bandwidthRef.current.chartInstance.destroy();
+        else if (bandwidthRef.current?.chart?.destroy) bandwidthRef.current.chart.destroy();
+      } catch (e) {}
+      try {
+        if (protocolRef.current?.destroy) protocolRef.current.destroy();
+        else if (protocolRef.current?.chartInstance?.destroy) protocolRef.current.chartInstance.destroy();
+        else if (protocolRef.current?.chart?.destroy) protocolRef.current.chart.destroy();
+      } catch (e) {}
+      try {
+        if (blockedRef.current?.destroy) blockedRef.current.destroy();
+        else if (blockedRef.current?.chartInstance?.destroy) blockedRef.current.chartInstance.destroy();
+        else if (blockedRef.current?.chart?.destroy) blockedRef.current.chart.destroy();
+      } catch (e) {}
+    };
   }, []);
 
   // Function to update chart colors based on dark mode
@@ -161,11 +189,23 @@ export default function FirewallMonitor() {
       ChartJS.defaults.borderColor = '#3d3d3d';
       ChartJS.defaults.plugins.legend.labels.color = '#ffffff';
       ChartJS.defaults.scale.ticks.color = '#ffffff';
+      ChartJS.defaults.animation = false;
+      ChartJS.defaults.animations = false;
+      ChartJS.defaults.transitions = {};
+      ChartJS.defaults.responsive = false;
+      ChartJS.defaults.resizeDelay = 200;
+      if (ChartJS.defaults.plugins) ChartJS.defaults.plugins.animation = false;
     } else {
       ChartJS.defaults.color = '#666';
       ChartJS.defaults.borderColor = '#e0e0e0';
       ChartJS.defaults.plugins.legend.labels.color = '#666';
       ChartJS.defaults.scale.ticks.color = '#666';
+      ChartJS.defaults.animation = false;
+      ChartJS.defaults.animations = false;
+      ChartJS.defaults.transitions = {};
+      ChartJS.defaults.responsive = false;
+      ChartJS.defaults.resizeDelay = 200;
+      if (ChartJS.defaults.plugins) ChartJS.defaults.plugins.animation = false;
     }
     setChartKey(prev => prev + 1); // Force chart re-render
   };
@@ -185,9 +225,37 @@ export default function FirewallMonitor() {
    * Simulates reloading mock data
    */
   function handleRefresh() {
+    // Debounce / prevent spamming refresh which triggers resize thrash
+    const now = Date.now();
+    if (isRefreshing || now - lastRefreshRef.current < 700) {
+      showNotification('Please wait before refreshing again', 'info');
+      return;
+    }
+    lastRefreshRef.current = now;
+    setIsRefreshing(true);
+    setTimeout(() => setIsRefreshing(false), 700);
+
     // In a real app, this would fetch fresh data from API
     setRules([...mockFirewallRules]);
     setBlockedConnections([...mockBlockedConnections]);
+
+    // destroy existing chart instances to avoid duplicate/mount issues
+    try {
+      if (bandwidthRef.current?.destroy) bandwidthRef.current.destroy();
+      else if (bandwidthRef.current?.chartInstance?.destroy) bandwidthRef.current.chartInstance.destroy();
+      else if (bandwidthRef.current?.chart?.destroy) bandwidthRef.current.chart.destroy();
+    } catch (e) {}
+    try {
+      if (protocolRef.current?.destroy) protocolRef.current.destroy();
+      else if (protocolRef.current?.chartInstance?.destroy) protocolRef.current.chartInstance.destroy();
+      else if (protocolRef.current?.chart?.destroy) protocolRef.current.chart.destroy();
+    } catch (e) {}
+    try {
+      if (blockedRef.current?.destroy) blockedRef.current.destroy();
+      else if (blockedRef.current?.chartInstance?.destroy) blockedRef.current.chartInstance.destroy();
+      else if (blockedRef.current?.chart?.destroy) blockedRef.current.chart.destroy();
+    } catch (e) {}
+
     setChartKey(prev => prev + 1);
     showNotification('Dashboard refreshed successfully!', 'success');
   }
@@ -348,15 +416,15 @@ export default function FirewallMonitor() {
             </div>
             <div className="card-body chart-compact">
               <Line
+                ref={bandwidthRef}
+                redraw={true}
                 key={`bandwidth-${chartKey}`}
-                data={mockBandwidthData} 
+                data={mockBandwidthData}
                 options={{
-                  responsive: true,
+                  responsive: false,
                   maintainAspectRatio: true,
                   aspectRatio: 1.3,
-                  animation: {
-                    duration: 750
-                  },
+                  animation: false,
                   plugins: {
                     legend: {
                       position: 'top',
@@ -405,15 +473,15 @@ export default function FirewallMonitor() {
             </div>
             <div className="card-body chart-doughnut chart-compact">
               <Doughnut
+                ref={protocolRef}
+                redraw={true}
                 key={`protocol-${chartKey}`}
                 data={mockProtocolData}
                 options={{
-                  responsive: true,
+                  responsive: false,
                   maintainAspectRatio: true,
                   aspectRatio: 1.3,
-                  animation: {
-                    duration: 750
-                  },
+                  animation: false,
                   plugins: {
                     legend: {
                       position: 'bottom',
@@ -438,16 +506,16 @@ export default function FirewallMonitor() {
             </div>
             <div className="card-body chart-compact">
               <Bar
+                ref={blockedRef}
+                redraw={true}
                 key={`blocked-${chartKey}`}
                 data={mockBlockedByReason}
                 options={{
-                  responsive: true,
+                  responsive: false,
                   maintainAspectRatio: true,
                   aspectRatio: 1.3,
                   indexAxis: 'y',
-                  animation: {
-                    duration: 750
-                  },
+                  animation: false,
                   plugins: {
                     legend: {
                       display: false,
