@@ -203,7 +203,7 @@ export default function LoginPage() {
             </span>
           </h1>
           <p className="header-subtitle">Barangay Fatima Residential Information System</p>
-          <p className="header-tagline">plus <span style={{color:'#ff4b00', fontWeight:600}}>Secure</span></p>
+          <p className="header-tagline">plus <span style={{color:'#ff4b00', fontWeight:600}}>Security</span></p>
         </div>
 
         <div className="login-right">

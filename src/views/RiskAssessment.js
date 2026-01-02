@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect, useLayoutEffect } from 'react';
+import { getAdminPassword } from '../utils/auth';
 import { FaInfoCircle } from 'react-icons/fa';
 import Header from '../components/Header';
 import './RiskAssessment.css';
@@ -193,8 +194,32 @@ export default function RiskAssessment() {
   };
 
   const handleDelete = (id) => {
-    setRecords(prev => prev.filter(r => r.id !== id));
+    // open password confirmation modal instead of immediate delete
+    setDeleteTargetId(id);
+    setDeletePassword('');
+    setDeleteModalOpen(true);
   };
+
+  // delete modal state
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [deleteTargetId, setDeleteTargetId] = useState('');
+  const [deletePassword, setDeletePassword] = useState('');
+
+  function closeDeleteModal() {
+    setDeleteModalOpen(false);
+    setDeleteTargetId('');
+    setDeletePassword('');
+  }
+
+  function handleConfirmDelete() {
+    if (deletePassword !== getAdminPassword()) {
+      showToast('Incorrect password. Please try again.');
+      return;
+    }
+    setRecords(prev => prev.filter(r => r.id !== deleteTargetId));
+    showToast('Risk deleted successfully!');
+    closeDeleteModal();
+  }
 
   const riskCounts = records.reduce((acc, record) => {
     const level = record.riskLevel || getRiskLevel(
@@ -425,6 +450,7 @@ export default function RiskAssessment() {
           <div className="toast-message">{toast}</div>
         </div>
       )}
+      <DeleteConfirmModal open={deleteModalOpen} onClose={closeDeleteModal} onConfirm={handleConfirmDelete} risk={records.find(r => r.id === deleteTargetId)} password={deletePassword} setPassword={setDeletePassword} />
     </div>
   );
 }
@@ -435,6 +461,45 @@ function StatCard({ label, count, color }) {
       <div className="stat-content">
         <p className="stat-label">{label}</p>
         <p className="stat-value" style={{ color }}>{count}</p>
+      </div>
+    </div>
+  );
+}
+
+function DeleteConfirmModal({ open, onClose, onConfirm, risk, password, setPassword }) {
+  if (!open) return null;
+  const name = risk ? `${risk.vulnerability}` : '';
+  return (
+    <div className="modal modal-overlay" role="dialog" aria-modal="true">
+      <div className="modal-content">
+        <h3>Delete Risk</h3>
+        <div className="warning-row">
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="16" cy="16" r="14" fill="url(#warnGradient)"/>
+            <path d="M16 10v8M16 22v1" stroke="#fff" strokeWidth="2.5" strokeLinecap="round"/>
+            <defs>
+              <linearGradient id="warnGradient" x1="2" y1="2" x2="30" y2="30">
+                <stop offset="0%" stopColor="#ff9800"/>
+                <stop offset="100%" stopColor="#ff6b00"/>
+              </linearGradient>
+            </defs>
+          </svg>
+          <p>Are you sure you want to delete <strong style={{ color: '#e53935' }}>{name}</strong>? This action cannot be undone.</p>
+        </div>
+        <div className="form-row">
+          <label>Enter password to confirm:</label>
+          <input 
+            type="password" 
+            value={password} 
+            onChange={e => setPassword(e.target.value)}
+            placeholder="Enter admin password"
+            autoFocus
+          />
+        </div>
+        <div className="form-actions" style={{ display: 'flex', justifyContent: 'flex-end', gap: 8 }}>
+          <button className="btn" onClick={onClose}>Cancel</button>
+          <button className="btn primary" onClick={onConfirm}>Delete</button>
+        </div>
       </div>
     </div>
   );

@@ -538,7 +538,7 @@ function DeleteConfirmModal({ open, onClose, onConfirm, stationName, password, s
             autoFocus
           />
         </div>
-        <div className="form-actions">
+        <div className="form-actions" style={{ display: 'flex', justifyContent: 'flex-end', gap: 8 }}>
           <button className="btn" onClick={onClose}>Cancel</button>
           <button className="btn primary" onClick={onConfirm}>Delete</button>
         </div>

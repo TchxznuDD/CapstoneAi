@@ -336,7 +336,7 @@ export default function BackupHistory() {
                 autoFocus
               />
             </div>
-            <div className="form-actions">
+            <div className="form-actions" style={{ display: 'flex', justifyContent: 'flex-end', gap: 8 }}>
               <button className="btn" onClick={() => { setDeleting(null); setDeletePassword(''); }}>Cancel</button>
               <button className="btn primary" onClick={() => { 
                 if (deletePassword !== 'admin') {
