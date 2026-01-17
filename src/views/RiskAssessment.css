@@ -525,11 +525,11 @@
 
 /* table wrapper: limit height and enable scrolling when records exceed available space */
 .chart-right .table-wrapper {
-  /* Cap vertical growth so horizontal scrollbar remains visible; allow scrolling */
+  /* Fixed height - table stays at top, items scroll inside */
   width: 100%;
-  max-height: 60vh; /* let the table grow but not beyond viewport; adjust if needed */
-  overflow-x: auto; /* horizontal scroll when table wider than container */
-  overflow-y: auto; /* vertical scroll when rows exceed max-height */
+  height: 600px;
+  overflow-x: auto;
+  overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   box-sizing: border-box;
   padding-bottom: 8px;
@@ -924,15 +924,6 @@
 .btn.primary { background: linear-gradient(90deg, #ff7b00, #ff4b00); color: #fff; box-shadow: 0 8px 20px rgba(255,123,0,0.10); }
 .btn.small { padding: 8px 14px; font-size: 13px; }
 
-.chart-right .table-wrapper {
-  /* Let the table height grow with new rows; allow horizontal scrolling for wide tables */
-  width: 100%;
-  overflow-x: auto; /* horizontal scroll when table wider than container */
-  overflow-y: visible; /* allow the wrapper to expand vertically with added rows */
-  -webkit-overflow-scrolling: touch;
-  box-sizing: border-box;
-  padding-bottom: 8px;
-}
 .dark-mode .risk-table thead th{
   background: linear-gradient(180deg,#0b1112 0%, #0f1213 100%); /* much darker header */
   color: var(--text-dark);
