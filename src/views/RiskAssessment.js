@@ -49,7 +49,9 @@ export default function RiskAssessment() {
   const threatsAnchorRef = useRef(null);
   const [threatsAnchorRect, setThreatsAnchorRect] = useState(null);
   const [toast, setToast] = useState('');
+  const [toastType, setToastType] = useState('error');
   const toastTimerRef = useRef(null);
+  const [showModal, setShowModal] = useState(false);
 
   // Update anchor rect when any tooltip opens or on resize/scroll
   useEffect(() => {
@@ -134,8 +136,9 @@ export default function RiskAssessment() {
     return createPortal(content, elRef.current);
   }
 
-  function showToast(msg, duration = 3500) {
+  function showToast(msg, duration = 3500, type = 'error') {
     setToast(msg);
+    setToastType(type);
     if (toastTimerRef.current) {
       clearTimeout(toastTimerRef.current);
       toastTimerRef.current = null;
@@ -191,6 +194,8 @@ export default function RiskAssessment() {
     setVuln('');
     setImpact('');
     setThreats('');
+    setShowModal(false);
+    showToast('Risk added successfully!', 2500, 'success');
   };
 
   const handleDelete = (id) => {
@@ -239,9 +244,12 @@ export default function RiskAssessment() {
             <h2>Risk Assessment</h2>
             <p>Create and view risk items using the severity/likelihood matrix.</p>
           </div>
-          <div className="external-refresh">
-            {/* keep space for actions if needed */}
-          </div>
+        </div>
+
+        <div className="external-refresh">
+          <button className="refresh-btn" onClick={() => setShowModal(true)}>
+            + Create Risk
+          </button>
         </div>
       </div>
 
@@ -300,96 +308,8 @@ export default function RiskAssessment() {
         </div>
       </section>
 
-      <section className="two-column-cards">
-        <div className="chart-card chart-left">
-          <div className="card-header">
-            <h3>Create Risk</h3>
-          </div>
-          <div className="card-body">
-            <form className="form-grid" onSubmit={handleAddRisk} autoComplete="off" style={{ width: '100%' }}>
-              <div className="form-left">
-                <div className="row">
-                  <label>Asset</label>
-                  <div className="select-wrapper">
-                    <select value={asset} onChange={(e) => setAsset(e.target.value)}>
-                      {Array.isArray(assets) && assets.map(a => <option key={a} value={a}>{a}</option>)}
-                    </select>
-                  </div>
-                </div>
-
-                <div className="row" style={{ position: 'relative' }}>
-                  <label>Vulnerability <span ref={vulnAnchorRef} className="info-icon" onClick={() => setShowVulnInfo(!showVulnInfo)} role="button" tabIndex={0} aria-label="Vulnerability help"><FaInfoCircle /></span></label>
-                  <input type="text" value={vuln} onChange={(e) => setVuln(e.target.value)} placeholder="Describe vulnerability" />
-
-                  <div style={{ marginTop: 8 }}>
-                    <div style={{ marginBottom: 8 }}>
-                      <label style={{ display: 'block', marginBottom: 6 }}>Impact <span ref={impactAnchorRef} className="info-icon" onClick={() => setShowImpactInfo(!showImpactInfo)} role="button" tabIndex={0} aria-label="Impact help"><FaInfoCircle /></span></label>
-                      <input type="text" value={impact} onChange={(e) => setImpact(e.target.value)} placeholder="Describe impact" />
-                    </div>
-                    <div>
-                      <label style={{ display: 'block', marginBottom: 6 }}>Threats <span ref={threatsAnchorRef} className="info-icon" onClick={() => setShowThreatsInfo(!showThreatsInfo)} role="button" tabIndex={0} aria-label="Threats help"><FaInfoCircle /></span></label>
-                      <input type="text" value={threats} onChange={(e) => setThreats(e.target.value)} placeholder="Describe threats" />
-                    </div>
-                  </div>
-
-                  {showVulnInfo && vulnAnchorRect && (
-                    <TooltipPortal anchorRect={vulnAnchorRect} anchorRef={vulnAnchorRef} onClose={() => setShowVulnInfo(false)}>
-                      <p style={{ margin: 0 }}>Tell us in plain language what the problem is and how it affects people. Example phrases you can use: <strong>"No firewall on server"</strong>, <strong>"Backups not taken"</strong>, <strong>"Slow page causing delays"</strong>, or <strong>"Outdated software"</strong>. A short sentence is enough.</p>
-                      <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 8 }}>
-                        <button type="button" className="btn small" onClick={() => setShowVulnInfo(false)}>Got it</button>
-                      </div>
-                    </TooltipPortal>
-                  )}
-
-                  {showImpactInfo && impactAnchorRect && (
-                    <TooltipPortal anchorRect={impactAnchorRect} anchorRef={impactAnchorRef} onClose={() => setShowImpactInfo(false)}>
-                      <p style={{ margin: 0 }}>Impact: describe the effect on systems, data, or people. Example: <strong>"System and data breach"</strong> or <strong>"Slow response to outages"</strong>.</p>
-                      <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 8 }}>
-                        <button type="button" className="btn small" onClick={() => setShowImpactInfo(false)}>Got it</button>
-                      </div>
-                    </TooltipPortal>
-                  )}
-
-                  {showThreatsInfo && threatsAnchorRect && (
-                    <TooltipPortal anchorRect={threatsAnchorRect} anchorRef={threatsAnchorRef} onClose={() => setShowThreatsInfo(false)}>
-                      <p style={{ margin: 0 }}>Threats: list likely threat actors or causes (e.g. <strong>"External threats, Hackers"</strong>, <strong>"Employee maintenance lapses"</strong>).</p>
-                      <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 8 }}>
-                        <button type="button" className="btn small" onClick={() => setShowThreatsInfo(false)}>Got it</button>
-                      </div>
-                    </TooltipPortal>
-                  )}
-                </div>
-
-                <div className="row two-cols">
-                  <div>
-                    <label>Severity</label>
-                    <div className="select-wrapper">
-                      <select value={severity} onChange={(e) => setSeverity(e.target.value)}>
-                        {SEVERITY_OPTIONS.map(s => <option key={s} value={s}>{s}</option>)}
-                      </select>
-                    </div>
-                  </div>
-                  <div>
-                    <label>Likelihood</label>
-                    <div className="select-wrapper">
-                      <select value={likelihood} onChange={(e) => setLikelihood(e.target.value)}>
-                        {LIKELIHOOD_OPTIONS.map(l => <option key={l} value={l}>{l}</option>)}
-                      </select>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <aside className="form-right" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-end' }}>
-                <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                  <button className="external-refresh refresh-btn" type="submit" style={{ background: 'linear-gradient(90deg,#ff9800,#ff6b00)', border: '2px solid #ff9800', color: '#fff', padding: '10px 18px', borderRadius: 18, fontWeight: 800 }}>Add Risk</button>
-                </div>
-              </aside>
-            </form>
-          </div>
-        </div>
-
-        <div className="chart-card chart-right">
+      <section className="risk-content-section">
+        <div className="chart-card chart-right" style={{ maxWidth: '100%' }}>
           <div className="card-header">
             <h3>Existing Risks</h3>
           </div>
@@ -444,9 +364,92 @@ export default function RiskAssessment() {
           </div>
         </div>
       </section>
+
+      {showModal && (
+        <div className="modal-overlay" onClick={() => setShowModal(false)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <h3>Create New Risk</h3>
+            <div className="modal-body">
+              <form onSubmit={handleAddRisk} autoComplete="off">
+                <div className="form-field full-width">
+                  <label>Asset</label>
+                  <select value={asset} onChange={(e) => setAsset(e.target.value)}>
+                    {Array.isArray(assets) && assets.map(a => <option key={a} value={a}>{a}</option>)}
+                  </select>
+                </div>
+
+                <div className="form-group">
+                  <h4 className="form-group-title">Risk Description</h4>
+                  
+                  <div className="form-field full-width" style={{ position: 'relative' }}>
+                    <label>Vulnerability <span ref={vulnAnchorRef} className="info-icon" onClick={() => setShowVulnInfo(!showVulnInfo)} role="button" tabIndex={0} aria-label="Vulnerability help"><FaInfoCircle /></span></label>
+                    <textarea value={vuln} onChange={(e) => setVuln(e.target.value)} placeholder="Describe the vulnerability in plain language..." rows={3} />
+
+                    {showVulnInfo && vulnAnchorRect && (
+                      <TooltipPortal anchorRect={vulnAnchorRect} anchorRef={vulnAnchorRef} onClose={() => setShowVulnInfo(false)}>
+                        <p style={{ margin: 0 }}>Tell us in plain language what the problem is and how it affects people. Example phrases you can use: <strong>"No firewall on server"</strong>, <strong>"Backups not taken"</strong>, <strong>"Slow page causing delays"</strong>, or <strong>"Outdated software"</strong>. A short sentence is enough.</p>
+                        <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 8 }}>
+                          <button type="button" className="btn small" onClick={() => setShowVulnInfo(false)}>Got it</button>
+                        </div>
+                      </TooltipPortal>
+                    )}
+                  </div>
+
+                  <div className="form-field">
+                    <label>Impact <span ref={impactAnchorRef} className="info-icon" onClick={() => setShowImpactInfo(!showImpactInfo)} role="button" tabIndex={0} aria-label="Impact help"><FaInfoCircle /></span></label>
+                    <textarea value={impact} onChange={(e) => setImpact(e.target.value)} placeholder="Describe the impact..." rows={3} />
+
+                    {showImpactInfo && impactAnchorRect && (
+                      <TooltipPortal anchorRect={impactAnchorRect} anchorRef={impactAnchorRef} onClose={() => setShowImpactInfo(false)}>
+                        <p style={{ margin: 0 }}>Impact: describe the effect on systems, data, or people. Example: <strong>"System and data breach"</strong> or <strong>"Slow response to outages"</strong>.</p>
+                        <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 8 }}>
+                          <button type="button" className="btn small" onClick={() => setShowImpactInfo(false)}>Got it</button>
+                        </div>
+                      </TooltipPortal>
+                    )}
+                  </div>
+
+                  <div className="form-field">
+                    <label>Threats <span ref={threatsAnchorRef} className="info-icon" onClick={() => setShowThreatsInfo(!showThreatsInfo)} role="button" tabIndex={0} aria-label="Threats help"><FaInfoCircle /></span></label>
+                    <textarea value={threats} onChange={(e) => setThreats(e.target.value)} placeholder="Describe the threats..." rows={3} />
+
+                    {showThreatsInfo && threatsAnchorRect && (
+                      <TooltipPortal anchorRect={threatsAnchorRect} anchorRef={threatsAnchorRef} onClose={() => setShowThreatsInfo(false)}>
+                        <p style={{ margin: 0 }}>Threats: list likely threat actors or causes (e.g. <strong>"External threats, Hackers"</strong>, <strong>"Employee maintenance lapses"</strong>).</p>
+                        <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 8 }}>
+                          <button type="button" className="btn small" onClick={() => setShowThreatsInfo(false)}>Got it</button>
+                        </div>
+                      </TooltipPortal>
+                    )}
+                  </div>
+                </div>
+
+                <div className="form-field">
+                  <label>Severity</label>
+                  <select value={severity} onChange={(e) => setSeverity(e.target.value)}>
+                    {SEVERITY_OPTIONS.map(s => <option key={s} value={s}>{s}</option>)}
+                  </select>
+                </div>
+
+                <div className="form-field">
+                  <label>Likelihood</label>
+                  <select value={likelihood} onChange={(e) => setLikelihood(e.target.value)}>
+                    {LIKELIHOOD_OPTIONS.map(l => <option key={l} value={l}>{l}</option>)}
+                  </select>
+                </div>
+
+                <div className="modal-actions">
+                  <button type="button" className="btn-cancel" onClick={() => setShowModal(false)}>Cancel</button>
+                  <button type="submit" className="btn-submit">Add Risk</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
       {toast && (
-        <div className={`toast-notification error`} role="status" aria-live="polite">
-          <div className="toast-icon">!</div>
+        <div className={`toast-notification ${toastType}`} role="status" aria-live="polite">
+          <div className="toast-icon">{toastType === 'success' ? '✓' : '!'}</div>
           <div className="toast-message">{toast}</div>
         </div>
       )}
