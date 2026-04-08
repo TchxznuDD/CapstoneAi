@@ -1,6 +1,5 @@
-import React, { useState, useRef, useEffect, useLayoutEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { getAdminPassword } from '../utils/auth';
-import { FaInfoCircle } from 'react-icons/fa';
 import Header from '../components/Header';
 import './RiskAssessment.css';
 import { mockRecords, assets, riskMatrix } from '../data/Matrix';
@@ -23,8 +22,6 @@ function getRiskLevel(severity, likelihood) {
   return riskMatrix[likelihood][severity];
 }
 
-import { createPortal } from 'react-dom';
-
 export default function RiskAssessment() {
   const fallbackMock = [
     { id: 'r1', asset: (Array.isArray(assets) && assets[0]) || 'Server and Host', vulnerability: 'NO FIREWALL', severity: 'Intolerable', likelihood: 'Probable', riskLevel: 'EXTREME' },
@@ -39,102 +36,10 @@ export default function RiskAssessment() {
   const [threats, setThreats] = useState('');
   const [severity, setSeverity] = useState('Undesirable');
   const [likelihood, setLikelihood] = useState('Possible');
-  const [showVulnInfo, setShowVulnInfo] = useState(false);
-  const vulnAnchorRef = useRef(null);
-  const [vulnAnchorRect, setVulnAnchorRect] = useState(null);
-  const [showImpactInfo, setShowImpactInfo] = useState(false);
-  const impactAnchorRef = useRef(null);
-  const [impactAnchorRect, setImpactAnchorRect] = useState(null);
-  const [showThreatsInfo, setShowThreatsInfo] = useState(false);
-  const threatsAnchorRef = useRef(null);
-  const [threatsAnchorRect, setThreatsAnchorRect] = useState(null);
   const [toast, setToast] = useState('');
   const [toastType, setToastType] = useState('error');
   const toastTimerRef = useRef(null);
   const [showModal, setShowModal] = useState(false);
-
-  // Update anchor rect when any tooltip opens or on resize/scroll
-  useEffect(() => {
-    function updateRect() {
-      if (vulnAnchorRef.current) setVulnAnchorRect(vulnAnchorRef.current.getBoundingClientRect());
-      if (impactAnchorRef.current) setImpactAnchorRect(impactAnchorRef.current.getBoundingClientRect());
-      if (threatsAnchorRef.current) setThreatsAnchorRect(threatsAnchorRef.current.getBoundingClientRect());
-    }
-    if (showVulnInfo || showImpactInfo || showThreatsInfo) updateRect();
-    window.addEventListener('resize', updateRect);
-    window.addEventListener('scroll', updateRect, true);
-    return () => {
-      window.removeEventListener('resize', updateRect);
-      window.removeEventListener('scroll', updateRect, true);
-    };
-  }, [showVulnInfo, showImpactInfo, showThreatsInfo]);
-
-  // Portal tooltip component
-  function TooltipPortal({ anchorRect, anchorRef, onClose, children }) {
-    const elRef = useRef(null);
-    const contentRef = useRef(null);
-    const [style, setStyle] = useState({ visibility: 'hidden' });
-
-    if (!elRef.current) elRef.current = document.createElement('div');
-
-    useEffect(() => {
-      const el = elRef.current;
-      el.className = 'vuln-tooltip-portal-root';
-      document.body.appendChild(el);
-      return () => {
-        try { document.body.removeChild(el); } catch (e) {}
-      };
-    }, []);
-
-    // compute placement after the tooltip content mounts so we can measure its height
-    useLayoutEffect(() => {
-      if (!anchorRect || !contentRef.current) return;
-      const padding = 8;
-      const maxWidth = Math.min(640, window.innerWidth - 32);
-      const tooltipRect = contentRef.current.getBoundingClientRect();
-      const spaceAbove = anchorRect.top;
-      const spaceBelow = window.innerHeight - anchorRect.bottom;
-      let top;
-      let placement = 'below';
-      if (spaceBelow < tooltipRect.height + 16 && spaceAbove > spaceBelow) {
-        // place above
-        top = window.scrollY + anchorRect.top - padding - tooltipRect.height;
-        placement = 'above';
-      } else {
-        // place below
-        top = window.scrollY + anchorRect.bottom + padding;
-        placement = 'below';
-      }
-      let left = window.scrollX + Math.max(8, anchorRect.left);
-      if (left + maxWidth + 24 > window.scrollX + window.innerWidth) left = window.scrollX + window.innerWidth - maxWidth - 16;
-      setStyle({ position: 'absolute', top: `${Math.round(top)}px`, left: `${Math.round(left)}px`, maxWidth: `${maxWidth}px`, zIndex: 9999, visibility: 'visible' });
-    }, [anchorRect, children]);
-
-    // outside click / Esc to close
-    useEffect(() => {
-      function onKey(e) { if (e.key === 'Escape') onClose(); }
-      function onDown(e) {
-        const el = elRef.current;
-        if (!el) return;
-        if (!el.contains(e.target) && !(anchorRef && anchorRef.current && anchorRef.current.contains(e.target))) {
-          onClose();
-        }
-      }
-      document.addEventListener('keydown', onKey);
-      document.addEventListener('mousedown', onDown);
-      return () => {
-        document.removeEventListener('keydown', onKey);
-        document.removeEventListener('mousedown', onDown);
-      };
-    }, [onClose]);
-
-    const content = (
-      <div style={style} className="vuln-tooltip" role="status" aria-live="polite" ref={contentRef}>
-        {children}
-      </div>
-    );
-    return createPortal(content, elRef.current);
-  }
 
   function showToast(msg, duration = 3500, type = 'error') {
     setToast(msg);
@@ -381,46 +286,22 @@ export default function RiskAssessment() {
                 <div className="form-group">
                   <h4 className="form-group-title">Risk Description</h4>
                   
-                  <div className="form-field full-width" style={{ position: 'relative' }}>
-                    <label>Vulnerability <span ref={vulnAnchorRef} className="info-icon" onClick={() => setShowVulnInfo(!showVulnInfo)} role="button" tabIndex={0} aria-label="Vulnerability help"><FaInfoCircle /></span></label>
+                  <div className="form-field full-width">
+                    <label>Vulnerability</label>
+                    <p className="field-help-text">Describe the problem in plain language. Example: No firewall on server, backups not taken, outdated software, or slow page causing delays.</p>
                     <textarea value={vuln} onChange={(e) => setVuln(e.target.value)} placeholder="Describe the vulnerability in plain language..." rows={3} />
-
-                    {showVulnInfo && vulnAnchorRect && (
-                      <TooltipPortal anchorRect={vulnAnchorRect} anchorRef={vulnAnchorRef} onClose={() => setShowVulnInfo(false)}>
-                        <p style={{ margin: 0 }}>Tell us in plain language what the problem is and how it affects people. Example phrases you can use: <strong>"No firewall on server"</strong>, <strong>"Backups not taken"</strong>, <strong>"Slow page causing delays"</strong>, or <strong>"Outdated software"</strong>. A short sentence is enough.</p>
-                        <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 8 }}>
-                          <button type="button" className="btn small" onClick={() => setShowVulnInfo(false)}>Got it</button>
-                        </div>
-                      </TooltipPortal>
-                    )}
                   </div>
 
                   <div className="form-field">
-                    <label>Impact <span ref={impactAnchorRef} className="info-icon" onClick={() => setShowImpactInfo(!showImpactInfo)} role="button" tabIndex={0} aria-label="Impact help"><FaInfoCircle /></span></label>
+                    <label>Impact</label>
+                    <p className="field-help-text">Describe the effect on systems, data, operations, or people. Example: System and data breach or slow response to outages.</p>
                     <textarea value={impact} onChange={(e) => setImpact(e.target.value)} placeholder="Describe the impact..." rows={3} />
-
-                    {showImpactInfo && impactAnchorRect && (
-                      <TooltipPortal anchorRect={impactAnchorRect} anchorRef={impactAnchorRef} onClose={() => setShowImpactInfo(false)}>
-                        <p style={{ margin: 0 }}>Impact: describe the effect on systems, data, or people. Example: <strong>"System and data breach"</strong> or <strong>"Slow response to outages"</strong>.</p>
-                        <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 8 }}>
-                          <button type="button" className="btn small" onClick={() => setShowImpactInfo(false)}>Got it</button>
-                        </div>
-                      </TooltipPortal>
-                    )}
                   </div>
 
                   <div className="form-field">
-                    <label>Threats <span ref={threatsAnchorRef} className="info-icon" onClick={() => setShowThreatsInfo(!showThreatsInfo)} role="button" tabIndex={0} aria-label="Threats help"><FaInfoCircle /></span></label>
+                    <label>Threats</label>
+                    <p className="field-help-text">List likely threat actors or causes. Example: External hackers, phishing, insider mistakes, or maintenance lapses.</p>
                     <textarea value={threats} onChange={(e) => setThreats(e.target.value)} placeholder="Describe the threats..." rows={3} />
-
-                    {showThreatsInfo && threatsAnchorRect && (
-                      <TooltipPortal anchorRect={threatsAnchorRect} anchorRef={threatsAnchorRef} onClose={() => setShowThreatsInfo(false)}>
-                        <p style={{ margin: 0 }}>Threats: list likely threat actors or causes (e.g. <strong>"External threats, Hackers"</strong>, <strong>"Employee maintenance lapses"</strong>).</p>
-                        <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 8 }}>
-                          <button type="button" className="btn small" onClick={() => setShowThreatsInfo(false)}>Got it</button>
-                        </div>
-                      </TooltipPortal>
-                    )}
                   </div>
                 </div>
 
