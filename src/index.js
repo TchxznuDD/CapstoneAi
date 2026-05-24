@@ -13,6 +13,7 @@ import Settings from "./views/Settings";
 import FirewallMonitor from "./views/FirewallMonitor";
 import UserManual from "./views/UserManual";
 import NotFound from "./views/not-found";
+import ViewChatbot from "./components/ViewChatbot";
 import { getDarkMode, applyDarkMode } from "./utils/theme";
 import "./dark-mode.css";
 
@@ -21,19 +22,22 @@ applyDarkMode(getDarkMode());
 
 ReactDOM.render(
   <Router>
-    <Switch>
-      <Route exact path="/" component={LoginPage} />
-      <PrivateRoute path="/home" component={Home} />
-      <PrivateRoute path="/computer" component={Computer} />
-      <PrivateRoute path="/risk-assessment" component={RiskAssessment} />
-      <PrivateRoute path="/server-status" component={ServerStatus} />
-      <PrivateRoute path="/backup/history" component={BackupHistory} />
-      <PrivateRoute path="/backup" component={BackupManagement} />
-      <PrivateRoute path="/settings" component={Settings} />
-      <PrivateRoute path="/firewall/monitor" component={FirewallMonitor} />
-      <PrivateRoute path="/user-manual" component={UserManual} />
-      <Route component={NotFound} />
-    </Switch>
+    <>
+      <Switch>
+        <Route exact path="/" component={LoginPage} />
+        <PrivateRoute path="/home" component={Home} />
+        <PrivateRoute path="/computer" component={Computer} />
+        <PrivateRoute path="/risk-assessment" component={RiskAssessment} />
+        <PrivateRoute path="/server-status" component={ServerStatus} />
+        <PrivateRoute path="/backup/history" component={BackupHistory} />
+        <PrivateRoute path="/backup" component={BackupManagement} />
+        <PrivateRoute path="/settings" component={Settings} />
+        <PrivateRoute path="/firewall/monitor" component={FirewallMonitor} />
+        <PrivateRoute path="/user-manual" component={UserManual} />
+        <Route component={NotFound} />
+      </Switch>
+      <ViewChatbot />
+    </>
   </Router>,
   document.getElementById("app")
 );
